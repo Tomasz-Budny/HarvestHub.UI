@@ -15,7 +15,7 @@
 
 .search-bar {
   width: 630px;
-  height: 35px;
+  height: calc(var(--navbar-height) * 0.55);
   border-radius: 8px;
   background-color: white;
 }
