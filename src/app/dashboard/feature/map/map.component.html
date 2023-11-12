@@ -1,3 +1,6 @@
 @if (apiLoaded | async) {
-  <google-map></google-map>
+  <google-map
+    [center]="center"
+    [options]="options">
+  </google-map>
 }
