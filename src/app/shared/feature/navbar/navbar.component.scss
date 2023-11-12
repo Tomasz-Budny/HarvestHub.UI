@@ -1,4 +1,21 @@
 :host {
   background-color: var(--primary-color);
   height: var(--navbar-height);
+  display: flex;
+  padding: 0px 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-family: 'Lobster', sans-serif;
+  font-size: 40px;
+  color: white;
+}
+
+.search-bar {
+  width: 630px;
+  height: 35px;
+  border-radius: 8px;
+  background-color: white;
 }
