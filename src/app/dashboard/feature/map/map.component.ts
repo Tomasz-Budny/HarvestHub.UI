@@ -8,7 +8,8 @@ import { Observable, catchError, map, of, tap } from 'rxjs';
   selector: 'app-map',
   standalone: true,
   imports: [GoogleMapsModule, HttpClientModule, HttpClientJsonpModule, AsyncPipe],
-  templateUrl: './map.component.html'
+  templateUrl: './map.component.html',
+  styleUrl: './map.component.scss'
 })
 export class MapComponent {
   @ViewChild(GoogleMap) map: GoogleMap;
@@ -30,7 +31,7 @@ export class MapComponent {
   initializeMap() {
     this.options = {
       disableDefaultUI: true,
-      fullscreenControl: true,
+      fullscreenControl: false,
       mapTypeId: google.maps.MapTypeId.HYBRID,
     }
     this.center = {lat: 53.0518, lng: 20.703};

@@ -5,7 +5,8 @@ import { MapComponent } from './map/map.component';
   selector: 'app-dashboard',
   standalone: true,
   imports: [MapComponent],
-  templateUrl: './dashboard.component.html'
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
   
