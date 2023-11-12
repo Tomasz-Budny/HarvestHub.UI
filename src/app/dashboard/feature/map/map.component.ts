@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { GoogleMap, GoogleMapsModule } from '@angular/google-maps';
@@ -7,7 +7,7 @@ import { Observable, catchError, map, of, tap } from 'rxjs';
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [GoogleMapsModule, HttpClientModule, HttpClientJsonpModule, AsyncPipe],
+  imports: [CommonModule, GoogleMapsModule, HttpClientModule, HttpClientJsonpModule],
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss'
 })
