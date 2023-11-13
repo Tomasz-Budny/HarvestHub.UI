@@ -3,6 +3,7 @@ import { HttpClient, HttpClientJsonpModule, HttpClientModule } from '@angular/co
 import { Component, ViewChild } from '@angular/core';
 import { GoogleMap, GoogleMapsModule } from '@angular/google-maps';
 import { Observable, catchError, map, of, tap } from 'rxjs';
+import { MapService } from '../../data-access/map.service';
 
 @Component({
   selector: 'app-map',
@@ -12,18 +13,27 @@ import { Observable, catchError, map, of, tap } from 'rxjs';
   styleUrl: './map.component.scss'
 })
 export class MapComponent {
-  @ViewChild(GoogleMap) map: GoogleMap;
+  private googleMap: GoogleMap;
+  @ViewChild(GoogleMap) set map(content: GoogleMap) {
+    if(content) {
+      this.googleMap = content;
+      this.mapService.map.next(this.googleMap)
+    }
+  }
   apiLoaded: Observable<boolean>;
   options: google.maps.MapOptions;
   center: google.maps.LatLngLiteral;
 
-  constructor(httpClient: HttpClient) {
-    this.apiLoaded = httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKv27xR4mZj_nWp6ljbbo0x_ta0yrui4', 'callback')
+  constructor(
+    public httpClient: HttpClient,
+    public mapService: MapService
+  ) { 
+    this.apiLoaded = this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKv27xR4mZj_nWp6ljbbo0x_ta0yrui4&libraries=places', 'callback')
         .pipe(
           map(() => true),
           catchError(() => of(false)),
           tap({
-            next: _ => this.initializeMap()
+            complete: () => this.initializeMap()
           })
         );
   }
