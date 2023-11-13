@@ -1,6 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { ElementRef, Injectable } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
-import { Subject } from 'rxjs';
+import { Observable, Subject, catchError, map, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,9 +9,19 @@ import { Subject } from 'rxjs';
 export class MapService {
   map: Subject<GoogleMap> = new Subject<GoogleMap>();
 
-  constructor() { }
+  constructor(
+    public httpClient: HttpClient,
+  ) { }
 
-  initializeSearchBar(searchBar: ElementRef) {
+  loadMap(): Observable<boolean> {
+    return this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKv27xR4mZj_nWp6ljbbo0x_ta0yrui4&libraries=places', 'callback')
+    .pipe(
+      map(() => true),
+      catchError(() => of(false))
+    );
+  }
+
+  initializeSearchBar(searchBar: ElementRef): void {
     this.map.subscribe(map => {
       if(!map) {
         throw new Error("map is not initialized!")
@@ -38,7 +49,6 @@ export class MapService {
           map.fitBounds(bounds);
         })
       })
-
     })
   }
 }
