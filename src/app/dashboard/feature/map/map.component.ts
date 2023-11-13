@@ -16,7 +16,7 @@ export class MapComponent {
   @ViewChild(GoogleMap) set map(content: GoogleMap) {
     if(content) {
       this.googleMap = content;
-      this.mapService.map.next(this.googleMap)
+      this.mapService.setMapInstance(this.googleMap);
     }
   }
   apiLoaded: Observable<boolean>;

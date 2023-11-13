@@ -7,7 +7,7 @@ import { Observable, Subject, catchError, map, of } from 'rxjs';
   providedIn: 'root'
 })
 export class MapService {
-  map: Subject<GoogleMap> = new Subject<GoogleMap>();
+  private map: Subject<GoogleMap> = new Subject<GoogleMap>();
 
   constructor(
     public httpClient: HttpClient,
@@ -19,6 +19,10 @@ export class MapService {
       map(() => true),
       catchError(() => of(false))
     );
+  }
+
+  setMapInstance(map: GoogleMap): void {
+    this.map.next(map);
   }
 
   initializeSearchBar(searchBar: ElementRef): void {

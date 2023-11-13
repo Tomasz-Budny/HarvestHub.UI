@@ -12,7 +12,6 @@ import { MapService } from '../../../dashboard/data-access/map.service';
 export class NavbarComponent implements AfterViewInit {
   @ViewChild('searchBar') searchBar: ElementRef;
 
-
   constructor(
     public mapService: MapService
   ) { }
