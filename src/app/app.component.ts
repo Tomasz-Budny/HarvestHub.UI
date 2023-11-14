@@ -37,5 +37,9 @@ export class AppComponent {
       'rainy', 
       this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/rainy.svg")
     );
+    this.matIconRegistry.addSvgIcon(
+      'dots', 
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dots.svg")
+    );
   }
 }
