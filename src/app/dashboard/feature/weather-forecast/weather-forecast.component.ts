@@ -14,8 +14,8 @@ export class WeatherForecastComponent {
 
   forecasts = [
     { day: "PON", icon: 'sun', temperature: 22, rainForecast: 12 },
-    { day: "WTO", icon: 'sun', temperature: 16, rainForecast: 17 },
-    { day: "ŚRO", icon: 'sun', temperature: 18, rainForecast: 2 },
-    { day: "CZW", icon: 'sun', temperature: 9, rainForecast: 57 },
+    { day: "WTO", icon: 'cloudy', temperature: 16, rainForecast: 17 },
+    { day: "ŚRO", icon: 'little-cloudy', temperature: 18, rainForecast: 2 },
+    { day: "CZW", icon: 'rainy', temperature: 9, rainForecast: 57 },
   ]
 }

@@ -25,5 +25,17 @@ export class AppComponent {
       'rain', 
       this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/rain.svg")
     );
+    this.matIconRegistry.addSvgIcon(
+      'little-cloudy', 
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/little-cloudy.svg")
+    );
+    this.matIconRegistry.addSvgIcon(
+      'cloudy', 
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/cloudy.svg")
+    );
+    this.matIconRegistry.addSvgIcon(
+      'rainy', 
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/rainy.svg")
+    );
   }
 }
