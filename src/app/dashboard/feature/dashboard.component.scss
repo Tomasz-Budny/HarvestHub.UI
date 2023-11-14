@@ -1,6 +1,6 @@
 :host {
   display: grid;
-  grid-template-columns: 22% auto;
+  grid-template-columns: var(--side-panel-width) auto;
   grid-template-rows: var(--navbar-height) auto;
   height: 100vh;
 }
