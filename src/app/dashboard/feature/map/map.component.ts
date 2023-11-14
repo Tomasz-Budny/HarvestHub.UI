@@ -28,7 +28,7 @@ export class MapComponent {
   ) { 
     this.apiLoaded = this.mapService.loadMap().pipe(
       tap({
-        complete: () => this.initializeMap()
+        next: () => this.initializeMap()
       })
     )
   }
