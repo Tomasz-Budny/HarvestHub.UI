@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { MatIconRegistry } from "@angular/material/icon";
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -13,11 +14,12 @@ import { MatIconRegistry } from "@angular/material/icon";
 export class AppComponent {
 
   constructor(
-    private matIconRegistry: MatIconRegistry
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer
   ) {
     this.matIconRegistry.addSvgIcon(
-      '', 
-      ''
+      'sun', 
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/sun.svg")
     );
   }
 }
