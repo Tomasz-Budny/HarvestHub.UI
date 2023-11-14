@@ -21,5 +21,9 @@ export class AppComponent {
       'sun', 
       this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/sun.svg")
     );
+    this.matIconRegistry.addSvgIcon(
+      'rain', 
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/rain.svg")
+    );
   }
 }

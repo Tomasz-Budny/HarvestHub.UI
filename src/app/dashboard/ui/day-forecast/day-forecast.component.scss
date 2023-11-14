@@ -6,4 +6,17 @@
 
 .rain-forecast {
   font-size: 13px;
+
+  p {
+    color: #7E7676;
+  }
+}
+
+.rain {
+  font-size: 8px;
+  height: 8px;
+  width: 8px;
+  margin: auto 0px;
+  position: relative;
+  top: -1px;
 }
