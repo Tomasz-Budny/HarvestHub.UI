@@ -10,5 +10,13 @@
   <span class="primary-button m-auto mr-0">Filtruj</span>
 </div>
 <div class="fields mt-5">
-  <app-field></app-field>
+  @for (field of fields; track $index) {
+    <app-field
+      class="mb-1"
+      [name]="field.name"
+      [area]="field.area"
+      [address]="field.address"
+      [color]="field.color">
+    </app-field>
+  }
 </div>

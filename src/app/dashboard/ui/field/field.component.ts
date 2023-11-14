@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -10,5 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './field.component.scss'
 })
 export class FieldComponent {
-
+  @Input() name: string;
+  @Input() area: number;
+  @Input() address: string;
+  @Input() color: string;
 }
