@@ -5,9 +5,13 @@
     <p class="address text-secondary">Żebry Kordy</p>
   </div>
 </div>
-<div class="flex justify-between mt-4 mx-6">
-  <app-day-forecast></app-day-forecast>
-  <app-day-forecast></app-day-forecast>
-  <app-day-forecast></app-day-forecast>
-  <app-day-forecast></app-day-forecast>
+<div class="flex justify-between mt-6 mx-6">
+  @for (forecast of forecasts; track $index) {
+    <app-day-forecast
+      [day]="forecast.day"
+      [icon]="forecast.icon"
+      [temperature]="forecast.temperature"
+      [rainForecast]="forecast.rainForecast">
+    </app-day-forecast>
+  }
 </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -11,4 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class DayForecastComponent {
 
+  @Input() day: string;
+  @Input() icon: string;
+  @Input() temperature: number;
+  @Input() rainForecast: number;
 }

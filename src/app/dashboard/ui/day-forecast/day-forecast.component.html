@@ -1,10 +1,10 @@
 <div class="flex flex-col content">
-  <p class="day text-center text-xs font-medium">PON</p>
+  <p class="day text-center text-xs font-medium">{{ day }}</p>
   <mat-icon svgIcon="sun" class="weather-icon m-auto mt-1"></mat-icon>
 
-  <p class="temperature text-center text-base mt-3">16°</p>
+  <p class="temperature text-center text-base mt-3">{{ temperature }}°</p>
   <div class="flex rain-forecast justify-center mt-1">
     <mat-icon svgIcon="rain" class="rain"></mat-icon>
-    <p class="text-center text-secondary">2%</p>
+    <p class="text-center text-secondary">{{ rainForecast }}%</p>
   </div>
 </div>
