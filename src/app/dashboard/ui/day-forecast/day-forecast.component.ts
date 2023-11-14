@@ -10,7 +10,6 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './day-forecast.component.scss'
 })
 export class DayForecastComponent {
-
   @Input() day: string;
   @Input() icon: string;
   @Input() temperature: number;
