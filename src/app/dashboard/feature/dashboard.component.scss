@@ -1,8 +1,7 @@
 :host {
   display: grid;
   grid-template-columns: var(--side-panel-width) auto;
-  grid-template-rows: var(--navbar-height) auto;
-  height: 100vh;
+  grid-template-rows: var(--navbar-height) calc(100vh - var(--navbar-height));
 }
 
 app-navbar {

@@ -3,6 +3,16 @@
   flex-direction: column;
 }
 
-app-copyright {
-  margin-top: auto;
+.chart-container {
+  padding: var(--side-panel-sections-padding);
+}
+
+.chart {
+  background-color: var(--primary-color);
+  height: 250px;
+}
+
+app-fields {
+  max-height: 100%;
+  overflow-y: hidden;
 }
