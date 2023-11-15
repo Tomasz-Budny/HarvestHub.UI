@@ -1,9 +1,10 @@
-$icon-size: 8px;
+$rain-icon-size: 8px;
+$weather-cion-size: 36px;
 
 .weather-icon {
-  font-size: 40px;
-  height: 40px;
-  width: 40px;
+  font-size: $weather-cion-size;
+  height: $weather-cion-size;
+  width: $weather-cion-size;
 }
 
 .rain-forecast {
@@ -11,9 +12,9 @@ $icon-size: 8px;
 }
 
 .rain {
-  font-size: $icon-size;
-  height: $icon-size;
-  width: $icon-size;
+  font-size: $rain-icon-size;
+  height: $rain-icon-size;
+  width: $rain-icon-size;
   margin: auto 0px;
   position: relative;
   top: -1px;

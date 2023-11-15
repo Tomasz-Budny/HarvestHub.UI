@@ -1,10 +1,12 @@
+$weather-icon: 48px;
+
 :host {
   padding: var(--side-panel-sections-padding);
   display: grid;
 }
 
 mat-icon {
-  font-size: 56px;
-  width: 56px;
-  height: 56px;
+  font-size: $weather-icon;
+  width: $weather-icon;
+  height: $weather-icon;
 }
