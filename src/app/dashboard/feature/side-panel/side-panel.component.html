@@ -3,8 +3,9 @@
 <app-fields></app-fields>
 <hr>
 <div class="mt-auto chart-container">
-  <div class="chart w-full">
-
-  </div>
+  <ngx-charts-pie-chart
+    [legend]="true"
+    [results]="dataset">
+  </ngx-charts-pie-chart>
 </div>
 <app-copyright></app-copyright>
