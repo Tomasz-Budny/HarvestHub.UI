@@ -1,11 +1,5 @@
 <app-weather-forecast></app-weather-forecast>
 <hr>
 <app-fields></app-fields>
-<hr>
-<div class="mt-auto chart-container">
-  <ngx-charts-pie-chart
-    [legend]="true"
-    [results]="dataset">
-  </ngx-charts-pie-chart>
-</div>
+<app-fields-area-chart class="mt-auto"></app-fields-area-chart>
 <app-copyright></app-copyright>
