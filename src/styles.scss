@@ -87,9 +87,3 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary-color);
 }
-
-@media screen and (max-width: 300px) { 
-  ::-webkit-scrollbar {
-    width: 5px !important;
-  }
-}

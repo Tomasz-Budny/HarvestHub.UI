@@ -1,3 +1,16 @@
 :host {
+  padding-bottom: 0px;
+  border: 1px 0px 0px 0px solid grey;
+}
+
+.chart-container {
   height: 200px;
+}
+
+.primary-button {
+  margin: var(--side-panel-sections-padding) var(--side-panel-sections-padding) 0px auto;
+}
+
+.absolute {
+  width: var(--side-panel-width);
 }
