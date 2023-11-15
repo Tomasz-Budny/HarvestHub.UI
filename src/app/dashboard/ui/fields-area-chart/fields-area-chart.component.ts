@@ -13,32 +13,15 @@ import { Field } from '../../data-model/field.model';
 })
 export class FieldsAreaChartComponent {
   fields: Signal<Field[]>;
+  legendVisible: boolean = true;
 
   constructor(
     private fieldsService: FieldsService
   ) {
-    this.fields = fieldsService.getFields();
+    this.fields = this.fieldsService.getFields();
   }
 
   colors = computed(() => this.fields().map(x => { return { name: x.name, value: x.color} }));
 
   data = computed(() => this.fields().map(x => { return { name: x.name, value: x.area} }));
-
-  // customColors = [
-  //   { name: "Działka #1", value: '#324C08' },
-  //   { name: "Działka #2", value: '#E6E5A3' },
-  //   { name: "Działka #3", value: '#856035' },
-  //   { name: "Działka #4", value: '#DAC92E' },
-  //   { name: "Działka #5", value: '#647D3B' },
-  //   { name: "Działka #6", value: '#C1C35D' }
-  // ];
-
-  // dataset = [
-  //   { name: "Działka #1", value: 3.14 },
-  //   { name: "Działka #2", value: 5.64 },
-  //   { name: "Działka #3", value: 9.25 },
-  //   { name: "Działka #4", value: 5.01 },
-  //   { name: "Działka #5", value: 7.57 },
-  //   { name: "Działka #6", value: 8.01 },
-  // ];
 }
