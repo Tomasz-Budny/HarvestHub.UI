@@ -13,7 +13,7 @@ import { Field } from '../../data-model/field.model';
 })
 export class FieldsAreaChartComponent {
   fields: Signal<Field[]>;
-  legendVisible: boolean = true;
+  legendVisible: boolean = false;
 
   constructor(
     private fieldsService: FieldsService
@@ -24,4 +24,8 @@ export class FieldsAreaChartComponent {
   colors = computed(() => this.fields().map(x => { return { name: x.name, value: x.color} }));
 
   data = computed(() => this.fields().map(x => { return { name: x.name, value: x.area} }));
+
+  getAddress(name: string): string {
+    return this.fields().find(x => x.name === name).address;
+  }
 }
