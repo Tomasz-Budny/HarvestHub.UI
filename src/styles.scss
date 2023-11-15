@@ -40,7 +40,13 @@ $harvest-hub-theme: mat.define-light-theme((
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { 
+  margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; 
+
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
 
 .text-secondary {
   color: #7E7676
@@ -52,11 +58,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: #FFF;
   padding: 3px 18px;
   border-radius: 12px;
-  background-color: #7D8F69;
+  background-color: var(--secondary-color);
 }
 
 .primary-button:hover {
-  background-color: #557153;
+  background-color: var(--primary-color);
   cursor: pointer;
 }
 
@@ -73,7 +79,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
+  background: var(--secondary-color);
   border-radius: 12px;
 }
 

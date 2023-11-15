@@ -1,4 +1,5 @@
 $field-radius: 8px;
+$dots-icon-size: 16px;
 
 :host {
   background-color: #FAF5F5;
@@ -10,4 +11,10 @@ $field-radius: 8px;
 .color {
   border-radius: $field-radius 0px 0px $field-radius;
   width: 10px;
+}
+
+.dots {
+  font-size: $dots-icon-size;
+  height: $dots-icon-size;
+  width: $dots-icon-size;
 }
