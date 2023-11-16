@@ -1,9 +1,9 @@
 @if (dayForecasts | async; as dayForecasts) {
   <div class="flex">
-    <mat-icon svgIcon="rainy" class="mr-4"></mat-icon>
+    <mat-icon [svgIcon]="dayForecasts[0].weatherStatus | weatherIcon" class="mr-4"></mat-icon>
     <div class="flex flex-col">
       <div class="flex">
-        <span class="text-2xl font-normal">Deszczowo</span>
+        <span class="text-2xl font-normal">{{ dayForecasts[0].weatherStatus| weatherDescription }}</span>
         &nbsp;
         <span class="my-auto ml-1 text-secondary">{{ dayForecasts[0].temperature }}°</span>
       </div>
@@ -13,8 +13,8 @@
   <div class="flex justify-between mt-4 mx-6">
     @for (forecast of dayForecasts | slice:1; track $index) {
       <app-day-forecast
-        [day]="'PON'"
-        [icon]="'sun'"
+        [day]="forecast.weekDay | weekDay"
+        [icon]="forecast.weatherStatus | weatherIcon"
         [temperature]="forecast.temperature"
         [rainForecast]="forecast.rainChances">
       </app-day-forecast>
