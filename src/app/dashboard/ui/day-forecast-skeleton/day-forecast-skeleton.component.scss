@@ -1,7 +1,4 @@
-$rain-icon-size: 8px;
-$weather-cion-size: 36px;
-
 .skeleton-icon {
-  width: $weather-cion-size;
-  height: $weather-cion-size;
+  width: var(--field-weather-icon-size);
+  height: var(--field-weather-icon-size);
 }
