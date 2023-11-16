@@ -8,11 +8,12 @@ import { DayForecastViewModel } from '../../data-model/day-forecast.model';
 import { WeatherIconPipe } from '../../utils/weather-icon.pipe';
 import { WeekDayPipe } from '../../utils/week-day.pipe';
 import { WeatherDescriptionPipe } from '../../utils/weather-description.pipe';
+import { DayForecastSkeletonComponent } from '../../ui/day-forecast-skeleton/day-forecast-skeleton.component';
 
 @Component({
   selector: 'app-weather-forecast',
   standalone: true,
-  imports: [CommonModule, MatIconModule, DayForecastComponent, WeatherIconPipe, WeekDayPipe, WeatherDescriptionPipe],
+  imports: [CommonModule, MatIconModule, DayForecastComponent, WeatherIconPipe, WeekDayPipe, WeatherDescriptionPipe, DayForecastSkeletonComponent],
   templateUrl: './weather-forecast.component.html',
   styleUrl: './weather-forecast.component.scss'
 })
