@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { DayForecastViewModel } from '../data-model/day-forecast.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherService {
+  URL = "https://localhost:7258/api/weather/";
 
   constructor(
     public http: HttpClient
   ) { }
 
   getDayForecasts(latitude: number, longitude: number, days: number) {
-    
+    const params = new HttpParams()
+      .set('latitude', latitude)
+      .set('longitude', longitude)
+      .set('days', days);
+
+    return this.http.get<DayForecastViewModel[]>(this.URL + '/day_forecast', { params })
   }
 }
