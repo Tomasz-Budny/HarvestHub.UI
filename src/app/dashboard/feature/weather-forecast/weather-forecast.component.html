@@ -1,21 +1,24 @@
-<div class="flex">
-  <mat-icon svgIcon="rainy" class="mr-4"></mat-icon>
-  <div class="flex flex-col">
-    <div class="flex">
-      <span class="text-2xl font-normal">Deszczowo</span>
-      &nbsp;
-      <span class="my-auto ml-1 text-secondary">16°</span>
+@if (dayForecasts | async; as dayForecasts) {
+  <div class="flex">
+    <mat-icon svgIcon="rainy" class="mr-4"></mat-icon>
+    <div class="flex flex-col">
+      <div class="flex">
+        <span class="text-2xl font-normal">Deszczowo</span>
+        &nbsp;
+        <span class="my-auto ml-1 text-secondary">{{ dayForecasts[0].temperature }}°</span>
+      </div>
+      <p class="address text-secondary">Żebry Kordy</p>
     </div>
-    <p class="address text-secondary">Żebry Kordy</p>
   </div>
-</div>
-<div class="flex justify-between mt-4 mx-6">
-  @for (forecast of forecasts; track $index) {
-    <app-day-forecast
-      [day]="forecast.day"
-      [icon]="forecast.icon"
-      [temperature]="forecast.temperature"
-      [rainForecast]="forecast.rainForecast">
-    </app-day-forecast>
-  }
-</div>
+  <div class="flex justify-between mt-4 mx-6">
+    @for (forecast of dayForecasts | slice:1; track $index) {
+      <app-day-forecast
+        [day]="'PON'"
+        [icon]="'sun'"
+        [temperature]="forecast.temperature"
+        [rainForecast]="forecast.rainChances">
+      </app-day-forecast>
+    }
+  </div>
+}
+
