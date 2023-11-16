@@ -1,11 +1,11 @@
 import { Injectable, signal } from '@angular/core';
-import { Field } from '../data-model/field.model';
+import { FieldViewModel } from '../data-model/field.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FieldsService {
-  readonly #fields = signal<Field[]>([])
+  readonly #fields = signal<FieldViewModel[]>([])
 
   getFields() {
     return this.#fields.asReadonly();

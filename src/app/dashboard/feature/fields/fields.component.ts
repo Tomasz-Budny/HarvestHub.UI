@@ -2,7 +2,7 @@ import { Component, Signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FieldComponent } from '../../ui/field/field.component';
 import { FieldsService } from '../../data-access/fields.service';
-import { Field } from '../../data-model/field.model';
+import { FieldViewModel } from '../../data-model/field.model';
 
 @Component({
   selector: 'app-fields',
@@ -12,7 +12,7 @@ import { Field } from '../../data-model/field.model';
   styleUrl: './fields.component.scss'
 })
 export class FieldsComponent {
-  fields: Signal<Field[]>;
+  fields: Signal<FieldViewModel[]>;
   hectares = computed(() => this.fields().reduce((prev, curr) => prev + curr.area, 0))
 
   constructor(

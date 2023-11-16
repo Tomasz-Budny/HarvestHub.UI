@@ -2,7 +2,7 @@ import { Component, Signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { FieldsService } from '../../data-access/fields.service';
-import { Field } from '../../data-model/field.model';
+import { FieldViewModel } from '../../data-model/field.model';
 
 @Component({
   selector: 'app-fields-area-chart',
@@ -12,7 +12,7 @@ import { Field } from '../../data-model/field.model';
   styleUrl: './fields-area-chart.component.scss'
 })
 export class FieldsAreaChartComponent {
-  fields: Signal<Field[]>;
+  fields: Signal<FieldViewModel[]>;
   legendVisible: boolean = false;
 
   constructor(
