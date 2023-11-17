@@ -76,7 +76,7 @@ body {
   background-color: var(--skeleton-color);
 }
 
-.shine {
+.skeleton-content, .skeleton-icon {
   -webkit-mask-image: linear-gradient(90deg,#000 25%,rgba(0,0,0,.2) 50%,#000 75%);
   mask-image: linear-gradient(90deg,#000 25%,rgba(0,0,0,.2) 50%,#000 75%);
   -webkit-mask-size: 800%;

@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { FieldViewModel } from '../data-model/field.model';
-import { delay, of } from 'rxjs';
+import { NEVER, delay, of } from 'rxjs';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
 
@@ -45,6 +45,8 @@ export class FieldsService {
       {name: 'Działka #9', area: 8.02, address: 'Żebry Kordy', color: '#647D3B'},
       {name: 'Działka #10', area: 1.00, address: 'Żebry Kordy', color: '#C1C35D'},
     ];
+
+    return NEVER;
 
     return of(fields).pipe(
       delay(1000),
