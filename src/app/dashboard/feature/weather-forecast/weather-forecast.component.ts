@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { DayForecastComponent } from '../../ui/day-forecast/day-forecast.component';
@@ -9,6 +9,8 @@ import { WeatherIconPipe } from '../../utils/weather-icon.pipe';
 import { WeekDayPipe } from '../../utils/week-day.pipe';
 import { WeatherDescriptionPipe } from '../../utils/weather-description.pipe';
 import { DayForecastSkeletonComponent } from '../../ui/day-forecast-skeleton/day-forecast-skeleton.component';
+import { OwnerService } from '../../data-access/owner.service';
+import { AddressViewModel } from '../../data-model/address.model';
 
 @Component({
   selector: 'app-weather-forecast',
@@ -19,11 +21,16 @@ import { DayForecastSkeletonComponent } from '../../ui/day-forecast-skeleton/day
 })
 export class WeatherForecastComponent {
   dayForecasts: Observable<DayForecastViewModel[]>;
+  address: Signal<AddressViewModel>;
 
   constructor(
-    public weatherService: WeatherService
+    public weatherService: WeatherService,
+    public ownerService: OwnerService
   ) {
-    //this.dayForecasts = this.weatherService.getDayForecasts(53.0518, 20.703, 5);
-    this.dayForecasts = this.weatherService.getDayForecasts(0, 0, 5);
+    this.address = this.ownerService.getAddress();
+
+    const coordinates = this.ownerService.getCoordinates();
+
+    this.dayForecasts = this.weatherService.getDayForecasts(coordinates().lat, coordinates().lng, 5);
   }
 }

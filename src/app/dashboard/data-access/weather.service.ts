@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { DayForecastViewModel } from '../data-model/day-forecast.model';
-import { NEVER, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +19,6 @@ export class WeatherService {
       .set('longitude', longitude)
       .set('days', days);
 
-    // return this.http.get<DayForecastViewModel[]>(this.URL + 'day_forecast', { params })
-
-    return NEVER;
+    return this.http.get<DayForecastViewModel[]>(this.URL + 'day_forecast', { params });
   }
 }
