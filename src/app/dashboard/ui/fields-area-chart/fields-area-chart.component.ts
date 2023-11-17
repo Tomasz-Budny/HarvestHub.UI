@@ -29,6 +29,6 @@ export class FieldsAreaChartComponent {
   data = computed(() => this.fields().map(x => { return { name: x.name, value: x.area} }));
 
   getAddress(name: string): string {
-    return this.fields().find(x => x.name === name).address;
+    return this.fields().find(x => x.name === name).address.city;
   }
 }
