@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, Signal, computed, signal } from '@angular/core';
 import { FieldViewModel } from '../data-model/field.model';
 import { NEVER, delay, of } from 'rxjs';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
@@ -16,6 +16,8 @@ export class FieldsService {
     loaded: false,
     error: null
   });
+
+  fieldsLoaded: Signal<boolean> = computed(() => this.state().loaded)
 
   constructor(
     public http: HttpClient
