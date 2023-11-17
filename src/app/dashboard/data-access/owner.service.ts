@@ -34,7 +34,7 @@ export class OwnerService {
 
   loadStartLocation() {
     return of(new StartLocation(
-      {lat: 30, lng: 50},
+      {lat: 90, lng: 90},
       new AddressViewModel("Polska", "", "", "Warszawa")
     )).pipe(
       takeUntilDestroyed(),

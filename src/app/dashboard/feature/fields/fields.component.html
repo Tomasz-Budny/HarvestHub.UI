@@ -6,7 +6,7 @@
         &nbsp;
         <span class="my-auto text-secondary ml-2">({{ fields().length }})</span>
       </div>
-      <span class="text-secondary text-sm font-medium">{{ hectares() }} ha</span>
+      <span class="text-secondary text-sm font-medium">{{ hectares() | hectare }}</span>
     </div>
     <span class="primary-button m-auto mr-0">Filtruj</span>
   </div>
@@ -16,7 +16,7 @@
         class="mb-1"
         [name]="field.name"
         [area]="field.area"
-        [address]="field.address"
+        [address]="field.address.city"
         [color]="field.color">
       </app-field>
     }

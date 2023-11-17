@@ -4,11 +4,12 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { FieldsService } from '../../data-access/fields.service';
 import { FieldViewModel } from '../../data-model/field.model';
 import { HarvestHubResponse } from '../../../shared/data-model/harvest-hub-response.model';
+import { HectarePipe } from '../../../shared/utils/hectare.pipe';
 
 @Component({
   selector: 'app-fields-area-chart',
   standalone: true,
-  imports: [CommonModule, NgxChartsModule],
+  imports: [CommonModule, NgxChartsModule, HectarePipe],
   templateUrl: './fields-area-chart.component.html',
   styleUrl: './fields-area-chart.component.scss'
 })
@@ -28,6 +29,6 @@ export class FieldsAreaChartComponent {
   data = computed(() => this.fields().map(x => { return { name: x.name, value: x.area} }));
 
   getAddress(name: string): string {
-    return this.fields().find(x => x.name === name).address;
+    return this.fields().find(x => x.name === name).address.city;
   }
 }
