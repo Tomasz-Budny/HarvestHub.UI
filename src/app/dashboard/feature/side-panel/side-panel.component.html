@@ -1,5 +1,7 @@
 <app-weather-forecast></app-weather-forecast>
 <hr>
 <app-fields></app-fields>
-<app-fields-area-chart class="mt-auto"></app-fields-area-chart>
-<app-copyright></app-copyright>
+@if (fieldsLoaded()) {
+  <app-fields-area-chart class="mt-auto"></app-fields-area-chart>
+}
+<app-copyright class="mt-auto"></app-copyright>
