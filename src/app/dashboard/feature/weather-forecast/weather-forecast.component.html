@@ -1,17 +1,17 @@
-@if (dayForecasts | async; as dayForecasts) {
+@if (dayForecasts().loaded) {
   <div class="flex">
-    <mat-icon [svgIcon]="dayForecasts[0].weatherStatus | weatherIcon" class="mr-4"></mat-icon>
+    <mat-icon [svgIcon]="dayForecasts().data[0].weatherStatus | weatherIcon" class="mr-4"></mat-icon>
     <div class="flex flex-col">
       <div class="flex">
-        <span class="text-2xl font-normal">{{ dayForecasts[0].weatherStatus| weatherDescription }}</span>
+        <span class="text-2xl font-normal">{{ dayForecasts().data[0].weatherStatus| weatherDescription }}</span>
         &nbsp;
-        <span class="my-auto ml-1 text-secondary">{{ dayForecasts[0].temperature }}°</span>
+        <span class="my-auto ml-1 text-secondary">{{ dayForecasts().data[0].temperature }}°</span>
       </div>
-      <p class="address text-secondary">{{ address().city }}</p>
+      <p class="address text-secondary">Żebry Kordy</p>
     </div>
   </div>
   <div class="flex justify-between mt-4 mx-6">
-    @for (forecast of dayForecasts | slice:1; track $index) {
+    @for (forecast of dayForecasts().data | slice:1; track $index) {
       <app-day-forecast
         [day]="forecast.weekDay | weekDay"
         [icon]="forecast.weatherStatus | weatherIcon"

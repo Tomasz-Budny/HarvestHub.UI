@@ -11,6 +11,7 @@ import { WeatherDescriptionPipe } from '../../utils/weather-description.pipe';
 import { DayForecastSkeletonComponent } from '../../ui/day-forecast-skeleton/day-forecast-skeleton.component';
 import { OwnerService } from '../../data-access/owner.service';
 import { AddressViewModel } from '../../data-model/address.model';
+import { HarvestHubResponse } from '../../../shared/data-model/harvest-hub-response.model';
 
 @Component({
   selector: 'app-weather-forecast',
@@ -20,17 +21,13 @@ import { AddressViewModel } from '../../data-model/address.model';
   styleUrl: './weather-forecast.component.scss'
 })
 export class WeatherForecastComponent {
-  dayForecasts: Observable<DayForecastViewModel[]>;
-  address: Signal<AddressViewModel>;
+  dayForecasts: Signal<HarvestHubResponse<DayForecastViewModel[]>>;
 
   constructor(
     public weatherService: WeatherService,
     public ownerService: OwnerService
   ) {
-    this.address = this.ownerService.getAddress();
 
-    const coordinates = this.ownerService.getCoordinates();
-
-    this.dayForecasts = this.weatherService.getDayForecasts(coordinates().lat, coordinates().lng, 5);
+    this.dayForecasts = this.weatherService.getDayForecasts(5);
   }
 }

@@ -1,20 +1,45 @@
-import { Injectable, Signal, signal } from '@angular/core';
+import { Injectable, Signal, computed, signal } from '@angular/core';
 import { AddressViewModel } from '../data-model/address.model';
+import { StartLocation } from '../data-model/start-location.model';
+import { delay, of } from 'rxjs';
+import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Injectable({
   providedIn: 'root'
 })
 export class OwnerService {
-  readonly #coordinates = signal({lat: 30, lng: 50});
-  readonly #address = signal(new AddressViewModel("Wielka Brytania", "", "", "Londyn"));
+  private state = signal<HarvestHubResponse<StartLocation>>({
+    data: null,
+    loaded: false,
+    error: null
+  });
 
-  getCoordinates(): Signal<{lat: number, lng: number}> {
-    return this.#coordinates.asReadonly();
+  startLocation = computed(() => this.state().data);
+  loaded = computed(() => this.state().loaded);
+
+  constructor() { 
+    this.loadStartLocation().subscribe({
+      next: (res) => this.state.update(state => ({
+        ...state,
+        data: res,
+        loaded: true
+      })),
+      error: (err) => this.state.update(state => ({
+        ...state,
+        error: err
+      }))
+    })
   }
 
-  getAddress() {
-    return this.#address.asReadonly();
+  loadStartLocation() {
+    return of(new StartLocation(
+      {lat: 30, lng: 50},
+      new AddressViewModel("Polska", "", "", "Warszawa")
+    )).pipe(
+      takeUntilDestroyed(),
+      delay(1000)
+    )
   }
 
-  constructor() { }
 }
