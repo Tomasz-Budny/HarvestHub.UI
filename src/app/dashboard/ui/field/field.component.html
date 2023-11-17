@@ -1,7 +1,9 @@
 <span class="color" [style]="{ background: color }"></span>
 <div class="content flex p-1.5 w-full">
-  <span class="text-base font-bold">{{ name }}</span>
+  <span class="text-base font-bold my-auto">{{ name }}</span>
   <span class="text-secondary font-medium text-xs my-auto ml-2">({{ area | hectare }})</span>
   <span class="text-secondary text-xs my-auto ml-2">{{ address }}</span>
-  <mat-icon svgIcon="dots" class="dots ml-auto my-auto"></mat-icon>
+  <div class="tooltip-wrapper ml-auto my-auto flex">
+    <mat-icon svgIcon="dots" class="dots ml-auto my-auto"></mat-icon>
+  </div>
 </div>

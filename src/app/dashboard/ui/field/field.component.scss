@@ -18,3 +18,13 @@ $dots-icon-size: 16px;
   height: $dots-icon-size;
   width: $dots-icon-size;
 }
+
+.tooltip-wrapper {
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.tooltip-wrapper:hover {
+  background-color: var(--skeleton-color);
+  cursor: pointer;
+}
