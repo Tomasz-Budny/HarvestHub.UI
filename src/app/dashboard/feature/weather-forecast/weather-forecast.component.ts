@@ -1,4 +1,4 @@
-import { Component, Signal } from '@angular/core';
+import { Component, Signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { DayForecastComponent } from '../../ui/day-forecast/day-forecast.component';
@@ -22,12 +22,12 @@ import { HarvestHubResponse } from '../../../shared/data-model/harvest-hub-respo
 })
 export class WeatherForecastComponent {
   dayForecasts: Signal<HarvestHubResponse<DayForecastViewModel[]>>;
+  address: Signal<AddressViewModel> = computed(() => this.ownerService.startLocation().address)
 
   constructor(
     public weatherService: WeatherService,
     public ownerService: OwnerService
   ) {
-
     this.dayForecasts = this.weatherService.getDayForecasts(5);
   }
 }

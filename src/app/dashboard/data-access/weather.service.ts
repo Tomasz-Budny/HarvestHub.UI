@@ -1,7 +1,7 @@
 import { Injectable, Signal, computed, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { DayForecastViewModel } from '../data-model/day-forecast.model';
-import { Observable, switchMap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 import { OwnerService } from './owner.service';
 import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
@@ -10,11 +10,18 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   providedIn: 'root'
 })
 export class WeatherService {
+  URL = "https://localhost:7258/api/weather/";
+
   private dayForecastsState = signal<HarvestHubResponse<DayForecastViewModel[]>>({
     data: null,
     loaded: false,
     error: null
   });
+
+  constructor(
+    public http: HttpClient,
+    public ownerService: OwnerService
+  ) { }
 
   getDayForecasts(days: number): Signal<HarvestHubResponse<DayForecastViewModel[]>> {
     this.loadDayForecasts(days).subscribe({
@@ -30,13 +37,6 @@ export class WeatherService {
     })
     return this.dayForecastsState.asReadonly()
   }
-
-  URL = "https://localhost:7258/api/weather/";
-
-  constructor(
-    public http: HttpClient,
-    public ownerService: OwnerService
-  ) { }
 
   private loadDayForecasts(days: number): Observable<DayForecastViewModel[]> {
     return this.ownerService.loadStartLocation().pipe(
