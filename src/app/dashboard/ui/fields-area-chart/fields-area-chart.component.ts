@@ -4,11 +4,12 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { FieldsService } from '../../data-access/fields.service';
 import { FieldViewModel } from '../../data-model/field.model';
 import { HarvestHubResponse } from '../../../shared/data-model/harvest-hub-response.model';
+import { HectarePipe } from '../../../shared/utils/hectare.pipe';
 
 @Component({
   selector: 'app-fields-area-chart',
   standalone: true,
-  imports: [CommonModule, NgxChartsModule],
+  imports: [CommonModule, NgxChartsModule, HectarePipe],
   templateUrl: './fields-area-chart.component.html',
   styleUrl: './fields-area-chart.component.scss'
 })
