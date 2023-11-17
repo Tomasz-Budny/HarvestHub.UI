@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WeatherForecastComponent } from '../weather-forecast/weather-forecast.component';
 import { CopyrightComponent } from '../../ui/copyright/copyright.component';
 import { FieldsComponent } from '../fields/fields.component';
 import { FieldsAreaChartComponent } from '../../ui/fields-area-chart/fields-area-chart.component';
+import { FieldsService } from '../../data-access/fields.service';
 
 @Component({
   selector: 'app-side-panel',
@@ -13,5 +14,11 @@ import { FieldsAreaChartComponent } from '../../ui/fields-area-chart/fields-area
   styleUrl: './side-panel.component.scss'
 })
 export class SidePanelComponent {
+  fieldsLoaded: Signal<boolean>;
 
+  constructor(
+    public fieldsService: FieldsService
+  ) { 
+    this.fieldsLoaded = computed(() => this.fieldsService.getFields()().loaded)
+  }
 }

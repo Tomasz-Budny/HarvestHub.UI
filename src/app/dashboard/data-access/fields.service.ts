@@ -1,17 +1,38 @@
 import { Injectable, signal } from '@angular/core';
-import { Field } from '../data-model/field.model';
+import { FieldViewModel } from '../data-model/field.model';
+import { delay, of } from 'rxjs';
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FieldsService {
-  readonly #fields = signal<Field[]>([])
+  private state = signal<HarvestHubResponse<FieldViewModel[]>>({
+    data: [],
+    loaded: false,
+    error: null
+  });
 
-  getFields() {
-    return this.#fields.asReadonly();
+  constructor() { 
+    this.loadFields().subscribe({
+      next: res => this.state.update(state => ({
+        ...state,
+        data: res,
+        loaded: true
+      })),
+      error: err => this.state.update(state => ({
+        ...state,
+        error: err
+      }))
+    })
   }
 
-  setFields() {
+  getFields() {
+    return this.state.asReadonly();
+  }
+
+  loadFields() {
     const fields = [
       {name: 'Działka #1', area: 3.17, address: 'Żebry Kordy', color: '#324C08'},
       {name: 'Działka #2', area: 4.01, address: 'Żebry Kordy', color: '#E6E5A3'},
@@ -25,8 +46,9 @@ export class FieldsService {
       {name: 'Działka #10', area: 1.00, address: 'Żebry Kordy', color: '#C1C35D'},
     ];
 
-    this.#fields.set(fields);
+    return of(fields).pipe(
+      delay(1000),
+      takeUntilDestroyed()
+    )
   }
-
-  constructor() { }
 }

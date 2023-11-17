@@ -66,6 +66,38 @@ body {
   cursor: pointer;
 }
 
+.skeleton-icon {
+  border-radius: 50%;
+  background-color: var(--skeleton-color);
+}
+
+.skeleton-content {
+  border-radius: 8px;
+  background-color: var(--skeleton-color);
+}
+
+.shine {
+  -webkit-mask-image: linear-gradient(90deg,#000 25%,rgba(0,0,0,.2) 50%,#000 75%);
+  mask-image: linear-gradient(90deg,#000 25%,rgba(0,0,0,.2) 50%,#000 75%);
+  -webkit-mask-size: 800%;
+  mask-size: 800%;
+  -webkit-mask-position: 100%;
+  mask-position: 100%;
+
+  animation: shine 1.5s infinite;
+}
+
+@keyframes shine {
+  0% {
+    -webkit-mask-position: 100%;
+    mask-position: 100%;
+  }
+  100% {
+    -webkit-mask-position: -20%;
+    mask-position: -20%;
+  }
+}
+
 // scroll
 
 ::-webkit-scrollbar {

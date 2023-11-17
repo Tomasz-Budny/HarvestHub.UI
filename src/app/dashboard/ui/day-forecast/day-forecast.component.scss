@@ -1,10 +1,7 @@
-$rain-icon-size: 8px;
-$weather-cion-size: 36px;
-
 .weather-icon {
-  font-size: $weather-cion-size;
-  height: $weather-cion-size;
-  width: $weather-cion-size;
+  font-size: var(--field-weather-icon-size);
+  height: var(--field-weather-icon-size);
+  width: var(--field-weather-icon-size);
 }
 
 .rain-forecast {
@@ -12,9 +9,9 @@ $weather-cion-size: 36px;
 }
 
 .rain {
-  font-size: $rain-icon-size;
-  height: $rain-icon-size;
-  width: $rain-icon-size;
+  font-size: var(--field-rain-icon-size);
+  height: var(--field-rain-icon-size);
+  width: var(--field-rain-icon-size);
   margin: auto 0px;
   position: relative;
   top: -1px;

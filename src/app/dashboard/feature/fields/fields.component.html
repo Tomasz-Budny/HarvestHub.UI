@@ -1,23 +1,25 @@
-<div class="flex justify-between">
-  <div>
-    <div class="flex">
-      <span class="text-2xl font-bold">Pola uprawne</span>
-      &nbsp;
-      <span class="my-auto text-secondary ml-2">({{ fields().length }})</span>
+@if (loaded()) { 
+  <div class="flex justify-between">
+    <div>
+      <div class="flex">
+        <span class="text-2xl font-bold">Pola uprawne</span>
+        &nbsp;
+        <span class="my-auto text-secondary ml-2">({{ fields().length }})</span>
+      </div>
+      <span class="text-secondary text-sm font-medium">{{ hectares() }} ha</span>
     </div>
-    <span class="text-secondary text-sm font-medium">{{ hectares() }} ha</span>
+    <span class="primary-button m-auto mr-0">Filtruj</span>
   </div>
-  <span class="primary-button m-auto mr-0">Filtruj</span>
-</div>
-<div class="fields mt-3">
-  @for (field of fields(); track $index) {
-    <app-field
-      class="mb-1"
-      [name]="field.name"
-      [area]="field.area"
-      [address]="field.address"
-      [color]="field.color">
-    </app-field>
-  }
-</div>
-<div class="footer"></div>
+  <div class="fields mt-3">
+    @for (field of fields(); track $index) {
+      <app-field
+        class="mb-1"
+        [name]="field.name"
+        [area]="field.area"
+        [address]="field.address"
+        [color]="field.color">
+      </app-field>
+    }
+  </div>
+  <div class="footer"></div>
+}

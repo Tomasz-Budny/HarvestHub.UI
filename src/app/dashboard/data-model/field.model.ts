@@ -1,4 +1,4 @@
-export interface Field {
+export interface FieldViewModel {
   name: string,
   area: number,
   address: string,

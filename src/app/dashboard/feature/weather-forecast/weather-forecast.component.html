@@ -1,21 +1,40 @@
-<div class="flex">
-  <mat-icon svgIcon="rainy" class="mr-4"></mat-icon>
-  <div class="flex flex-col">
-    <div class="flex">
-      <span class="text-2xl font-normal">Deszczowo</span>
-      &nbsp;
-      <span class="my-auto ml-1 text-secondary">16°</span>
+@if (dayForecasts().loaded) {
+  <div class="flex">
+    <mat-icon [svgIcon]="dayForecasts().data[0].weatherStatus | weatherIcon" class="mr-4"></mat-icon>
+    <div class="flex flex-col">
+      <div class="flex">
+        <span class="text-2xl font-normal">{{ dayForecasts().data[0].weatherStatus| weatherDescription }}</span>
+        &nbsp;
+        <span class="my-auto ml-1 text-secondary">{{ dayForecasts().data[0].temperature }}°</span>
+      </div>
+      <p class="address text-secondary">{{ address().city }}</p>
     </div>
-    <p class="address text-secondary">Żebry Kordy</p>
   </div>
-</div>
-<div class="flex justify-between mt-4 mx-6">
-  @for (forecast of forecasts; track $index) {
-    <app-day-forecast
-      [day]="forecast.day"
-      [icon]="forecast.icon"
-      [temperature]="forecast.temperature"
-      [rainForecast]="forecast.rainForecast">
-    </app-day-forecast>
-  }
-</div>
+  <div class="flex justify-between mt-4 mx-6">
+    @for (forecast of dayForecasts().data | slice:1; track $index) {
+      <app-day-forecast
+        [day]="forecast.weekDay | weekDay"
+        [icon]="forecast.weatherStatus | weatherIcon"
+        [temperature]="forecast.temperature"
+        [rainForecast]="forecast.rainChances">
+      </app-day-forecast>
+    }
+  </div>
+} @else {
+  <div class="flex">
+    <div class="skeleton-icon mr-4 shine"></div>
+    <div class="flex flex-col">
+      <div class="flex">
+        <span class="h-6 font-normal skeleton-content w-40 shine"></span>
+      </div>
+      <p class="skeleton-content w-20 h-4 my-auto shine"></p>
+    </div>
+  </div>
+  <div class="flex justify-between mt-4 mx-6">
+    <app-day-forecast-skeleton></app-day-forecast-skeleton>
+    <app-day-forecast-skeleton></app-day-forecast-skeleton>
+    <app-day-forecast-skeleton></app-day-forecast-skeleton>
+    <app-day-forecast-skeleton></app-day-forecast-skeleton>
+  </div>
+}
+
