@@ -7,9 +7,22 @@
     @if (fieldsLoaded()) {
       @for (field of fields(); track $index) {
         <map-polygon
-          [paths]="field.paths">
+          (polygonMouseover)="onFieldMouseover(field)"
+          (polygonMouseout)="onFieldMouseout()"
+          [paths]="field.paths"
+          [options]="{
+            fillColor: field.color,
+            fillOpacity: 0.8
+          }">
+
         </map-polygon>
       }
+      @if (marker) {
+        <map-marker
+          [label]="marker.name"
+          [position]="marker.center">
+        </map-marker>    
+      }        
     }
   </google-map>
 }

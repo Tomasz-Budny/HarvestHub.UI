@@ -29,7 +29,8 @@ export class MapComponent {
   fieldsResponse: Signal<HarvestHubResponse<FieldViewModel[]>>;
   fields: Signal<FieldViewModel[]> = computed(() => this.fieldsResponse().data)
   fieldsLoaded: Signal<boolean> = computed(() => this.fieldsResponse().loaded)
-  
+  marker: {name: string, color: string, center}
+
   constructor(
     public mapService: MapService,
     public fieldsService: FieldsService
@@ -49,5 +50,13 @@ export class MapComponent {
       mapTypeId: google.maps.MapTypeId.HYBRID,
     }
     this.center = {lat: 53.0518, lng: 20.703};
+  }
+
+  onFieldMouseover(field: FieldViewModel) {
+    this.marker = {name: field.name, color: field.color, center: field.center}
+  }
+
+  onFieldMouseout() {
+    this.marker = null;
   }
 }

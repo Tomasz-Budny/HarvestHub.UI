@@ -3,5 +3,6 @@ export interface FieldViewModel {
   area: number,
   address: string,
   color: string,
+  center: {lat: number, lng: number}
   paths: {lat: number, lng: number}[]
 }
