@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { FieldViewModel } from '../data-model/field.model';
-import { delay, of } from 'rxjs';
+import { NEVER, delay, of } from 'rxjs';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
 
