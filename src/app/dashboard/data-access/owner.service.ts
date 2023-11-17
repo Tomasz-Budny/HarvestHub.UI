@@ -1,4 +1,4 @@
-import { Injectable, Signal, computed, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { AddressViewModel } from '../data-model/address.model';
 import { StartLocation } from '../data-model/start-location.model';
 import { delay, of } from 'rxjs';

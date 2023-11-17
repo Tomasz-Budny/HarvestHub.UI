@@ -46,8 +46,6 @@ export class FieldsService {
       {name: 'Działka #10', area: 1.00, address: 'Żebry Kordy', color: '#C1C35D'},
     ];
 
-    return NEVER;
-
     return of(fields).pipe(
       delay(1000),
       takeUntilDestroyed()
