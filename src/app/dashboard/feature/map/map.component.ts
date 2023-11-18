@@ -25,8 +25,6 @@ export class MapComponent {
   }
   apiLoaded: Observable<boolean>;
   options: google.maps.MapOptions;
-  center: Signal<CoordinatesViewModel>;
-  zoom: Signal<number>;
 
   fieldsResponse: Signal<HarvestHubResponse<FieldViewModel[]>>;
   fields: Signal<FieldViewModel[]> = computed(() => this.fieldsResponse().data)

@@ -1,4 +1,7 @@
-<p>confirm-dialog works!</p>
 
-<span (click)="confirmService.confirm$.next(true)">Ok</span>
-<span (click)="onDiscard()">Discard</span>
+<p class="text-xl text-center">Czy napewno chcesz usunąć ten element?</p>
+<div class="flex mt-6">
+  <span class="primary-button ml-auto" (click)="onDiscard()">Anuluj</span>
+  <span class="ml-3 cursor-pointer" (click)="confirmService.confirm$.next(true)">Zatwierdź</span>
+</div>
+
