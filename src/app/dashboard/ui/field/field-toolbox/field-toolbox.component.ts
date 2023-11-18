@@ -8,10 +8,10 @@ import { FieldsService } from '../../../data-access/fields.service';
   selector: 'app-field-tooltip',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './field-tooltip.component.html',
-  styleUrl: './field-tooltip.component.scss'
+  templateUrl: './field-toolbox.component.html',
+  styleUrl: './field-toolbox.component.scss'
 })
-export class FieldTooltipComponent {
+export class FieldToolboxComponent {
 
   @Output() leave = new EventEmitter()
   @Input() field: FieldViewModel;

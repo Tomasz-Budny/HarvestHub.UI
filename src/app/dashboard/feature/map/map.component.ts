@@ -6,7 +6,6 @@ import { MapService } from '../../data-access/map.service';
 import { FieldsService } from '../../data-access/fields.service';
 import { FieldViewModel } from '../../data-model/field.model';
 import { HarvestHubResponse } from '../../../shared/data-model/harvest-hub-response.model';
-import { CoordinatesViewModel } from '../../data-model/coordinates.model';
 
 @Component({
   selector: 'app-map',
