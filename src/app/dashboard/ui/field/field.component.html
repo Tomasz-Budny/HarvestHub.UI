@@ -7,8 +7,12 @@
     class="tooltip-wrapper ml-auto my-auto flex" 
     (click)="tooltipVisible=!tooltipVisible"
     >
+    
     @if(tooltipVisible) {
-      <app-field-tooltip toolbox></app-field-tooltip>
+      <app-field-tooltip 
+        toolbox
+        (leave)="tooltipVisible = false">
+      </app-field-tooltip>
     }
     <mat-icon svgIcon="dots" class="dots ml-auto my-auto"></mat-icon>
   </div>

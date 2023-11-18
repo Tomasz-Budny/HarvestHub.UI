@@ -1,7 +1,7 @@
 :host {
   text-align: center;
   z-index: 100;
-  position: fixed;
+  position: absolute;
   padding: 6px 12px;
   font-size: 0.66rem;
   font-weight: 600;
@@ -11,10 +11,8 @@
   background: #111111ee;
   box-sizing: border-box;
   opacity: 0;
-  transform: translate(-50%, -30%);
   animation: tooltip-slide 0.08s ease-out 0.2s;
   animation-fill-mode: forwards;
-  pointer-events: none;
 }
 
 @keyframes tooltip-slide {

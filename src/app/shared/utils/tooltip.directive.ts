@@ -1,4 +1,4 @@
-import { Directive, ElementRef, OnInit } from '@angular/core';
+import { Directive, ElementRef, HostListener, OnInit, Output } from '@angular/core';
 
 @Directive({
   selector: '[toolbox]',
@@ -15,7 +15,7 @@ export class ToolBoxDirective implements OnInit {
 
     let x = parentNode.getBoundingClientRect().left + this.el.nativeElement.offsetWidth / 2;
 
-    let y = parentNode.getBoundingClientRect().top + this.el.nativeElement.offsetHeight;
+    let y = parentNode.getBoundingClientRect().top;
 
     this.createTooltipPopup(x, y); 
   }

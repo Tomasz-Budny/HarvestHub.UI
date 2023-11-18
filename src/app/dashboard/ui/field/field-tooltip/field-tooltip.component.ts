@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,4 +10,10 @@ import { CommonModule } from '@angular/common';
 })
 export class FieldTooltipComponent {
 
+  @Output() leave = new EventEmitter()
+
+  @HostListener('mouseleave')
+  onMouseLeave(): void {
+    this.leave.emit();
+  }
 }
