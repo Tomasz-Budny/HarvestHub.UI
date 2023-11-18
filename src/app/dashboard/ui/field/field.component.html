@@ -11,6 +11,7 @@
     @if(tooltipVisible) {
       <app-field-tooltip 
         toolbox
+        [field]="field"
         (leave)="tooltipVisible = false">
       </app-field-tooltip>
     }

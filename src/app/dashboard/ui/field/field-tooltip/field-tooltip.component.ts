@@ -1,5 +1,7 @@
-import { Component, EventEmitter, HostListener, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MapService } from '../../../data-access/map.service';
+import { FieldViewModel } from '../../../data-model/field.model';
 
 @Component({
   selector: 'app-field-tooltip',
@@ -11,13 +13,18 @@ import { CommonModule } from '@angular/common';
 export class FieldTooltipComponent {
 
   @Output() leave = new EventEmitter()
+  @Input() field: FieldViewModel;
+
+  constructor(
+    private mapService: MapService
+  ) {}
 
   @HostListener('mouseleave')
   onMouseLeave(): void {
     this.leave.emit();
   }
 
-  onOptionClick() {
-    console.log("Działa")
+  onfieldFocusClick() {
+    this.mapService.focus(this.field.center);
   }
 }

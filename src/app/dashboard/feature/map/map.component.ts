@@ -6,6 +6,7 @@ import { MapService } from '../../data-access/map.service';
 import { FieldsService } from '../../data-access/fields.service';
 import { FieldViewModel } from '../../data-model/field.model';
 import { HarvestHubResponse } from '../../../shared/data-model/harvest-hub-response.model';
+import { CoordinatesViewModel } from '../../data-model/coordinates.model';
 
 @Component({
   selector: 'app-map',
@@ -24,7 +25,8 @@ export class MapComponent {
   }
   apiLoaded: Observable<boolean>;
   options: google.maps.MapOptions;
-  center: google.maps.LatLngLiteral;
+  //center: google.maps.LatLngLiteral;
+  center: Signal<CoordinatesViewModel>;
 
   fieldsResponse: Signal<HarvestHubResponse<FieldViewModel[]>>;
   fields: Signal<FieldViewModel[]> = computed(() => this.fieldsResponse().data)
@@ -49,7 +51,9 @@ export class MapComponent {
       fullscreenControl: false,
       mapTypeId: google.maps.MapTypeId.HYBRID,
     }
-    this.center = {lat: 53.0518, lng: 20.703};
+    //this.center = {lat: 53.0518, lng: 20.703};
+    this.mapService.focus({lat: 53.0518, lng: 20.703})
+    this.center = this.mapService.getCenter();
   }
 
   onFieldMouseover(field: FieldViewModel) {

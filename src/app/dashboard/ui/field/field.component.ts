@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { HectarePipe } from '../../../shared/utils/hectare.pipe';
 import { FieldTooltipComponent } from './field-tooltip/field-tooltip.component';
 import { ToolBoxDirective } from '../../../shared/utils/tooltip.directive';
+import { FieldViewModel } from '../../data-model/field.model';
 
 @Component({
   selector: 'app-field',
@@ -17,6 +18,8 @@ export class FieldComponent {
   @Input() area: number;
   @Input() address: string;
   @Input() color: string;
+
+  @Input() field: FieldViewModel;
 
   tooltipVisible: boolean = false;
 }

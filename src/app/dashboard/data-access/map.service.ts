@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
-import { ElementRef, Injectable } from '@angular/core';
+import { ElementRef, Injectable, Signal, WritableSignal, signal } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
 import { Observable, Subject, catchError, map, of } from 'rxjs';
+import { CoordinatesViewModel } from '../data-model/coordinates.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
   private map: Subject<GoogleMap> = new Subject<GoogleMap>();
+  private center: WritableSignal<CoordinatesViewModel> = signal({lat: 0, lng: 0});
 
   constructor(
     public httpClient: HttpClient,
@@ -19,6 +21,14 @@ export class MapService {
       map(() => true),
       catchError(() => of(false))
     );
+  }
+
+  focus(coords: CoordinatesViewModel) {
+    this.center.set(coords);
+  }
+
+  getCenter() {
+    return this.center.asReadonly();
   }
 
   setMapInstance(map: GoogleMap): void {
