@@ -1,15 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { ElementRef, Injectable, Signal, WritableSignal, signal } from '@angular/core';
+import { ElementRef, Injectable, WritableSignal, signal } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
-import { Observable, Subject, catchError, map, of } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
 import { CoordinatesViewModel } from '../data-model/coordinates.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
-  private map: Subject<GoogleMap> = new Subject<GoogleMap>();
+  private map: BehaviorSubject<GoogleMap> = new BehaviorSubject<GoogleMap>(null);
   private center: WritableSignal<CoordinatesViewModel> = signal({lat: 0, lng: 0});
+  private zoom: WritableSignal<number> = signal(10);
 
   constructor(
     public httpClient: HttpClient,
@@ -23,8 +24,20 @@ export class MapService {
     );
   }
 
+  // workaround
+  zm = false;
   focus(coords: CoordinatesViewModel) {
-    this.center.set(coords);
+    this.map.subscribe(map => {
+      if(!map) {
+        return;
+      }
+      map.googleMap.setCenter(coords);
+      map.googleMap.setZoom(17);
+    })
+  }
+
+  getZoom() {
+    return this.zoom.asReadonly();
   }
 
   getCenter() {
@@ -38,7 +51,7 @@ export class MapService {
   initializeSearchBar(searchBar: ElementRef): void {
     this.map.subscribe(map => {
       if(!map) {
-        throw new Error("map is not initialized!")
+        return;
       }
 
       const searchBox = new google.maps.places.SearchBox(

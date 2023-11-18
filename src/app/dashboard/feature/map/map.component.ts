@@ -25,8 +25,8 @@ export class MapComponent {
   }
   apiLoaded: Observable<boolean>;
   options: google.maps.MapOptions;
-  //center: google.maps.LatLngLiteral;
   center: Signal<CoordinatesViewModel>;
+  zoom: Signal<number>;
 
   fieldsResponse: Signal<HarvestHubResponse<FieldViewModel[]>>;
   fields: Signal<FieldViewModel[]> = computed(() => this.fieldsResponse().data)
@@ -54,6 +54,7 @@ export class MapComponent {
     //this.center = {lat: 53.0518, lng: 20.703};
     this.mapService.focus({lat: 53.0518, lng: 20.703})
     this.center = this.mapService.getCenter();
+    this.zoom = this.mapService.getZoom();
   }
 
   onFieldMouseover(field: FieldViewModel) {
