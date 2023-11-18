@@ -1,6 +1,5 @@
 import { Injectable, Signal, computed, signal } from '@angular/core';
 import { FieldViewModel } from '../data-model/field.model';
-import { NEVER, delay, of } from 'rxjs';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
 import { HttpClient } from '@angular/common/http';
@@ -39,9 +38,27 @@ export class FieldsService {
     return this.state.asReadonly();
   }
 
+  deleteField(fieldId: string) {
+    this.deleteFieldApi(fieldId).subscribe({
+      next: _ => this.state.update(state => ({
+        ...state,
+        data: state.data.filter(field => field.id !== fieldId),
+        loaded: true
+      })),
+      error: err => this.state.update(state => ({
+        ...state,
+        error: err
+      }))
+    })
+  }
+
   loadFields() {
     return this.http.get<FieldViewModel[]>(this.URL).pipe(
       takeUntilDestroyed()
     );
+  }
+
+  private deleteFieldApi(fieldId: string) {
+    return this.http.delete(this.URL + `/${fieldId}`)
   }
 }

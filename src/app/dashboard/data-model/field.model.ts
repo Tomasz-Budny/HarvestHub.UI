@@ -3,6 +3,7 @@ import { CoordinatesViewModel } from "./coordinates.model";
 
 export class FieldViewModel {
   constructor(
+    public id: string,
     public name: string,
     public area: number,
     public color: string,
