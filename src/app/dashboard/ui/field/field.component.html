@@ -3,7 +3,13 @@
   <span class="text-base font-bold my-auto">{{ name }}</span>
   <span class="text-secondary font-medium text-xs my-auto ml-2">({{ area | hectare }})</span>
   <span class="text-secondary text-xs my-auto ml-2">{{ address }}</span>
-  <div class="tooltip-wrapper ml-auto my-auto flex">
+  <div 
+    class="tooltip-wrapper ml-auto my-auto flex" 
+    (click)="tooltipVisible=!tooltipVisible"
+    >
+    @if(tooltipVisible) {
+      <app-field-tooltip toolbox></app-field-tooltip>
+    }
     <mat-icon svgIcon="dots" class="dots ml-auto my-auto"></mat-icon>
   </div>
 </div>
