@@ -14,11 +14,6 @@ import { FieldViewModel } from '../../data-model/field.model';
   styleUrl: './field.component.scss'
 })
 export class FieldComponent {
-  @Input() name: string;
-  @Input() area: number;
-  @Input() address: string;
-  @Input() color: string;
-
   @Input() field: FieldViewModel;
 
   tooltipVisible: boolean = false;

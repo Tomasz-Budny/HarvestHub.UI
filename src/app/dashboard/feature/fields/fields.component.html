@@ -14,11 +14,7 @@
     @for (field of fields(); track $index) {
       <app-field
         class="mb-1"
-        [field]="field"
-        [name]="field.name"
-        [area]="field.area"
-        [address]="field.address.city"
-        [color]="field.color">
+        [field]="field">
       </app-field>
     }
   </div>
