@@ -31,6 +31,7 @@ export class FieldTooltipComponent {
   }
 
   onFieldDeleteClick() {
-    this.fieldService.deleteField(this.field.id)
+    //this.fieldService.deleteField(this.field.id)
+    this.fieldService.remove$.next(this.field.id)
   }
 }
