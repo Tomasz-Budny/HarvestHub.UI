@@ -1,9 +1,10 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, Signal, computed, signal } from '@angular/core';
 import { AddressViewModel } from '../data-model/address.model';
 import { StartLocation } from '../data-model/start-location.model';
-import { delay, of } from 'rxjs';
+import { delay, of, tap } from 'rxjs';
 import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { MapService } from './map.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,12 @@ export class OwnerService {
     error: null
   });
 
-  startLocation = computed(() => this.state().data);
-  loaded = computed(() => this.state().loaded);
+  startLocation: Signal<StartLocation> = computed(() => this.state().data);
+  loaded: Signal<boolean> = computed(() => this.state().loaded);
 
-  constructor() { 
+  constructor(
+    private mapService: MapService
+  ) { 
     this.loadStartLocation().subscribe({
       next: (res) => this.state.update(state => ({
         ...state,
@@ -34,11 +37,12 @@ export class OwnerService {
 
   loadStartLocation() {
     return of(new StartLocation(
-      {lat: 90, lng: 90},
+      {lat: 53.0518, lng: 20.2},
       new AddressViewModel("Polska", "", "", "Warszawa")
     )).pipe(
       takeUntilDestroyed(),
-      delay(1000)
+      delay(1000),
+      tap(startLocation => this.mapService.focus(startLocation.coordinates))
     )
   }
 

@@ -51,10 +51,6 @@ export class MapComponent {
       fullscreenControl: false,
       mapTypeId: google.maps.MapTypeId.HYBRID,
     }
-    //this.center = {lat: 53.0518, lng: 20.703};
-    this.mapService.focus({lat: 53.0518, lng: 20.703})
-    this.center = this.mapService.getCenter();
-    this.zoom = this.mapService.getZoom();
   }
 
   onFieldMouseover(field: FieldViewModel) {

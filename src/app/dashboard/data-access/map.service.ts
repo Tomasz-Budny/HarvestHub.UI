@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { ElementRef, Injectable, WritableSignal, signal } from '@angular/core';
+import { ElementRef, Injectable } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
 import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
 import { CoordinatesViewModel } from '../data-model/coordinates.model';
@@ -9,11 +9,9 @@ import { CoordinatesViewModel } from '../data-model/coordinates.model';
 })
 export class MapService {
   private map: BehaviorSubject<GoogleMap> = new BehaviorSubject<GoogleMap>(null);
-  private center: WritableSignal<CoordinatesViewModel> = signal({lat: 0, lng: 0});
-  private zoom: WritableSignal<number> = signal(10);
 
   constructor(
-    public httpClient: HttpClient,
+    public httpClient: HttpClient
   ) { }
 
   loadMap(): Observable<boolean> {
@@ -24,8 +22,6 @@ export class MapService {
     );
   }
 
-  // workaround
-  zm = false;
   focus(coords: CoordinatesViewModel) {
     this.map.subscribe(map => {
       if(!map) {
@@ -34,14 +30,6 @@ export class MapService {
       map.googleMap.setCenter(coords);
       map.googleMap.setZoom(17);
     })
-  }
-
-  getZoom() {
-    return this.zoom.asReadonly();
-  }
-
-  getCenter() {
-    return this.center.asReadonly();
   }
 
   setMapInstance(map: GoogleMap): void {
