@@ -1,18 +1,19 @@
+$radius: 12px;
+
 :host {
   text-align: center;
   z-index: 100;
-  position: absolute;
-  padding: 6px 12px;
-  font-size: 0.66rem;
-  font-weight: 600;
+  position: fixed;
+  // font-size: 0.66rem;
+  // font-weight: 600;
   line-height: initial;
-  color: white;
   width: auto;
-  background: #111111ee;
-  box-sizing: border-box;
+  height: auto;
+  background: #fff;
   opacity: 0;
-  animation: tooltip-slide 0.08s ease-out 0.2s;
+  animation: tooltip-slide 0.08s ease-out 0.1s;
   animation-fill-mode: forwards;
+  border-radius: $radius;
 }
 
 @keyframes tooltip-slide {
@@ -24,4 +25,26 @@
     opacity: 1;
     transform: translate(-50%, 0);
   }
+}
+
+.option:first-of-type {
+  border-radius: $radius $radius 0px 0px;
+  border: 0px;
+}
+
+.option:last-of-type {
+  border-radius: 0px 0px $radius $radius;
+  border: 0px;
+}
+
+.option {
+  padding: 8px;
+  font-size: 12px;
+  border-top: 1px solid var(--skeleton-color);
+  border-bottom: 1px solid var(--skeleton-color)
+}
+
+.option:hover {
+  background-color: var(--secondary-color);
+  color: #fff;
 }

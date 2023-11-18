@@ -16,4 +16,8 @@ export class FieldTooltipComponent {
   onMouseLeave(): void {
     this.leave.emit();
   }
+
+  onOptionClick() {
+    console.log("Działa")
+  }
 }
