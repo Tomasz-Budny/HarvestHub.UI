@@ -5,13 +5,13 @@ import { FieldsService } from '../../data-access/fields.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'app-add-field-button',
+  selector: 'app-map-controls',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './add-field-button.component.html',
-  styleUrl: './add-field-button.component.scss'
+  templateUrl: './map-controls.component.html',
+  styleUrl: './map-controls.component.scss'
 })
-export class AddFieldButtonComponent {
+export class MapControlsComponent {
   onAddingMode: boolean = false;
 
   constructor(

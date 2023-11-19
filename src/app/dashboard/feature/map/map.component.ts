@@ -6,13 +6,13 @@ import { MapService } from '../../data-access/map.service';
 import { FieldsService } from '../../data-access/fields.service';
 import { FieldViewModel } from '../../data-model/field.model';
 import { HarvestHubResponse } from '../../../shared/data-model/harvest-hub-response.model';
-import { AddFieldButtonComponent } from '../../ui/add-field-button/add-field-button.component';
+import { MapControlsComponent } from '../../ui/map-controls/map-controls.component';
 import { MapControlDirective } from '../../utils/map-control.directive';
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [CommonModule, GoogleMapsModule, AddFieldButtonComponent, MapControlDirective],
+  imports: [CommonModule, GoogleMapsModule, MapControlsComponent, MapControlDirective],
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss'
 })
