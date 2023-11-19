@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MapService } from '../../data-access/map.service';
 
 @Component({
   selector: 'app-add-field-button',
@@ -10,4 +11,11 @@ import { CommonModule } from '@angular/common';
 })
 export class AddFieldButtonComponent {
 
+  constructor(
+    public mapService: MapService
+  ) {}
+
+  onAddNewField() {
+    this.mapService.addNewField()
+  }
 }
