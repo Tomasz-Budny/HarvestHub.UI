@@ -37,8 +37,8 @@ export class OwnerService {
 
   loadStartLocation() {
     return of(new StartLocation(
-      {lat: 53.0518, lng: 20.2},
-      new AddressViewModel("Polska", "", "", "Warszawa")
+      {lat: 53.0518, lng: 20.703},
+      new AddressViewModel("Polska", "", "", "Żebry-Kordy")
     )).pipe(
       takeUntilDestroyed(),
       delay(1000),
