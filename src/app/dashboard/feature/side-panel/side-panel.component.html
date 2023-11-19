@@ -2,6 +2,8 @@
 <hr>
 <app-fields></app-fields>
 @if (fieldsLoaded()) {
-  <app-fields-area-chart class="mt-auto"></app-fields-area-chart>
+  @if(fieldsNotEmpty()) {
+    <app-fields-area-chart class="mt-auto"></app-fields-area-chart>
+  }
 }
-<app-copyright class="mt-auto"></app-copyright>
+<app-copyright [class.mt-auto]="!fieldsNotEmpty()"></app-copyright>

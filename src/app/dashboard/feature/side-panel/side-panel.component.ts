@@ -14,11 +14,16 @@ import { FieldsService } from '../../data-access/fields.service';
   styleUrl: './side-panel.component.scss'
 })
 export class SidePanelComponent {
-  fieldsLoaded: Signal<boolean>;
+  fieldsLoaded: Signal<boolean> = computed(() => this.fieldsService.getFields()().loaded);
+
+  fieldsNotEmpty: Signal<boolean> = computed(() => {
+    if(this.fieldsService.getFields()().data.length > 0) {
+      return true;
+    }
+    return false
+  })
 
   constructor(
     public fieldsService: FieldsService
-  ) { 
-    this.fieldsLoaded = computed(() => this.fieldsService.getFields()().loaded)
-  }
+  ) { }
 }
