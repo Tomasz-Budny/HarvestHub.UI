@@ -24,11 +24,15 @@ export class FieldsAreaChartComponent {
     this.fieldsResponse = this.fieldsService.getFields();
   }
 
-  colors = computed(() => this.fields().map(x => { return { name: x.name, value: x.color} }));
+  colors = computed(() => this.fields().map(x => { return { name: x.id, value: x.color} }));
 
-  data = computed(() => this.fields().map(x => { return { name: x.name, value: x.area} }));
+  data = computed(() => this.fields().map(x => { return { name: x.id, value: x.area} }));
 
-  getAddress(name: string): string {
-    return this.fields().find(x => x.name === name).address.city;
+  getAddress(id: string): string {
+    return this.fields().find(x => x.id === id).address.city;
+  }
+
+  getName(id: string) {
+    return this.fields().find(x => x.id === id).name;
   }
 }

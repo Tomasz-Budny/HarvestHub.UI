@@ -21,7 +21,7 @@
 
   <ng-template #tooltipTemplate let-model="model">
     <span class="text-base font-medium">
-      {{ model.name }}
+      {{ getName(model.name) }}
     </span>
     <div class="text-xs font-light">
       {{ getAddress(model.name) }}
