@@ -3,7 +3,7 @@
   <mat-icon [svgIcon]="icon" class="weather-icon m-auto mt-1"></mat-icon>
 
   <p class="temperature text-center text-base mt-2">{{ temperature }}°</p>
-  <div class="flex rain-forecast justify-center mt-1">
+  <div [tooltip]="'Szansa na opady deszczu: ' + rainForecast + '%'" [leftOffset]="50" class="flex rain-forecast justify-center mt-1">
     <mat-icon svgIcon="rain" class="rain"></mat-icon>
     <p class="text-center text-secondary">{{ rainForecast }}%</p>
   </div>
