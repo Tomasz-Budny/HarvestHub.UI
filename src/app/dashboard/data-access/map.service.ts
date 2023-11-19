@@ -11,7 +11,7 @@ import { Polygon } from '../data-model/polygon.model';
 })
 export class MapService {
   private map: BehaviorSubject<GoogleMap> = new BehaviorSubject<GoogleMap>(null);
-
+  drawingManager;
   constructor(
     public httpClient: HttpClient,
     private fieldService: FieldsService 
@@ -85,12 +85,14 @@ export class MapService {
         },
       };
 
-      const drawingManager = new google.maps.drawing.DrawingManager(drawingManagerOptions);
+      const DrawingManager = new google.maps.drawing.DrawingManager(drawingManagerOptions);
 
-      drawingManager.setMap(map.googleMap);
+      DrawingManager.setMap(map.googleMap);
   
-      google.maps.event.addListener(drawingManager, 'overlaycomplete', (event)=> {
-        drawingManager.setMap(null);
+      this.drawingManager = DrawingManager;
+
+      google.maps.event.addListener(DrawingManager, 'overlaycomplete', (event)=> {
+        DrawingManager.setMap(null);
         const path = event.overlay.getPath();
         const coords = this.getCoordinates(path)
         const area = this.calculateArea(coords);
@@ -107,6 +109,10 @@ export class MapService {
         event.overlay.setMap(null)
       })
     })
+  }
+
+  discardAddingPolygon() {
+    (<google.maps.drawing.DrawingManager>this.drawingManager).setMap(null);
   }
   
   private getCoordinates(path): CoordinatesViewModel[] {
