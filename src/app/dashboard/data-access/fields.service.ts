@@ -3,7 +3,7 @@ import { FieldViewModel } from '../data-model/field.model';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
 import { HttpClient } from '@angular/common/http';
-import { EMPTY, Subject, catchError, switchMap, tap } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, switchMap, tap } from 'rxjs';
 import { confirmDialog } from '../../shared/utils/confirm.operator';
 import { CreateFieldRequest } from '../data-model/create-field-request.model';
 import { Polygon } from '../data-model/polygon.model';
@@ -61,8 +61,19 @@ export class FieldsService {
 
     this.add$.asObservable().pipe(
       takeUntilDestroyed(),
-      switchMap(polygon => this.addFieldApi(polygon))
-    ).subscribe()
+      switchMap(polygon => this.addFieldApi(polygon)),
+      switchMap(res => this.getFieldApi(res.id))
+    ).subscribe({
+      next: field => this.state.update(state => ({
+        ...state,
+        data: [...state.data, field],
+        loaded: true
+      })),
+      error: err => this.state.update(state => ({
+        ...state,
+        error: err
+      }))
+    })
   }
 
   getFields() {
@@ -75,12 +86,16 @@ export class FieldsService {
     );
   }
 
-  private deleteFieldApi(fieldId: string) {
-    return this.http.delete(this.URL + `/${fieldId}`)
+  private deleteFieldApi(fieldId: string): Observable<string> {
+    return this.http.delete<string>(this.URL + `/${fieldId}`)
   }
 
-  private addFieldApi(polygon: Polygon) {
-    const name = `Działka #${this.state().data.length}`
+  private getFieldApi(fieldId: string): Observable<FieldViewModel> {
+    return this.http.get<FieldViewModel>(this.URL + `/${fieldId}`)
+  }
+
+  private addFieldApi(polygon: Polygon): Observable<{id: string}> {
+    const name = `Działka #${this.state().data.length + 1}`
     const color = '#324C08';
 
     const newField: CreateFieldRequest = {
@@ -91,6 +106,6 @@ export class FieldsService {
       vertices: polygon.vertices
     }
 
-    return this.http.post<CreateFieldRequest>(this.URL, newField);
+    return this.http.post<{id: string}>(this.URL, newField);
   }
 }
