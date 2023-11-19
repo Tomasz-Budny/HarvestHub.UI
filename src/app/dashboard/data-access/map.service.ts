@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { ElementRef, Injectable, Signal, computed, signal } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
-import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { CoordinatesViewModel } from '../data-model/coordinates.model';
 import { FieldsService } from './fields.service';
 import { Polygon } from '../data-model/polygon.model';
@@ -19,11 +19,20 @@ export class MapService {
     fieldId: ''
   });
   editingFieldId: Signal<string> = computed(() => this.editingField().fieldId);
+  focus$ = new Subject<CoordinatesViewModel>()
 
   constructor(
     public httpClient: HttpClient,
     private fieldService: FieldsService 
-  ) { }
+  ) { 
+
+    this.focus$.pipe(
+      withLatestFrom(this.map)
+    ).subscribe(([coords, map]) => {
+      map.googleMap.setCenter(coords);
+      map.googleMap.setZoom(17);
+    })
+  }
 
   loadMap(): Observable<boolean> {
     return this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKv27xR4mZj_nWp6ljbbo0x_ta0yrui4&libraries=places,geometry,drawing', 'callback')
@@ -34,8 +43,7 @@ export class MapService {
   }
 
   focus(coords: CoordinatesViewModel) {
-    this.map.value.googleMap.setCenter(coords);
-    this.map.value.googleMap.setZoom(17);
+    this.focus$.next(coords);
   }
 
   setMapInstance(map: GoogleMap): void {
