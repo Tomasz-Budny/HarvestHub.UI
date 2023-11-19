@@ -31,7 +31,11 @@ export class FieldToolboxComponent {
   }
 
   onFieldDeleteClick() {
-    //this.fieldService.deleteField(this.field.id)
     this.fieldService.remove$.next(this.field.id)
+  }
+
+  onEditFieldBorders() {
+    this.mapService.focus(this.field.center);
+    this.mapService.editPolygonBorders(this.field);
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapService } from '../../data-access/map.service';
 import { FieldsService } from '../../data-access/fields.service';
@@ -13,6 +13,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class MapControlsComponent {
   onAddingMode: boolean = false;
+  onEditingFieldMode: Signal<boolean> = computed(() => {
+    if(this.mapService.editingFieldId()) {
+      return true;
+    } else return false;
+  })
 
   constructor(
     public mapService: MapService,
@@ -30,8 +35,12 @@ export class MapControlsComponent {
     this.mapService.addNewField()
   }
 
-  discard() {
+  discardAddingField() {
     this.onAddingMode = false;
     this.mapService.discardAddingPolygon();
+  }
+
+  discardFieldVericesEditing() {
+    this.mapService.discardPolygonBordersEditing();
   }
 }

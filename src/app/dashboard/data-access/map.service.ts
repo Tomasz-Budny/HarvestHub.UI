@@ -1,17 +1,25 @@
 import { HttpClient } from '@angular/common/http';
-import { ElementRef, Injectable } from '@angular/core';
+import { ElementRef, Injectable, Signal, computed, signal } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
 import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
 import { CoordinatesViewModel } from '../data-model/coordinates.model';
 import { FieldsService } from './fields.service';
 import { Polygon } from '../data-model/polygon.model';
+import { FieldViewModel } from '../data-model/field.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
   private map: BehaviorSubject<GoogleMap> = new BehaviorSubject<GoogleMap>(null);
-  drawingManager;
+  drawingManager: any;
+  editingFieldPolygon: any;
+  private editingField = signal<{polygon, fieldId: string}>({
+    polygon: null,
+    fieldId: ''
+  });
+  editingFieldId: Signal<string> = computed(() => this.editingField().fieldId);
+
   constructor(
     public httpClient: HttpClient,
     private fieldService: FieldsService 
@@ -26,13 +34,8 @@ export class MapService {
   }
 
   focus(coords: CoordinatesViewModel) {
-    this.map.subscribe(map => {
-      if(!map) {
-        return;
-      }
-      map.googleMap.setCenter(coords);
-      map.googleMap.setZoom(17);
-    })
+    this.map.value.googleMap.setCenter(coords);
+    this.map.value.googleMap.setZoom(17);
   }
 
   setMapInstance(map: GoogleMap): void {
@@ -71,48 +74,71 @@ export class MapService {
   }
 
   addNewField() {
-    this.map.subscribe(map => {
-      if(!map) {
-        return;
-      }
+    const drawingManagerOptions = {
+      drawingMode: google.maps.drawing.OverlayType.POLYGON,
+      drawingControl: false,
+      polygonOptions: {
+        draggable: true,
+        editable: true,
+      },
+    };
 
-      const drawingManagerOptions = {
-        drawingMode: google.maps.drawing.OverlayType.POLYGON,
-        drawingControl: false,
-        polygonOptions: {
-          draggable: true,
-          editable: true,
-        },
+    const DrawingManager = new google.maps.drawing.DrawingManager(drawingManagerOptions);
+
+    DrawingManager.setMap(this.map.value.googleMap);
+
+    this.drawingManager = DrawingManager;
+
+    google.maps.event.addListener(DrawingManager, 'overlaycomplete', (event)=> {
+      DrawingManager.setMap(null);
+      const path = event.overlay.getPath();
+      const coords = this.getCoordinates(path)
+      const area = this.calculateArea(coords);
+      const center = this.calculateCenter(coords);
+
+      const polygon: Polygon = {
+        vertices: coords,
+        area: area,
+        center: center
       };
 
-      const DrawingManager = new google.maps.drawing.DrawingManager(drawingManagerOptions);
+      this.fieldService.add$.next(polygon);
 
-      DrawingManager.setMap(map.googleMap);
-  
-      this.drawingManager = DrawingManager;
-
-      google.maps.event.addListener(DrawingManager, 'overlaycomplete', (event)=> {
-        DrawingManager.setMap(null);
-        const path = event.overlay.getPath();
-        const coords = this.getCoordinates(path)
-        const area = this.calculateArea(coords);
-        const center = this.calculateCenter(coords);
-
-        const polygon: Polygon = {
-          vertices: coords,
-          area: area,
-          center: center
-        };
-
-        this.fieldService.add$.next(polygon);
-
-        event.overlay.setMap(null)
-      })
+      event.overlay.setMap(null)
     })
   }
 
   discardAddingPolygon() {
-    (<google.maps.drawing.DrawingManager>this.drawingManager).setMap(null);
+    if(this.drawingManager) {
+      (<google.maps.drawing.DrawingManager>this.drawingManager).setMap(null);
+    }
+  }
+
+  editPolygonBorders(field: FieldViewModel) {
+    this.discardPolygonBordersEditing();
+    const polygon = new google.maps.Polygon({
+      paths: field.paths,
+      editable: true,
+      fillColor: field.color,
+      fillOpacity: 0.5
+    });
+
+    polygon.setMap(this.map.value.googleMap);
+
+    this.editingField.set({
+      polygon: polygon,
+      fieldId: field.id
+    });
+  }
+
+  discardPolygonBordersEditing() {
+    if(this.editingField().polygon) {
+      this.editingField().polygon.setMap(null);
+    }
+    this.editingField.set({
+      polygon: null,
+      fieldId: ''
+    });
   }
   
   private getCoordinates(path): CoordinatesViewModel[] {

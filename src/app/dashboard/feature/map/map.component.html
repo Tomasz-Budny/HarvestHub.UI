@@ -2,12 +2,13 @@
   <google-map 
     width="100%"
     height="100%"
-    [center]="{lat: 40, lng: 20.2}"
+    [center]="{lat: 60, lng: 20.2}"
     [zoom]="3"
     [options]="options">
     @if (fieldsLoaded()) {
       @for (field of fields(); track $index) {
         <map-polygon
+        *ngIf="editingFieldId() !== field.id"
           (polygonMouseover)="onFieldMouseover(field)"
           (polygonMouseout)="onFieldMouseout()"
           [paths]="field.paths"

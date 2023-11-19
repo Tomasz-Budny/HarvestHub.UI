@@ -31,6 +31,7 @@ export class MapComponent {
   fields: Signal<FieldViewModel[]> = computed(() => this.fieldsResponse().data)
   fieldsLoaded: Signal<boolean> = computed(() => this.fieldsResponse().loaded)
   marker: {name: string, color: string, center}
+  editingFieldId = this.mapService.editingFieldId;
 
   constructor(
     public mapService: MapService,

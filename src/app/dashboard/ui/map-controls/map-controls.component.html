@@ -1,13 +1,24 @@
-<span >
+@if(onEditingFieldMode()) {
+  <span class="flex">
+    <span class="option flex" (click)="discardFieldVericesEditing()">
+      <i class="fa-solid fa-x my-auto"></i>
+      <span class="ml-2">Anuluj</span>
+    </span>
+    <span class="option flex ml-2">
+      <i class="fa-solid fa-check my-auto"></i>
+      <span class="ml-2">Zaakceptuj</span>
+    </span>
+  </span>
+} @else {
   @if(!onAddingMode) {
-    <span (click)="onAddNewField()">
+    <span class="option" (click)="onAddNewField()">
       <i class="fa-solid fa-plus"></i>
       <span class="ml-2">Dodaj nowe pole</span>
     </span>
   } @else {
-    <span (click)="discard()">
+    <span class="option" (click)="discardAddingField()">
       <i class="fa-solid fa-x"></i>
       <span class="ml-2">Anuluj</span>
     </span>
   }
-</span>
+}

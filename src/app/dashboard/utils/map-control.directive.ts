@@ -15,7 +15,7 @@ export class MapControlDirective implements AfterViewInit {
   }
 
   editPosition() {
-    const width = this.el.nativeElement.offsetWidth + 20;
+    const width = this.el.nativeElement.offsetWidth + 80;
     const height = this.el.nativeElement.offsetHeight + 30;
     this.el.nativeElement.style.position = 'absolute';
     const y = `100vh`;
