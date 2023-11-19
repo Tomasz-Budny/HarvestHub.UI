@@ -6,6 +6,7 @@ import { CoordinatesViewModel } from '../data-model/coordinates.model';
 import { FieldsService } from './fields.service';
 import { Polygon } from '../data-model/polygon.model';
 import { FieldViewModel } from '../data-model/field.model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,10 @@ export class MapService {
     fieldId: ''
   });
   editingFieldId: Signal<string> = computed(() => this.editingField().fieldId);
-  focus$ = new Subject<CoordinatesViewModel>()
+  private focus$ = new Subject<CoordinatesViewModel>();
+  private initializeSearchBar$ = new Subject<ElementRef>();
+  private addNewField$ = new Subject<void>();
+  private editPolygonBorders$ = new Subject<FieldViewModel>();
 
   constructor(
     public httpClient: HttpClient,
@@ -27,31 +31,17 @@ export class MapService {
   ) { 
 
     this.focus$.pipe(
-      withLatestFrom(this.map)
+      withLatestFrom(this.map),
+      takeUntilDestroyed(),
     ).subscribe(([coords, map]) => {
       map.googleMap.setCenter(coords);
       map.googleMap.setZoom(17);
-    })
-  }
+    });
 
-  loadMap(): Observable<boolean> {
-    return this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKv27xR4mZj_nWp6ljbbo0x_ta0yrui4&libraries=places,geometry,drawing', 'callback')
-    .pipe(
-      map(() => true),
-      catchError(() => of(false))
-    );
-  }
-
-  focus(coords: CoordinatesViewModel) {
-    this.focus$.next(coords);
-  }
-
-  setMapInstance(map: GoogleMap): void {
-    this.map.next(map);
-  }
-
-  initializeSearchBar(searchBar: ElementRef): void {
-    this.map.subscribe(map => {
+    this.initializeSearchBar$.pipe(
+      withLatestFrom(this.map),
+      takeUntilDestroyed(),
+    ).subscribe(([searchBar, map]) => {
       if(!map) {
         return;
       }
@@ -78,42 +68,89 @@ export class MapService {
           map.fitBounds(bounds);
         })
       })
-    })
+    });
+
+    this.addNewField$.pipe(
+      withLatestFrom(this.map),
+      takeUntilDestroyed(),
+    ).subscribe(([_, map]) => {
+      const drawingManagerOptions = {
+        drawingMode: google.maps.drawing.OverlayType.POLYGON,
+        drawingControl: false,
+        polygonOptions: {
+          draggable: true,
+          editable: true,
+        },
+      };
+  
+      const DrawingManager = new google.maps.drawing.DrawingManager(drawingManagerOptions);
+  
+      DrawingManager.setMap(map.googleMap);
+  
+      this.drawingManager = DrawingManager;
+  
+      google.maps.event.addListener(DrawingManager, 'overlaycomplete', (event)=> {
+        DrawingManager.setMap(null);
+        const path = event.overlay.getPath();
+        const coords = this.getCoordinates(path)
+        const area = this.calculateArea(coords);
+        const center = this.calculateCenter(coords);
+  
+        const polygon: Polygon = {
+          vertices: coords,
+          area: area,
+          center: center
+        };
+  
+        this.fieldService.add$.next(polygon);
+  
+        event.overlay.setMap(null)
+      })
+    });
+
+    this.editPolygonBorders$.pipe(
+      withLatestFrom(this.map),
+      takeUntilDestroyed(),
+    ).subscribe(([field, map]) => {
+      this.discardPolygonBordersEditing();
+      const polygon = new google.maps.Polygon({
+        paths: field.paths,
+        editable: true,
+        fillColor: field.color,
+        fillOpacity: 0.5
+      });
+  
+      polygon.setMap(map.googleMap);
+  
+      this.editingField.set({
+        polygon: polygon,
+        fieldId: field.id
+      });
+    });
+  }
+
+  loadMap(): Observable<boolean> {
+    return this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKv27xR4mZj_nWp6ljbbo0x_ta0yrui4&libraries=places,geometry,drawing', 'callback')
+    .pipe(
+      map(() => true),
+      catchError(() => of(false))
+    );
+  }
+
+  focus(coords: CoordinatesViewModel) {
+    this.focus$.next(coords);
+  }
+
+  setMapInstance(map: GoogleMap): void {
+    this.map.next(map);
+  }
+
+  initializeSearchBar(searchBar: ElementRef): void {
+    this.initializeSearchBar$.next(searchBar);
   }
 
   addNewField() {
-    const drawingManagerOptions = {
-      drawingMode: google.maps.drawing.OverlayType.POLYGON,
-      drawingControl: false,
-      polygonOptions: {
-        draggable: true,
-        editable: true,
-      },
-    };
-
-    const DrawingManager = new google.maps.drawing.DrawingManager(drawingManagerOptions);
-
-    DrawingManager.setMap(this.map.value.googleMap);
-
-    this.drawingManager = DrawingManager;
-
-    google.maps.event.addListener(DrawingManager, 'overlaycomplete', (event)=> {
-      DrawingManager.setMap(null);
-      const path = event.overlay.getPath();
-      const coords = this.getCoordinates(path)
-      const area = this.calculateArea(coords);
-      const center = this.calculateCenter(coords);
-
-      const polygon: Polygon = {
-        vertices: coords,
-        area: area,
-        center: center
-      };
-
-      this.fieldService.add$.next(polygon);
-
-      event.overlay.setMap(null)
-    })
+    this.addNewField$.next();
   }
 
   discardAddingPolygon() {
@@ -123,20 +160,7 @@ export class MapService {
   }
 
   editPolygonBorders(field: FieldViewModel) {
-    this.discardPolygonBordersEditing();
-    const polygon = new google.maps.Polygon({
-      paths: field.paths,
-      editable: true,
-      fillColor: field.color,
-      fillOpacity: 0.5
-    });
-
-    polygon.setMap(this.map.value.googleMap);
-
-    this.editingField.set({
-      polygon: polygon,
-      fieldId: field.id
-    });
+    this.editPolygonBorders$.next(field);
   }
 
   discardPolygonBordersEditing() {
