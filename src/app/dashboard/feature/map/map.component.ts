@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, Signal, ViewChild, computed } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Signal, ViewChild, computed } from '@angular/core';
 import { GoogleMap, GoogleMapsModule } from '@angular/google-maps';
 import { Observable, tap } from 'rxjs';
 import { MapService } from '../../data-access/map.service';
 import { FieldsService } from '../../data-access/fields.service';
 import { FieldViewModel } from '../../data-model/field.model';
 import { HarvestHubResponse } from '../../../shared/data-model/harvest-hub-response.model';
+import { AddFieldButtonComponent } from '../../ui/add-field-button/add-field-button.component';
+import { MapControlDirective } from '../../utils/map-control.directive';
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [CommonModule, GoogleMapsModule],
+  imports: [CommonModule, GoogleMapsModule, AddFieldButtonComponent, MapControlDirective],
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss'
 })
