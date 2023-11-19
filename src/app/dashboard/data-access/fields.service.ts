@@ -7,6 +7,7 @@ import { EMPTY, Observable, Subject, catchError, switchMap, tap } from 'rxjs';
 import { confirmDialog } from '../../shared/utils/confirm.operator';
 import { CreateFieldRequest } from '../data-model/create-field-request.model';
 import { Polygon } from '../data-model/polygon.model';
+import { ColorUtil } from '../utils/color.util';
 
 @Injectable({
   providedIn: 'root'
@@ -95,8 +96,11 @@ export class FieldsService {
   }
 
   private addFieldApi(polygon: Polygon): Observable<{id: string}> {
-    const name = `Działka #${this.state().data.length + 1}`
-    const color = '#324C08';
+    const fields = this.state().data;
+    const lastField = fields[fields.length - 1];
+
+    const name = `Działka #${fields.length + 1}`
+    const color = ColorUtil.getRandomColorExcept(lastField === undefined ? '' : lastField.color );
 
     const newField: CreateFieldRequest = {
       name: name,
