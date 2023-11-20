@@ -42,7 +42,7 @@ export class FieldsAreaChartComponent {
     const field = this.fields().find(field => field.id === $event.name);
 
     if(field) {
-      this.mapService.focus(field.center);
+      this.mapService.focusOnField(field);
     }
   }
 }

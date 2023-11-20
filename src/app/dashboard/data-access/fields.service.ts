@@ -3,11 +3,12 @@ import { FieldViewModel } from '../data-model/field.model';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
 import { HttpClient } from '@angular/common/http';
-import { EMPTY, Observable, Subject, catchError, switchMap, tap } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, combineLatest, map, switchMap, tap } from 'rxjs';
 import { confirmDialog } from '../../shared/utils/confirm.operator';
 import { CreateFieldRequest } from '../data-model/create-field-request.model';
 import { Polygon } from '../data-model/polygon.model';
 import { ColorUtil } from '../utils/color.util';
+import { ReplaceFieldVerticesRequest } from '../data-model/replace-field-vertices-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,7 @@ export class FieldsService {
   fieldsLoaded: Signal<boolean> = computed(() => this.state().loaded)
   remove$ = new Subject<string>();
   add$ = new Subject<Polygon>();
+  replaceFieldVertices$ = new Subject<ReplaceFieldVerticesRequest>()
 
   constructor(
     public http: HttpClient
@@ -74,11 +76,36 @@ export class FieldsService {
         ...state,
         error: err
       }))
+    });
+
+    this.replaceFieldVertices$.pipe(
+      takeUntilDestroyed(),
+      switchMap(request => this.replaceFieldVerticesApi(request).pipe(map(_ => request)))
+    ).subscribe({
+      next: req => this.state.update(state => ({
+        ...state,
+        data: this.updateFieldPolygon(req.polygon, req.fieldId),
+        loaded: true
+      })),
+      error: err => this.state.update(state => ({
+        ...state,
+        error: err
+      }))
     })
   }
 
   getFields() {
     return this.state.asReadonly();
+  }
+
+  private updateFieldPolygon(polygon: Polygon, fieldId: string) {
+    const fields = this.state().data;
+    const field = fields.find(field => field.id === fieldId);
+    field.paths = polygon.vertices;
+    field.area = polygon.area;
+    field.center = polygon.center;
+
+    return [...fields];
   }
 
   private loadFields() {
@@ -111,5 +138,12 @@ export class FieldsService {
     }
 
     return this.http.post<{id: string}>(this.URL, newField);
+  }
+
+  private replaceFieldVerticesApi(request: ReplaceFieldVerticesRequest): Observable<void> {
+    const fieldId = request.fieldId;
+    const polygon = request.polygon;
+
+    return this.http.post<void>(this.URL + `/${fieldId}/vertices/replace`, polygon);
   }
 }

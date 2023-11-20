@@ -45,10 +45,6 @@ export class MapComponent {
     )
   }
 
-  onZoomChanged() {
-    console.log(this.googleMap.getZoom())
-  }
-
   initializeMap(): void {
     this.options = {
       disableDefaultUI: true,

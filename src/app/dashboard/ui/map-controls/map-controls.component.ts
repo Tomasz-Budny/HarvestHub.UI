@@ -43,4 +43,8 @@ export class MapControlsComponent {
   discardFieldVericesEditing() {
     this.mapService.discardPolygonBordersEditing();
   }
+
+  editFieldVertices() {
+    this.mapService.editPolygonBorders();
+  }
 }

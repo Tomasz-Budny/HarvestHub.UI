@@ -36,6 +36,6 @@ export class FieldToolboxComponent {
 
   onEditFieldBorders() {
     this.mapService.focusOnField(this.field);
-    this.mapService.editPolygonBorders(this.field);
+    this.mapService.initializeEditPolygonBorders(this.field);
   }
 }

@@ -7,7 +7,6 @@ import { FieldsService } from './fields.service';
 import { Polygon } from '../data-model/polygon.model';
 import { FieldViewModel } from '../data-model/field.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { HectaresUtils } from '../../shared/utils/hectare.util';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +24,7 @@ export class MapService {
   private focus$ = new Subject<CoordinatesViewModel>();
   private initializeSearchBar$ = new Subject<ElementRef>();
   private addNewField$ = new Subject<void>();
-  private editPolygonBorders$ = new Subject<FieldViewModel>();
+  private initializeEditPolygonBorders$ = new Subject<FieldViewModel>();
 
   constructor(
     public httpClient: HttpClient,
@@ -131,7 +130,7 @@ export class MapService {
       })
     });
 
-    this.editPolygonBorders$.pipe(
+    this.initializeEditPolygonBorders$.pipe(
       withLatestFrom(this.map),
       takeUntilDestroyed(),
     ).subscribe(([field, map]) => {
@@ -186,8 +185,32 @@ export class MapService {
     }
   }
 
-  editPolygonBorders(field: FieldViewModel) {
-    this.editPolygonBorders$.next(field);
+  initializeEditPolygonBorders(field: FieldViewModel) {
+    this.initializeEditPolygonBorders$.next(field);
+  }
+
+  editPolygonBorders() {
+    const editingPolygon = this.editingField();
+
+    if(editingPolygon.fieldId !== '') {
+      const fieldId = editingPolygon.fieldId;
+      const coords = this.getCoordinates(editingPolygon.polygon.getPath());
+      const area = this.calculateArea(coords);
+      const center = this.calculateCenter(coords);
+
+      const polygon: Polygon = {
+        vertices: coords,
+        area: area,
+        center: center
+      };
+
+      this.fieldService.replaceFieldVertices$.next({
+        polygon: polygon,
+        fieldId: fieldId
+      });
+
+      this.discardPolygonBordersEditing()
+    }
   }
 
   discardPolygonBordersEditing() {
