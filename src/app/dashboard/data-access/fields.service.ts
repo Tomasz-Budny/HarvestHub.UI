@@ -43,7 +43,6 @@ export class FieldsService {
     })
 
     this.remove$.asObservable().pipe(
-      tap(fieldId => console.log(fieldId)),
       confirmDialog(fieldId => {
         return this.deleteFieldApi(fieldId)
         .pipe(
