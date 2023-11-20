@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { ElementRef, Injectable, Signal, computed, signal } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
-import { BehaviorSubject, Observable, Subject, catchError, map, of, withLatestFrom } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { CoordinatesViewModel } from '../data-model/coordinates.model';
 import { FieldsService } from './fields.service';
 import { Polygon } from '../data-model/polygon.model';
@@ -61,9 +61,9 @@ export class MapService {
     });
 
     this.initializeSearchBar$.pipe(
-      withLatestFrom(this.map),
+      switchMap(searchBar => this.map.pipe(map(map => ({searchBar: searchBar, map: map})))),
       takeUntilDestroyed(),
-    ).subscribe(([searchBar, map]) => {
+    ).subscribe(({searchBar, map}) => {
       if(!map) {
         return;
       }

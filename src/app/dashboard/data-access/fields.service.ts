@@ -3,7 +3,7 @@ import { FieldViewModel } from '../data-model/field.model';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
 import { HttpClient } from '@angular/common/http';
-import { EMPTY, Observable, Subject, catchError, combineLatest, map, switchMap, tap } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, map, switchMap, tap } from 'rxjs';
 import { confirmDialog } from '../../shared/utils/confirm.operator';
 import { CreateFieldRequest } from '../data-model/create-field-request.model';
 import { Polygon } from '../data-model/polygon.model';
