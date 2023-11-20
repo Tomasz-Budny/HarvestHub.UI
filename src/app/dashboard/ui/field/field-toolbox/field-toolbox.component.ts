@@ -27,7 +27,7 @@ export class FieldToolboxComponent {
   }
 
   onfieldFocusClick() {
-    this.mapService.focus(this.field.center);
+    this.mapService.focusOnField(this.field);
   }
 
   onFieldDeleteClick() {
@@ -35,7 +35,7 @@ export class FieldToolboxComponent {
   }
 
   onEditFieldBorders() {
-    this.mapService.focus(this.field.center);
+    this.mapService.focusOnField(this.field);
     this.mapService.editPolygonBorders(this.field);
   }
 }

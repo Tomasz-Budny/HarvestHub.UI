@@ -7,6 +7,7 @@ import { FieldsService } from './fields.service';
 import { Polygon } from '../data-model/polygon.model';
 import { FieldViewModel } from '../data-model/field.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { HectaresUtils } from '../../shared/utils/hectare.util';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,7 @@ export class MapService {
     fieldId: ''
   });
   editingFieldId: Signal<string> = computed(() => this.editingField().fieldId);
+  private focusOnField$ = new Subject<FieldViewModel>();
   private focus$ = new Subject<CoordinatesViewModel>();
   private initializeSearchBar$ = new Subject<ElementRef>();
   private addNewField$ = new Subject<void>();
@@ -36,6 +38,27 @@ export class MapService {
     ).subscribe(([coords, map]) => {
       map.googleMap.setCenter(coords);
       map.googleMap.setZoom(17);
+    });
+
+    this.focusOnField$.pipe(
+      withLatestFrom(this.map),
+      takeUntilDestroyed(),
+    ).subscribe(([field, map]) => {
+      map.googleMap.setCenter(field.center);
+      let zoom = 17;
+
+      if(field.area < 10000) {
+        zoom = 19;
+        map.googleMap.setZoom(zoom);
+        return;
+      }
+
+      if(field.area < 50000) {
+        zoom = 18;
+        map.googleMap.setZoom(zoom);
+        return;
+      }
+      map.googleMap.setZoom(zoom);
     });
 
     this.initializeSearchBar$.pipe(
@@ -139,6 +162,10 @@ export class MapService {
 
   focus(coords: CoordinatesViewModel) {
     this.focus$.next(coords);
+  }
+
+  focusOnField(field: FieldViewModel) {
+    this.focusOnField$.next(field);
   }
 
   setMapInstance(map: GoogleMap): void {

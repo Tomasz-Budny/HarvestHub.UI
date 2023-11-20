@@ -4,6 +4,7 @@
     height="100%"
     [center]="{lat: 30, lng: 20.2}"
     [zoom]="3"
+    (zoomChanged)="onZoomChanged()"
     [options]="options">
     @if (fieldsLoaded()) {
       @for (field of fields(); track $index) {
