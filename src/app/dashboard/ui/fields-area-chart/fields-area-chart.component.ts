@@ -5,6 +5,7 @@ import { FieldsService } from '../../data-access/fields.service';
 import { FieldViewModel } from '../../data-model/field.model';
 import { HarvestHubResponse } from '../../../shared/data-model/harvest-hub-response.model';
 import { HectarePipe } from '../../../shared/utils/hectare.pipe';
+import { MapService } from '../../data-access/map.service';
 
 @Component({
   selector: 'app-fields-area-chart',
@@ -19,7 +20,8 @@ export class FieldsAreaChartComponent {
   legendVisible: boolean = false;
 
   constructor(
-    private fieldsService: FieldsService
+    private fieldsService: FieldsService,
+    private mapService: MapService
   ) {
     this.fieldsResponse = this.fieldsService.getFields();
   }
@@ -34,5 +36,13 @@ export class FieldsAreaChartComponent {
 
   getName(id: string) {
     return this.fields().find(x => x.id === id).name;
+  }
+
+  onSelect($event: {name: string, label: string, value: number}) {
+    const field = this.fields().find(field => field.id === $event.name);
+
+    if(field) {
+      this.mapService.focus(field.center);
+    }
   }
 }
