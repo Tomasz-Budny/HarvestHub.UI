@@ -1,6 +1,8 @@
 :host {
   padding: var(--dialog-content-padding);
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .label {
@@ -9,4 +11,12 @@
 
 .info-container {
   margin-top: 12px;
+}
+
+.delete {
+  background-color: #A5371E;
+}
+
+.delete:hover {
+  background-color: #632517;
 }
