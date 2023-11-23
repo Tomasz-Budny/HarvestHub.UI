@@ -1,1 +1,16 @@
-<div class="dialog-content">field-details works!: {{ data }}</div>
+<div class="dialog-content">
+  <div class="controls flex">
+    <div class="options flex">
+      <span class="option" [class.focus]="tabId === 1" (click)="onChangeTab(1)">Informacje</span>
+      <span class="option" [class.focus]="tabId === 2" (click)="onChangeTab(2)">Statystyki</span>
+    </div>
+    <div class="close w-full">
+      <i (click)="onDialogClose()" class="fa-solid fa-x ml-auto my-auto px-4"></i>
+    </div>
+  </div>
+  @if (tabId === 1) {
+    <div>tab 1 Content</div>
+  } @else if (tabId === 2) {
+    <div>tab 2 Content</div>
+  }
+</div>

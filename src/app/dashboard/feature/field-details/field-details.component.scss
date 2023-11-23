@@ -1,4 +1,41 @@
+$dialog-secondary-color: #D9D9D9;
+
+:host {
+  display: flex;
+}
+
 .dialog-content {
-  width: 50vw;
-  height: 30vh;
+  width: 820px;
+  height: 450px;
+}
+
+.options {
+  background-color: $dialog-secondary-color;
+  border-radius: 0px var(--dialog-border-radius) 0px 0px;
+}
+
+.option {
+  font-weight: 400;
+  padding: 10px 8px;
+  min-width: 120px;
+  text-align: center;
+  border-radius: var(--dialog-border-radius) var(--dialog-border-radius) 0px 0px;
+  cursor: pointer;
+}
+
+.option:last-of-type {
+  border-right: 1px $dialog-secondary-color solid;
+}
+
+.focus {
+  background-color: #fff;
+}
+
+.close {
+  border-bottom: 1px $dialog-secondary-color solid;
+  display: flex;
+  
+  i {
+    cursor: pointer;
+  }
 }
