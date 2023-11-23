@@ -2,22 +2,22 @@
   <div class="text-4xl font-bold mb-6">{{ field.name }}</div>
   <div class="info-container">
     <span class="text-lg font-medium label">Pole powierzchni: </span>
-    <span class="text-lg font-bold info ml-4">{{ field.area }}</span>
+    <span class="text-lg font-bold info ml-4">{{ field.area | hectare:4 }}</span>
   </div>
   <div class="info-container">
     <span class="text-lg font-medium label">Utworzone: </span>
-    <span class="text-lg font-bold info ml-4">{{ field.createdAt }}</span>
+    <span class="text-lg font-bold info ml-4">{{ field.createdAt | date: 'dd/MM/yyyy' }}</span>
   </div>
   <div class="info-container">
     <span class="text-lg font-medium label">Klasa ziemi: </span>
-    <span class="text-lg font-bold info ml-4">{{ field.fieldClass }}</span>
+    <span class="text-lg font-bold info ml-4">{{ field.fieldClass | soilClass }}</span>
   </div>
   <div class="info-container">
     <span class="text-lg font-medium label">Status posiadania: </span>
-    <span class="text-lg font-bold info ml-4">{{ field.ownershipStatus }}</span>
+    <span class="text-lg font-bold info ml-4">{{ field.ownershipStatus | ownershipStatus }}</span>
   </div>
   <div class="info-container">
     <span class="text-lg font-medium label">Adres: </span>
-    <span class="text-base font-bold info ml-4">{{ field.address }}</span>
+    <span class="text-base font-bold info ml-4">{{ field.address | address }}</span>
   </div>
 }
