@@ -16,9 +16,14 @@
     <span class="text-lg font-medium label">Klasa ziemi: </span>
     <span class="text-lg font-bold info ml-4">{{ field.fieldClass | soilClass }}</span>
   </div>
-  <div class="info-container">
+  <div class="info-container flex">
     <span class="text-lg font-medium label">Status posiadania: </span>
-    <span class="text-lg font-bold info ml-4">{{ field.ownershipStatus | ownershipStatus }}</span>
+    <!-- <span class="text-lg font-bold info ml-4">{{ field.ownershipStatus | ownershipStatus }}</span> -->
+    <mat-select class="text-lg font-bold ml-4" [(value)]="field.ownershipStatus">
+      @for (ownershipStatus of ownershipStatuses; track ownershipStatus) {
+        <mat-option [value]="ownershipStatus">{{ ownershipStatus | ownershipStatus }}</mat-option>
+      }
+    </mat-select>
   </div>
   <div class="info-container">
     <span class="text-lg font-medium label">Adres: </span>

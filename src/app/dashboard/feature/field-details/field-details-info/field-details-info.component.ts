@@ -11,24 +11,30 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { FieldDetailsComponent } from '../field-details.component';
 import { FieldsService } from '../../../data-access/fields.service';
 import { MapService } from '../../../data-access/map.service';
+import { MatSelectModule } from '@angular/material/select';
+import { OwnerShipStatusUtil } from '../../../utils/ownership-status.util';
+import { OwnershipStatus } from '../../../data-model/ownership-status.model';
 
 @Component({
   selector: 'app-field-details-info',
   standalone: true,
-  imports: [CommonModule, HectarePipe, SoilClassPipe, OwnershipStatusPipe, AddressPipe],
+  imports: [CommonModule, HectarePipe, SoilClassPipe, OwnershipStatusPipe, AddressPipe, MatSelectModule],
   templateUrl: './field-details-info.component.html',
   styleUrl: './field-details-info.component.scss'
 })
 export class FieldDetailsInfoComponent implements OnInit {
   @Input() fieldId: string;
   fieldDetails$: Observable<FieldDetailsViewModel>;
-
+  ownershipStatuses: OwnershipStatus[];
+  
   constructor(
     private fieldDetailsService: FieldDetailsService,
     public dialogRef: MatDialogRef<FieldDetailsComponent>,
     private fieldService: FieldsService,
     private mapService: MapService
-  ) {}
+  ) {
+    this.ownershipStatuses = OwnerShipStatusUtil.getAllOwnerShipStatuses()
+  }
 
   ngOnInit() {
     this.fieldDetails$ = this.fieldDetailsService.loadFieldDetails(this.fieldId);

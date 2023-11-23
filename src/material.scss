@@ -1,0 +1,22 @@
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: var(--dialog-border-radius) !important;
+}
+
+.mat-mdc-select {
+  width: auto !important;
+  display: grid !important;
+}
+
+.mat-mdc-select-trigger {
+  gap: 1em !important;
+}
+
+.mat-pseudo-checkbox {
+  display: none !important;
+}
+
+.mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
+  margin: 0px !important;
+  width: 100%;
+  text-align: center;
+}
