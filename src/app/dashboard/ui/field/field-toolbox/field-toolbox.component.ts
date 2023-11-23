@@ -44,7 +44,9 @@ export class FieldToolboxComponent {
 
   onFieldDetailsClick() {
     this.dialog.open(FieldDetailsComponent, {
-      data: this.field.id
+      data: {
+        fieldId: this.field.id
+      }
     });
   }
 }

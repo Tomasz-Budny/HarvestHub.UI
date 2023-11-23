@@ -1,21 +1,23 @@
-<div class="text-4xl font-bold mb-6">Działka #1</div>
-<div class="info-container">
-  <span class="text-lg font-medium label">Pole powierzchni: </span>
-  <span class="text-lg font-bold info ml-4">15.3201 ha</span>
-</div>
-<div class="info-container">
-  <span class="text-lg font-medium label">Utworzone: </span>
-  <span class="text-lg font-bold info ml-4">05.04.2023</span>
-</div>
-<div class="info-container">
-  <span class="text-lg font-medium label">Klasa ziemi: </span>
-  <span class="text-lg font-bold info ml-4">2 klasa</span>
-</div>
-<div class="info-container">
-  <span class="text-lg font-medium label">Status posiadania: </span>
-  <span class="text-lg font-bold info ml-4">Własność</span>
-</div>
-<div class="info-container">
-  <span class="text-lg font-medium label">Adres: </span>
-  <span class="text-base font-bold info ml-4">Polska, Mazowieckie, powiat przasnyski, Żebry-Kordy</span>
-</div>
+@if (fieldDetails$ | async; as field) {
+  <div class="text-4xl font-bold mb-6">{{ field.name }}</div>
+  <div class="info-container">
+    <span class="text-lg font-medium label">Pole powierzchni: </span>
+    <span class="text-lg font-bold info ml-4">{{ field.area }}</span>
+  </div>
+  <div class="info-container">
+    <span class="text-lg font-medium label">Utworzone: </span>
+    <span class="text-lg font-bold info ml-4">{{ field.createdAt }}</span>
+  </div>
+  <div class="info-container">
+    <span class="text-lg font-medium label">Klasa ziemi: </span>
+    <span class="text-lg font-bold info ml-4">{{ field.fieldClass }}</span>
+  </div>
+  <div class="info-container">
+    <span class="text-lg font-medium label">Status posiadania: </span>
+    <span class="text-lg font-bold info ml-4">{{ field.ownershipStatus }}</span>
+  </div>
+  <div class="info-container">
+    <span class="text-lg font-medium label">Adres: </span>
+    <span class="text-base font-bold info ml-4">{{ field.address }}</span>
+  </div>
+}

@@ -1,6 +1,8 @@
-import { Injectable, signal } from '@angular/core';
-import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
+import { Injectable } from '@angular/core';
 import { FieldDetailsViewModel } from '../data-model/field-details.model';
+import { HttpClient } from '@angular/common/http';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +10,15 @@ import { FieldDetailsViewModel } from '../data-model/field-details.model';
 export class FieldDetailsService {
   URL = 'https://localhost:7258/api/fields/'
 
-  private state = signal<HarvestHubResponse<FieldDetailsViewModel[]>>({
-    data: [],
-    loaded: false,
-    error: null
-  });
+  constructor(
+    public http: HttpClient
+  ) { }
 
-  constructor() { }
+  loadFieldDetails(fieldId: string): Observable<FieldDetailsViewModel> {
+    return this.getFieldDetailsApi(fieldId);
+  }
 
-
+  private getFieldDetailsApi(fieldId: string) {
+    return this.http.get<FieldDetailsViewModel>(this.URL + `${fieldId}/details`)
+  }
 }
