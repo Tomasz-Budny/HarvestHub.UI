@@ -93,6 +93,10 @@ export class FieldsService {
     })
   }
 
+  getField(fieldId: string) {
+    return this.state().data.find(field => field.id === fieldId);
+  }
+
   getFields() {
     return this.state.asReadonly();
   }

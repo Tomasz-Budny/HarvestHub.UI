@@ -14,9 +14,9 @@
 }
 
 .delete {
-  background-color: #A5371E;
+  background-color: var(--delete-color);
 }
 
 .delete:hover {
-  background-color: #632517;
+  background-color: var(--delete-color-hover);
 }
