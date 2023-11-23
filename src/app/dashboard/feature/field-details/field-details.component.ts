@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-field-details',
@@ -10,4 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class FieldDetailsComponent {
 
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: string
+  ) {}
 }
