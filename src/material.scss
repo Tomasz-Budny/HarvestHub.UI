@@ -8,15 +8,19 @@
 }
 
 .mat-mdc-select-trigger {
-  gap: 1em !important;
+  gap: 0.6em !important;
 }
 
 .mat-pseudo-checkbox {
   display: none !important;
 }
 
-.mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
+.mat-mdc-option {
   margin: 0px !important;
   width: 100%;
   text-align: center;
+}
+
+.cdk-overlay-pane {
+  min-width: 100px !important;
 }

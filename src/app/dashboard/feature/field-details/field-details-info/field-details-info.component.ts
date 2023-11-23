@@ -11,9 +11,11 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { FieldDetailsComponent } from '../field-details.component';
 import { FieldsService } from '../../../data-access/fields.service';
 import { MapService } from '../../../data-access/map.service';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { OwnerShipStatusUtil } from '../../../utils/ownership-status.util';
 import { OwnershipStatus } from '../../../data-model/ownership-status.model';
+import { SoilClass } from '../../../data-model/soil-class.model';
+import { SoilClassUtil } from '../../../utils/soil-class-util';
 
 @Component({
   selector: 'app-field-details-info',
@@ -26,14 +28,18 @@ export class FieldDetailsInfoComponent implements OnInit {
   @Input() fieldId: string;
   fieldDetails$: Observable<FieldDetailsViewModel>;
   ownershipStatuses: OwnershipStatus[];
-  
+  soilClasses: SoilClass[];
+  isOwnershipStatusEditing: boolean = false;
+  isSoilClassEditing: boolean = false;
+
   constructor(
     private fieldDetailsService: FieldDetailsService,
     public dialogRef: MatDialogRef<FieldDetailsComponent>,
     private fieldService: FieldsService,
     private mapService: MapService
   ) {
-    this.ownershipStatuses = OwnerShipStatusUtil.getAllOwnerShipStatuses()
+    this.ownershipStatuses = OwnerShipStatusUtil.getAllOwnerShipStatuses();
+    this.soilClasses = SoilClassUtil.getAllSoilClasses()
   }
 
   ngOnInit() {
@@ -49,5 +55,15 @@ export class FieldDetailsInfoComponent implements OnInit {
 
   onDelete() {
     this.fieldService.remove$.next(this.fieldId);
+  }
+
+  onSoilClassSelected($event: MatSelectChange) {
+    this.isSoilClassEditing = false;
+    console.log($event.value);
+  }
+
+  onOwnershipStatusSelected($event: MatSelectChange) {
+    this.isOwnershipStatusEditing = false;
+    console.log($event.value);
   }
 }

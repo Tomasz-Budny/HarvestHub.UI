@@ -13,6 +13,13 @@
   margin-top: 12px;
 }
 
+.info-container:hover {
+  i {
+    display: inline-block;
+  }
+}
+
+
 .delete {
   background-color: var(--delete-color);
 }

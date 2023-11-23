@@ -12,15 +12,15 @@ export class SoilClassPipe implements PipeTransform {
       case SoilClass.Unknown:
         return 'Nieznana';
       case SoilClass.First:
-        return 'Pierwsza klasa';
+        return '1 klasa';
       case SoilClass.Second:
-        return 'Druga klasa';
+        return '2 klasa';
       case SoilClass.Third:
-        return 'Trzecia klasa';
+        return '3 klasa';
       case SoilClass.Fourth:
-          return 'Czwarta klasa';
+          return '4 klasa';
       case SoilClass.Fifth:
-            return 'Piąta klasa';
+            return '5 klasa';
       default:
         return 'Nieznane'
     }

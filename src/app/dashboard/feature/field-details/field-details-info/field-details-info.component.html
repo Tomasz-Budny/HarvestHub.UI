@@ -12,18 +12,41 @@
     <span class="text-lg font-medium label">Utworzone: </span>
     <span class="text-lg font-bold info ml-4">{{ field.createdAt | date: 'dd/MM/yyyy' }}</span>
   </div>
-  <div class="info-container">
+  <div class="info-container flex">
     <span class="text-lg font-medium label">Klasa ziemi: </span>
-    <span class="text-lg font-bold info ml-4">{{ field.fieldClass | soilClass }}</span>
+    @if (!isSoilClassEditing) {
+      <span class="text-lg font-bold info ml-4">{{ field.fieldClass | soilClass }}</span>
+    } @else {
+      <mat-select
+        (selectionChange)="onSoilClassSelected($event)" 
+        class="text-lg font-medium ml-4" [(value)]="field.fieldClass">
+        @for (soilClass of soilClasses; track soilClass) {
+          <mat-option [value]="soilClass">{{ soilClass | soilClass }}</mat-option>
+        }
+      </mat-select>
+    }
+    <i 
+      (click)="isSoilClassEditing = !isSoilClassEditing"
+      class="fa-solid fa-pen ml-4 my-auto text-xs cursor-pointer hidden">
+    </i>
   </div>
   <div class="info-container flex">
     <span class="text-lg font-medium label">Status posiadania: </span>
-    <!-- <span class="text-lg font-bold info ml-4">{{ field.ownershipStatus | ownershipStatus }}</span> -->
-    <mat-select class="text-lg font-bold ml-4" [(value)]="field.ownershipStatus">
-      @for (ownershipStatus of ownershipStatuses; track ownershipStatus) {
-        <mat-option [value]="ownershipStatus">{{ ownershipStatus | ownershipStatus }}</mat-option>
-      }
-    </mat-select>
+    @if (!isOwnershipStatusEditing) {
+      <span class="text-lg font-bold info ml-4">{{ field.ownershipStatus | ownershipStatus }}</span>
+    } @else {
+      <mat-select
+        (selectionChange)="onOwnershipStatusSelected($event)" 
+        class="text-lg font-medium ml-4" [(value)]="field.ownershipStatus">
+        @for (ownershipStatus of ownershipStatuses; track ownershipStatus) {
+          <mat-option [value]="ownershipStatus">{{ ownershipStatus | ownershipStatus }}</mat-option>
+        }
+      </mat-select>
+    }
+    <i 
+      (click)="isOwnershipStatusEditing = !isOwnershipStatusEditing"
+      class="fa-solid fa-pen ml-4 my-auto text-xs cursor-pointer hidden">
+    </i>
   </div>
   <div class="info-container">
     <span class="text-lg font-medium label">Adres: </span>
