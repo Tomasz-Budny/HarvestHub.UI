@@ -9,7 +9,10 @@
     </div>
   </div>
   @if (tabId === 1) {
-    <app-field-details-info></app-field-details-info>
+    <div class="field-info">
+      <app-field-details-info></app-field-details-info>
+      <app-field-details-history></app-field-details-history>
+    </div>
   } @else if (tabId === 2) {
     <div>tab 2 Content</div>
   }

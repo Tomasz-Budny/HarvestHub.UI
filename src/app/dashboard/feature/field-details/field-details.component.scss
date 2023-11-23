@@ -39,3 +39,9 @@ $dialog-secondary-color: #D9D9D9;
     cursor: pointer;
   }
 }
+
+.field-info {
+  display: grid;
+  grid-template-columns: auto 42%;
+  grid-template-rows: 100%;
+}
