@@ -1,11 +1,12 @@
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FieldDetailsInfoComponent } from './field-details-info/field-details-info.component';
 
 @Component({
   selector: 'app-field-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FieldDetailsInfoComponent],
   templateUrl: './field-details.component.html',
   styleUrl: './field-details.component.scss'
 })
