@@ -59,11 +59,17 @@ export class FieldDetailsInfoComponent implements OnInit {
 
   onSoilClassSelected($event: MatSelectChange) {
     this.isSoilClassEditing = false;
-    console.log($event.value);
+    this.fieldDetailsService.updateSoilClass$.next({
+      fieldId: this.fieldId,
+      soilClass: $event.value
+    });
   }
 
   onOwnershipStatusSelected($event: MatSelectChange) {
     this.isOwnershipStatusEditing = false;
-    console.log($event.value);
+    this.fieldDetailsService.updateOwnerShipStatus$.next({
+      fieldId: this.fieldId,
+      ownershipStatus: $event.value
+    });
   }
 }
