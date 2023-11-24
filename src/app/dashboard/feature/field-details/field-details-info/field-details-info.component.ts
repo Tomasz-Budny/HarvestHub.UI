@@ -17,7 +17,7 @@ import { OwnershipStatus } from '../../../data-model/ownership-status.model';
 import { SoilClass } from '../../../data-model/soil-class.model';
 import { SoilClassUtil } from '../../../utils/soil-class-util';
 import {MatInputModule} from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { AutoFocusDirective } from '../../../../shared/utils/auto-focus.directive';
 import { TooltipDirective } from '../../../../shared/utils/tooltip.directive';
 
@@ -36,6 +36,7 @@ export class FieldDetailsInfoComponent implements OnInit {
   isOwnershipStatusEditing: boolean = false;
   isSoilClassEditing: boolean = false;
   isNameEditing: boolean = false;
+  initialName: string;
 
   constructor(
     private fieldDetailsService: FieldDetailsService,
@@ -78,11 +79,14 @@ export class FieldDetailsInfoComponent implements OnInit {
     });
   }
 
-  onNameEdit(name: string) {
-    this.isNameEditing = false;
-    this.fieldDetailsService.updateFieldName$.next({
-      fieldId: this.fieldId,
-      name: name
-    });
+  onNameEdit(form: NgForm) {
+
+    if(form.valid) {
+      this.isNameEditing = false;
+      this.fieldDetailsService.updateFieldName$.next({
+        fieldId: this.fieldId,
+        name: form.value.fieldName
+      });
+    }
   }
 }

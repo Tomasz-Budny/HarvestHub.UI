@@ -4,24 +4,34 @@
     @if (!isNameEditing) {
       <div class="text-3xl font-bold">{{ field.name }}</div>
       <i 
-        (click)="isNameEditing = !isNameEditing"
+        (click)="isNameEditing = !isNameEditing; initialName = field.name"
         class="fa-solid fa-pen ml-4 my-auto text-xs cursor-pointer opacity-0">
       </i>
       <div [style]="{ background: field.color }" class="w-5 h-5 ml-4 my-auto"></div>
     } @else {
-      <input 
-        (keyup.enter)="onNameEdit(field.name)"
-        class="text-3xl font-bold w-1/2" 
+      <form #f="ngForm" class="w-1/2">
+        <div class="relative ml-1">
+          <div *ngIf="f.invalid" class="text-xs valid-error absolute">
+            Pole Wymagane!
+          </div> 
+        </div>
+        <input 
+        (keyup.enter)="onNameEdit(f)"
+        class="text-3xl font-bold w-full" 
         matInput 
         autofocusOnElement 
         type="text" 
+        name="fieldName"
+        required
         [(ngModel)]="field.name">
+    
+      </form>
       <i 
-        (click)="isNameEditing = false"
+        (click)="isNameEditing = false; field.name = initialName"
         class="fa-solid fa-x ml-4 font-semibold my-auto text-sm cursor-pointer opacity-0">
       </i>
       <i 
-        (click)="onNameEdit(field.name)"
+        (click)="onNameEdit(f)"
         class="fa-solid fa-check ml-4 font-semibold my-auto text-sm  cursor-pointer opacity-0">
       </i>
     }

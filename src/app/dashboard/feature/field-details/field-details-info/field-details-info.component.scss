@@ -37,3 +37,20 @@
   font-size: 18px !important;
   font-weight: 700 !important;
 }
+
+input.ng-invalid {
+  border: 2px solid var(--delete-color);
+}
+
+input:focus {
+  outline: none;
+}
+
+input {
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.valid-error {
+  color: var(--delete-color);
+}

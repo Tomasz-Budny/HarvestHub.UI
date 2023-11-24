@@ -9,6 +9,7 @@ import { CreateFieldRequest } from '../data-model/create-field-request.model';
 import { Polygon } from '../data-model/polygon.model';
 import { ColorUtil } from '../utils/color.util';
 import { ReplaceFieldVerticesRequest } from '../data-model/replace-field-vertices-request.model';
+import { FieldDetailsService } from './field-details.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,10 +26,11 @@ export class FieldsService {
   fieldsLoaded: Signal<boolean> = computed(() => this.state().loaded)
   remove$ = new Subject<string>();
   add$ = new Subject<Polygon>();
-  replaceFieldVertices$ = new Subject<ReplaceFieldVerticesRequest>()
+  replaceFieldVertices$ = new Subject<ReplaceFieldVerticesRequest>();
 
   constructor(
-    public http: HttpClient
+    public http: HttpClient,
+    public fieldDetailsService: FieldDetailsService
   ) { 
     this.loadFields().subscribe({
       next: res => this.state.update(state => ({
@@ -90,7 +92,21 @@ export class FieldsService {
         ...state,
         error: err
       }))
-    })
+    });
+
+    this.fieldDetailsService.updateFieldName$.pipe(
+      takeUntilDestroyed(),
+    ).subscribe({
+      next: req => this.state.update(state => ({
+        ...state,
+        data: this.updateFieldName(req.fieldId, req.name),
+        loaded: true
+      })),
+      error: err => this.state.update(state => ({
+        ...state,
+        error: err
+      }))
+    });
   }
 
   getField(fieldId: string) {
@@ -107,6 +123,14 @@ export class FieldsService {
     field.paths = polygon.vertices;
     field.area = polygon.area;
     field.center = polygon.center;
+
+    return [...fields];
+  }
+
+  private updateFieldName(fieldId: string, name: string) {
+    const fields = this.state().data;
+    const field = fields.find(field => field.id === fieldId);
+    field.name = name;
 
     return [...fields];
   }
