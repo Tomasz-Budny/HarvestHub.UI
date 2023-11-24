@@ -1,8 +1,30 @@
 @if (fieldDetails$ | async; as field) {
 <div>
-  <div class="flex mb-6">
-    <div class="text-3xl font-bold">{{ field.name }}</div>
-    <div [style]="{ background: field.color }" class="w-5 h-5 ml-4 my-auto"></div>
+  <div class="name-container flex mb-6 mt-0">
+    @if (!isNameEditing) {
+      <div class="text-3xl font-bold">{{ field.name }}</div>
+      <i 
+        (click)="isNameEditing = !isNameEditing"
+        class="fa-solid fa-pen ml-4 my-auto text-xs cursor-pointer opacity-0">
+      </i>
+      <div [style]="{ background: field.color }" class="w-5 h-5 ml-4 my-auto"></div>
+    } @else {
+      <input 
+        (keyup.enter)="onNameEdit(field.name)"
+        class="text-3xl font-bold w-1/2" 
+        matInput 
+        autofocusOnElement 
+        type="text" 
+        [(ngModel)]="field.name">
+      <i 
+        (click)="isNameEditing = false"
+        class="fa-solid fa-x ml-4 font-semibold my-auto text-sm cursor-pointer opacity-0">
+      </i>
+      <i 
+        (click)="onNameEdit(field.name)"
+        class="fa-solid fa-check ml-4 font-semibold my-auto text-sm  cursor-pointer opacity-0">
+      </i>
+    }
   </div>
   <div class="info-container">
     <span class="text-lg font-medium label">Pole powierzchni: </span>

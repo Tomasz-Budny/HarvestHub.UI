@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, OnInit, Output } from '@angular/core';
+import { Directive, ElementRef, OnInit } from '@angular/core';
 
 @Directive({
   selector: '[toolbox]',

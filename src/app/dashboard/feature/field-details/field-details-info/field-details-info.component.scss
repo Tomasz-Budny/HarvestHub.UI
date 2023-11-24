@@ -19,6 +19,11 @@
   }
 }
 
+.name-container:hover {
+  i {
+    opacity: 1;
+  }
+}
 
 .delete {
   background-color: var(--delete-color);

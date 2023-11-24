@@ -16,11 +16,15 @@ import { OwnerShipStatusUtil } from '../../../utils/ownership-status.util';
 import { OwnershipStatus } from '../../../data-model/ownership-status.model';
 import { SoilClass } from '../../../data-model/soil-class.model';
 import { SoilClassUtil } from '../../../utils/soil-class-util';
+import {MatInputModule} from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { AutoFocusDirective } from '../../../../shared/utils/auto-focus.directive';
+import { TooltipDirective } from '../../../../shared/utils/tooltip.directive';
 
 @Component({
   selector: 'app-field-details-info',
   standalone: true,
-  imports: [CommonModule, HectarePipe, SoilClassPipe, OwnershipStatusPipe, AddressPipe, MatSelectModule],
+  imports: [CommonModule, HectarePipe, SoilClassPipe, OwnershipStatusPipe, AddressPipe, MatSelectModule, MatInputModule, FormsModule, AutoFocusDirective, TooltipDirective],
   templateUrl: './field-details-info.component.html',
   styleUrl: './field-details-info.component.scss'
 })
@@ -31,6 +35,7 @@ export class FieldDetailsInfoComponent implements OnInit {
   soilClasses: SoilClass[];
   isOwnershipStatusEditing: boolean = false;
   isSoilClassEditing: boolean = false;
+  isNameEditing: boolean = false;
 
   constructor(
     private fieldDetailsService: FieldDetailsService,
@@ -70,6 +75,14 @@ export class FieldDetailsInfoComponent implements OnInit {
     this.fieldDetailsService.updateOwnerShipStatus$.next({
       fieldId: this.fieldId,
       ownershipStatus: $event.value
+    });
+  }
+
+  onNameEdit(name: string) {
+    this.isNameEditing = false;
+    this.fieldDetailsService.updateFieldName$.next({
+      fieldId: this.fieldId,
+      name: name
     });
   }
 }
