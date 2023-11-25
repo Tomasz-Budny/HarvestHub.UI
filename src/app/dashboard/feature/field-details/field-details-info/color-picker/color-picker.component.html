@@ -1,1 +1,10 @@
-<p>color-picker works!</p>
+<div class="triangle"></div>
+<div class="content flex p-3 gap-2">
+  @for (color of colors; track color) {
+    <div 
+      [style]="{ background: color }" 
+      class="w-6 h-6 rounded-full my-auto"
+      (click)="onPickColor(color)">
+    </div>
+  }
+</div>

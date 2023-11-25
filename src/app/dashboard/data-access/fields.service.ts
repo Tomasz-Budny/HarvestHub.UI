@@ -107,6 +107,20 @@ export class FieldsService {
         error: err
       }))
     });
+
+    this.fieldDetailsService.updateFieldColor$.pipe(
+      takeUntilDestroyed()
+    ).subscribe({
+      next: req => this.state.update(state => ({
+        ...state,
+        data: this.updateFieldColor(req.fieldId, req.color),
+        loaded: true
+      })),
+      error: err => this.state.update(state => ({
+        ...state,
+        error: err
+      }))
+    })
   }
 
   getField(fieldId: string) {
@@ -131,6 +145,14 @@ export class FieldsService {
     const fields = this.state().data;
     const field = fields.find(field => field.id === fieldId);
     field.name = name;
+
+    return [...fields];
+  }
+
+  private updateFieldColor(fieldId: string, color: string) {
+    const fields = this.state().data;
+    const field = fields.find(field => field.id === fieldId);
+    field.color = color;
 
     return [...fields];
   }

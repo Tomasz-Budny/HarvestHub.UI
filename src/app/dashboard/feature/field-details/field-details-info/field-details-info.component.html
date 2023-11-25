@@ -2,12 +2,24 @@
 <div>
   <div class="name-container flex mb-6 mt-0">
     @if (!isNameEditing) {
+      <div 
+        (mouseleave)="isColorPickerVisible = false"
+        (click)="isColorPickerVisible = !isColorPickerVisible"
+        [style]="{ background: field.color }" 
+        class="w-5 h-5 mr-2 my-auto cursor-pointer rounded-full">
+        <div class="relative right-1 top-3">
+          <app-color-picker 
+            *ngIf="isColorPickerVisible" 
+            [(initialColor)]="field.color"
+            [fieldId]="fieldId">
+          </app-color-picker>
+        </div>
+      </div>
       <div class="text-3xl font-bold">{{ field.name }}</div>
       <i 
         (click)="isNameEditing = !isNameEditing; initialName = field.name"
         class="fa-solid fa-pen ml-4 my-auto text-xs cursor-pointer opacity-0">
       </i>
-      <div [style]="{ background: field.color }" class="w-5 h-5 ml-4 my-auto"></div>
     } @else {
       <form #f="ngForm" class="w-1/2">
         <div class="relative ml-1">

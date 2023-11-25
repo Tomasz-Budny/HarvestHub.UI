@@ -20,11 +20,13 @@ import {MatInputModule} from '@angular/material/input';
 import { FormsModule, NgForm } from '@angular/forms';
 import { AutoFocusDirective } from '../../../../shared/utils/auto-focus.directive';
 import { TooltipDirective } from '../../../../shared/utils/tooltip.directive';
+import { ColorPickerComponent } from './color-picker/color-picker.component';
+import { ToolBoxDirective } from '../../../../shared/utils/toolbox.directive';
 
 @Component({
   selector: 'app-field-details-info',
   standalone: true,
-  imports: [CommonModule, HectarePipe, SoilClassPipe, OwnershipStatusPipe, AddressPipe, MatSelectModule, MatInputModule, FormsModule, AutoFocusDirective, TooltipDirective],
+  imports: [CommonModule, HectarePipe, SoilClassPipe, OwnershipStatusPipe, AddressPipe, MatSelectModule, MatInputModule, FormsModule, AutoFocusDirective, TooltipDirective, ColorPickerComponent, ToolBoxDirective],
   templateUrl: './field-details-info.component.html',
   styleUrl: './field-details-info.component.scss'
 })
@@ -35,6 +37,7 @@ export class FieldDetailsInfoComponent implements OnInit {
   soilClasses: SoilClass[];
   isOwnershipStatusEditing: boolean = false;
   isSoilClassEditing: boolean = false;
+  isColorPickerVisible: boolean = false;
   isNameEditing: boolean = false;
   initialName: string;
 
