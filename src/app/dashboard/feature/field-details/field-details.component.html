@@ -5,7 +5,8 @@
       <span class="option" [class.focus]="tabId === 2" (click)="onChangeTab(2)">Statystyki</span>
     </div>
     <div class="close w-full">
-      <i (click)="onDialogClose()" class="fa-solid fa-x ml-auto my-auto px-4"></i>
+      <!-- <i (click)="onDialogClose()" class="fa-solid fa-x ml-auto my-auto px-4"></i> -->
+      <mat-icon #closeIcon svgIcon="close" (click)="onDialogClose()" class="ml-auto my-auto mr-2 cursor-pointer"></mat-icon>
     </div>
   </div>
   @if (tabId === 1) {

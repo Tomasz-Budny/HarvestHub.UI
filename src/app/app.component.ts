@@ -41,5 +41,9 @@ export class AppComponent {
       'dots', 
       this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/dots.svg")
     );
+    this.matIconRegistry.addSvgIcon(
+      'close', 
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/icons/close.svg")
+    );
   }
 }
