@@ -1,14 +1,12 @@
-import { CropType } from "./crop-type.model";
 import { CultivationHistoryRecord } from "./cultivation-history-record.model";
 
-export class HarvestHistoryRecord extends CultivationHistoryRecord {
+export class FertilizationHistoryRecord extends CultivationHistoryRecord {
   constructor(
     public override id: string,
     public override date: Date,
     public override type: string,
-    public amount: number,
-    public cropType: CropType,
-    public humidity: number
+    public fertilizerType: number,
+    public amount: number
   ) {
     super(id, date, type)
   }

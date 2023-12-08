@@ -8,8 +8,12 @@
 
 .history {
   overflow-y: overlay;
-  height: 318px;
   padding-right: 10px;
+  height: 318px;
+}
+
+.history > * {
+  margin-bottom: 0.5rem;
 }
 
 .add-record:hover {

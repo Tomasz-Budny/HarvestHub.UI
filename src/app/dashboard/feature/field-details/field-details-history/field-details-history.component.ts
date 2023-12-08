@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { HarvestHistoryRecordComponent } from '../../../ui/harvest-history-record/harvest-history-record.component';
 import { FieldHistoryService } from '../../../data-access/field-history.service';
 import { CultivationHistoryRecord } from '../../../data-model/cultivation-history-record.model';
+import { FertilizationHistoryRecordComponent } from '../../../ui/fertilization-history-record/fertilization-history-record.component';
 
 @Component({
   selector: 'app-field-details-history',
   standalone: true,
-  imports: [CommonModule, HarvestHistoryRecordComponent],
+  imports: [CommonModule, HarvestHistoryRecordComponent, FertilizationHistoryRecordComponent],
   templateUrl: './field-details-history.component.html',
   styleUrl: './field-details-history.component.scss'
 })

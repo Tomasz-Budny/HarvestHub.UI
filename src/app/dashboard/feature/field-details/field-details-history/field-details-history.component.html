@@ -2,13 +2,18 @@
   <div class="text-4xl font-bold">Historia</div>
   <div class="primary-button ml-auto my-auto">Filtruj</div>
 </div>
-<div class="mt-4 grid gap-1 history">
+<div class="mt-4 h-full history">
   @if (historyLoaded) {
     @for (record of history(); track $index) {
       @if (record.type === 'harvest') {
         <app-harvest-history-record
           [data]="$any(record)">
         </app-harvest-history-record>
+      }
+      @if(record.type === 'fertilization') {
+        <app-fertilization-history-record
+          [data]="$any(record)">
+        </app-fertilization-history-record>
       }
     } @empty {
       <div class="text-center w-full text-base mt-3">Brak wpisów!</div>
