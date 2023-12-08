@@ -3,14 +3,25 @@
   <div class="primary-button ml-auto my-auto">Filtruj</div>
 </div>
 <div class="mt-4 grid gap-1 history">
-  <app-harvest-history-record></app-harvest-history-record>
-  <app-harvest-history-record></app-harvest-history-record>
-  <app-harvest-history-record></app-harvest-history-record>
-  <app-harvest-history-record></app-harvest-history-record>
-  <app-harvest-history-record></app-harvest-history-record>
-  <app-harvest-history-record></app-harvest-history-record>
-  <app-harvest-history-record></app-harvest-history-record>
-  <app-harvest-history-record></app-harvest-history-record>
+  @if (historyLoaded) {
+    @if (history.length > 0) {
+      <app-harvest-history-record></app-harvest-history-record>
+      <app-harvest-history-record></app-harvest-history-record>
+      <app-harvest-history-record></app-harvest-history-record>
+      <app-harvest-history-record></app-harvest-history-record>
+      <app-harvest-history-record></app-harvest-history-record>
+      <app-harvest-history-record></app-harvest-history-record>
+      <app-harvest-history-record></app-harvest-history-record>
+      <app-harvest-history-record></app-harvest-history-record>
+    } @else {
+      <div class="text-center w-full text-base mt-3">Brak wpisów!</div>
+    }
+  } @else {
+    <div class="skeleton w-full h-7"></div>
+    <div class="skeleton w-full h-7"></div>
+    <div class="skeleton w-full h-7"></div>
+    <div class="skeleton w-full h-7"></div>
+  }
 </div>
 <div class="footer"></div>
 <div class="flex w-full mt-auto">
@@ -24,5 +35,3 @@
     </div>
   </div>
 </div>
-
-<!-- <div class="text-center w-full text-base mt-3">Brak wpisów!</div> -->

@@ -13,7 +13,10 @@
     <div class="field-info">
       <app-field-details-info [fieldId]="fieldId"></app-field-details-info>
       <div class="vl"></div>
-      <app-field-details-history class="h-full"></app-field-details-history>
+      <app-field-details-history 
+        class="h-full" 
+        [fieldId]="fieldId">
+      </app-field-details-history>
     </div>
   } @else if (tabId === 2) {
     <div>tab 2 Content</div>
