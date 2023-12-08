@@ -14,6 +14,7 @@ import { ToolBoxDirective } from '../../../shared/utils/toolbox.directive';
   styleUrl: './harvest-history-record.component.scss'
 })
 export class HarvestHistoryRecordComponent {
+  @Input() fieldId: string
   @Input() data: HarvestHistoryRecord;
   tooltipVisible: boolean = false;
 }

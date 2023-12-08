@@ -14,6 +14,7 @@ import { ToolBoxDirective } from '../../../shared/utils/toolbox.directive';
   styleUrl: './fertilization-history-record.component.scss'
 })
 export class FertilizationHistoryRecordComponent {
+  @Input() fieldId: string
   @Input() data: FertilizationHistoryRecord;
   tooltipVisible: boolean = false;
 }

@@ -7,11 +7,13 @@
     @for (record of history(); track $index) {
       @if (record.type === 'harvest') {
         <app-harvest-history-record
+          [fieldId]="fieldId"
           [data]="$any(record)">
         </app-harvest-history-record>
       }
       @if(record.type === 'fertilization') {
         <app-fertilization-history-record
+          [fieldId]="fieldId"
           [data]="$any(record)">
         </app-fertilization-history-record>
       }

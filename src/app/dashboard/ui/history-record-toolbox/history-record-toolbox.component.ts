@@ -1,5 +1,6 @@
-import { Component, EventEmitter, HostListener, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FieldHistoryService } from '../../data-access/field-history.service';
 
 @Component({
   selector: 'app-history-record-toolbox',
@@ -10,9 +11,22 @@ import { CommonModule } from '@angular/common';
 })
 export class HistoryRecordToolboxComponent {
   @Output() leave = new EventEmitter()
+  @Input() historyRecordId: string;
+  @Input() fieldId: string;
 
   @HostListener('mouseleave')
   onMouseLeave(): void {
     this.leave.emit();
+  }
+
+  constructor(
+    private fieldHistoryService: FieldHistoryService
+  ) {}
+
+  deleteHarvestHistoryRecord() {
+    this.fieldHistoryService.deleteCultivationHistoryRecord.next({
+      fieldId: this.fieldId, 
+      historyRecordId: this.historyRecordId
+    });
   }
 }

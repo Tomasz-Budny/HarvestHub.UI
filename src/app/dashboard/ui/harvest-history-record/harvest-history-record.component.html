@@ -6,6 +6,8 @@
     @if(tooltipVisible) {
       <app-history-record-toolbox 
         toolbox
+        [fieldId]="fieldId"
+        [historyRecordId]="data.id"
         (leave)="tooltipVisible = false">
       </app-history-record-toolbox>
     }
