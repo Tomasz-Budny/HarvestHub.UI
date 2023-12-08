@@ -1,4 +1,4 @@
-export class CultivationHistory {
+export class CultivationHistoryRecord {
   constructor(
     public id: string,
     public date: Date,

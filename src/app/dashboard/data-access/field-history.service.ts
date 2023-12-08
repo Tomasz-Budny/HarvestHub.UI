@@ -1,6 +1,6 @@
 import { Injectable, Signal, computed, signal } from '@angular/core';
 import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
-import { CultivationHistory } from '../data-model/cultivation-history.model';
+import { CultivationHistoryRecord } from '../data-model/cultivation-history-record.model';
 import { HttpClient } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, tap } from 'rxjs';
@@ -11,14 +11,14 @@ import { Observable, tap } from 'rxjs';
 export class FieldHistoryService {
   URL = 'https://localhost:7258/api/fields/'
 
-  private state = signal<HarvestHubResponse<CultivationHistory[]>>({
+  private state = signal<HarvestHubResponse<CultivationHistoryRecord[]>>({
     data: [],
     loaded: false,
     error: null
   });
 
   historyLoaded: Signal<boolean> = computed(() => this.state().loaded);
-  data: Signal<CultivationHistory[]> = computed(() => this.state().data)
+  data: Signal<CultivationHistoryRecord[]> = computed(() => this.state().data)
 
   constructor(
     public http: HttpClient,
@@ -39,8 +39,8 @@ export class FieldHistoryService {
     });
   }
 
-  private loadCultivationHistory(id: string): Observable<CultivationHistory[]> {
-    return this.http.get<CultivationHistory[]>(this.URL + id + '/history');
+  private loadCultivationHistory(id: string): Observable<CultivationHistoryRecord[]> {
+    return this.http.get<CultivationHistoryRecord[]>(this.URL + id + '/history');
   }
 
   private onLoading() {

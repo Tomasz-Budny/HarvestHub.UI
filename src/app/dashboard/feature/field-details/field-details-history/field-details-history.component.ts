@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HarvestHistoryRecordComponent } from '../../../ui/harvest-history-record/harvest-history-record.component';
 import { FieldHistoryService } from '../../../data-access/field-history.service';
-import { CultivationHistory } from '../../../data-model/cultivation-history.model';
+import { CultivationHistoryRecord } from '../../../data-model/cultivation-history-record.model';
 
 @Component({
   selector: 'app-field-details-history',
@@ -14,7 +14,7 @@ import { CultivationHistory } from '../../../data-model/cultivation-history.mode
 export class FieldDetailsHistoryComponent implements OnInit {
   @Input() fieldId: string;
   historyLoaded: Signal<Boolean>;
-  history: Signal<CultivationHistory[]>;
+  history: Signal<CultivationHistoryRecord[]>;
 
   constructor(
     private historyService: FieldHistoryService
