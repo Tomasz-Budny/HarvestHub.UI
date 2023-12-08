@@ -3,7 +3,7 @@
   <div class="primary-button ml-auto my-auto">Filtruj</div>
 </div>
 <div class="mt-4 h-full history">
-  @if (historyLoaded) {
+  @if (historyLoaded()) {
     @for (record of history(); track $index) {
       @if (record.type === 'harvest') {
         <app-harvest-history-record
@@ -19,10 +19,10 @@
       <div class="text-center w-full text-base mt-3">Brak wpisów!</div>
     }
   } @else {
-    <div class="skeleton w-full h-7 mb-2"></div>
-    <div class="skeleton w-full h-7 mb-2"></div>
-    <div class="skeleton w-full h-7 mb-2"></div>
-    <div class="skeleton w-full h-7 mb-2"></div>
+    <div class="skeleton-content w-full h-7 mb-2"></div>
+    <div class="skeleton-content w-full h-7 mb-2"></div>
+    <div class="skeleton-content w-full h-7 mb-2"></div>
+    <div class="skeleton-content w-full h-7 mb-2"></div>
   }
 </div>
 <div class="footer"></div>
