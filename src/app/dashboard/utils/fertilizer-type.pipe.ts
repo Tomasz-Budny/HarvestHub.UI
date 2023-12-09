@@ -22,7 +22,7 @@ export class FertilizerTypePipe implements PipeTransform {
       case FertilizerType.Potassium:
           return 'potas';
       default:
-        return 'Nieznanego'
+        return 'Nieznane'
     }
   }
 

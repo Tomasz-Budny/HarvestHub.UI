@@ -10,21 +10,21 @@ export class CropTypePipe implements PipeTransform {
   transform(cropType: CropType): string {
     switch(cropType) {
       case CropType.Wheat:
-        return 'przenicy';
+        return 'pszenica';
       case CropType.Barley:
-        return 'jęczmienia';
+        return 'jęczmień';
       case CropType.Oat:
-        return 'owsu';
+        return 'owies';
       case CropType.Rye:
-          return 'żyta';
+          return 'żyto';
       case CropType.Corn:
-          return 'kukurydzy';
+          return 'kukurydza';
       case CropType.Rapeseed:
-          return 'rzepaku';
+          return 'rzepak';
       case CropType.Triticale:
-          return 'przenżyta';
+          return 'pszenżyto';
       default:
-        return 'Nieznanego'
+        return 'Nieznane'
     }
   }
 

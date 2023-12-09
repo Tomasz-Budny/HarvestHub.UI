@@ -1,1 +1,41 @@
-<p>cultivation-history-record-creator works!</p>
+<div class="content">
+  <div class="text-4xl font-bold">Dodaj nowy wpis</div>
+
+  <form class="mt-4">
+    <div class="text-sm font-bold mb-1">Wybierz rodzaj:</div>
+    <mat-select 
+    class="text-lg font-medium ml-4" [(value)]="chosenHistoryRecordType">
+    @for (historyRecordType of historyRecordTypes; track historyRecordType) {
+      <mat-option [value]="historyRecordType">{{ historyRecordType }}</mat-option>
+    }
+    </mat-select>
+    <div class="text-sm font-bold mb-1 mt-2">Wybierz ilość (w kg):</div>
+    <input type="number" min="0">
+
+    @if (chosenHistoryRecordType === 'harvest') {
+      <div class="text-sm font-bold mb-1 mt-2">Wybierz rodzaj zebranej uprawy:</div>
+      <mat-select 
+      class="text-lg font-medium ml-4" [(value)]="chosenHistoryRecordType">
+      @for (cropType of cropTypes; track cropType) {
+        <mat-option [value]="cropType">{{ cropType | cropType }}</mat-option>
+      }
+      </mat-select>
+
+      <div class="text-sm font-bold mb-1 mt-2">Wybierz wilgotność zebranej uprawy:</div>
+      <input type="number" min="0" max="100">
+    }
+    @if (chosenHistoryRecordType === 'fertilization') {
+      <div class="text-sm font-bold mb-1 mt-2">Wybierz rodzaj użytego nawozu:</div>
+      <mat-select 
+      class="text-lg font-medium ml-4" [(value)]="chosenHistoryRecordType">
+      @for (fertilizerType of fertilizerTypes; track fertilizerType) {
+        <mat-option [value]="fertilizerType">{{ fertilizerType | fertilizerType }}</mat-option>
+      }
+      </mat-select>
+    }
+  </form>
+  <div class="flex mt-8">
+    <div class="primary-button ml-auto">Utwórz</div>
+  </div>
+</div>
+

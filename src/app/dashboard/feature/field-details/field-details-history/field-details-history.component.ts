@@ -4,6 +4,8 @@ import { HarvestHistoryRecordComponent } from '../../../ui/harvest-history-recor
 import { FieldHistoryService } from '../../../data-access/field-history.service';
 import { CultivationHistoryRecord } from '../../../data-model/cultivation-history-record.model';
 import { FertilizationHistoryRecordComponent } from '../../../ui/fertilization-history-record/fertilization-history-record.component';
+import { CultivationHistoryRecordCreatorComponent } from '../../cultivation-history-record-creator/cultivation-history-record-creator.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-field-details-history',
@@ -18,12 +20,21 @@ export class FieldDetailsHistoryComponent implements OnInit {
   history: Signal<CultivationHistoryRecord[]>;
 
   constructor(
-    private historyService: FieldHistoryService
+    private historyService: FieldHistoryService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
     this.historyService.getCultivationHistory(this.fieldId);
     this.historyLoaded = this.historyService.historyLoaded;
     this.history = this.historyService.data;
+  }
+
+  onCultivationHistoryRecordCreatorClick() {
+    this.dialog.open(CultivationHistoryRecordCreatorComponent, {
+      data: {
+        fieldId: this.fieldId
+      }
+    });
   }
 }
