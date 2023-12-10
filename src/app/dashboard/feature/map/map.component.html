@@ -8,7 +8,8 @@
     @if (fieldsLoaded()) {
       @for (field of fields(); track $index) {
         <map-polygon
-        *ngIf="editingFieldId() !== field.id"
+          *ngIf="editingFieldId() !== field.id"
+          (polygonClick)="onPolygonClick(field)"
           (polygonMouseover)="onFieldMouseover(field)"
           (polygonMouseout)="onFieldMouseout()"
           [paths]="field.paths"

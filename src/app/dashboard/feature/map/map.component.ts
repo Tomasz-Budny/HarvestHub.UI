@@ -8,6 +8,8 @@ import { FieldViewModel } from '../../data-model/field.model';
 import { HarvestHubResponse } from '../../../shared/data-model/harvest-hub-response.model';
 import { MapControlsComponent } from '../../ui/map-controls/map-controls.component';
 import { MapControlDirective } from '../../utils/map-control.directive';
+import { MatDialog } from '@angular/material/dialog';
+import { FieldDetailsComponent } from '../field-details/field-details.component';
 
 @Component({
   selector: 'app-map',
@@ -35,7 +37,8 @@ export class MapComponent {
 
   constructor(
     public mapService: MapService,
-    public fieldsService: FieldsService
+    public fieldsService: FieldsService,
+    private dialog: MatDialog
   ) {
     this.fieldsResponse = fieldsService.getFields() 
     this.apiLoaded = this.mapService.loadMap().pipe(
@@ -59,5 +62,13 @@ export class MapComponent {
 
   onFieldMouseout() {
     this.marker = null;
+  }
+
+  onPolygonClick(field: FieldViewModel) {
+    this.dialog.open(FieldDetailsComponent, {
+      data: {
+        fieldId: field.id
+      }
+    });
   }
 }
