@@ -7,8 +7,8 @@ import { HectaresUtils } from './hectare.util';
 })
 export class HectarePipe implements PipeTransform {
 
-  transform(squareMeters: number): string {
-    const hectares = HectaresUtils.ConvertToHectares(squareMeters).toFixed(2);
+  transform(squareMeters: number, decimalNumber: number = 2): string {
+    const hectares = HectaresUtils.ConvertToHectares(squareMeters).toFixed(decimalNumber);
 
     return hectares + ' ha';
   }

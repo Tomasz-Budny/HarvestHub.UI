@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MapService } from '../../../data-access/map.service';
 import { FieldViewModel } from '../../../data-model/field.model';
 import { FieldsService } from '../../../data-access/fields.service';
+import { MatDialog } from '@angular/material/dialog';
+import { FieldDetailsComponent } from '../../../feature/field-details/field-details.component';
 
 @Component({
   selector: 'app-field-tooltip',
@@ -18,7 +20,8 @@ export class FieldToolboxComponent {
 
   constructor(
     private mapService: MapService,
-    private fieldService: FieldsService
+    private fieldService: FieldsService,
+    private dialog: MatDialog
   ) {}
 
   @HostListener('mouseleave')
@@ -37,5 +40,13 @@ export class FieldToolboxComponent {
   onEditFieldBorders() {
     this.mapService.focusOnField(this.field);
     this.mapService.initializeEditPolygonBorders(this.field);
+  }
+
+  onFieldDetailsClick() {
+    this.dialog.open(FieldDetailsComponent, {
+      data: {
+        fieldId: this.field.id
+      }
+    });
   }
 }

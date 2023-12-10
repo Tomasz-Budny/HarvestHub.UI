@@ -46,7 +46,7 @@ export class MapService {
       map.googleMap.setCenter(field.center);
       let zoom = 17;
 
-      if(field.area < 10000) {
+      if(field.area < 15000) {
         zoom = 19;
         map.googleMap.setZoom(zoom);
         return;

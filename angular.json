@@ -30,6 +30,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/material.scss",
               "src/tooltip.scss",
               "src/styles.scss",
               "src/variables.scss"

@@ -1,0 +1,24 @@
+<div class="flex">
+  <div class="text-xs font-medium">{{ data.date | date: 'dd-MM-yyyy' }}</div>
+  <div 
+    class="tooltip-wrapper ml-auto my-auto flex"
+    (click)="tooltipVisible=!tooltipVisible">
+    @if(tooltipVisible) {
+      <app-history-record-toolbox 
+        toolbox
+        [fieldId]="fieldId"
+        [historyRecordId]="data.id"
+        (leave)="tooltipVisible = false">
+      </app-history-record-toolbox>
+    }
+    <mat-icon svgIcon="dots" class="dots ml-auto my-auto"></mat-icon>
+  </div>
+</div>
+<div class="text-xs p-0.5 text-center">
+  <span>
+    Zebrano {{ data.amount }} kg uprawy {{ data.cropType | cropType }}.
+  </span>
+  <span class="whitespace-nowrap">
+    Średnia wilgotność {{ data.humidity }}%.
+  </span>
+</div>

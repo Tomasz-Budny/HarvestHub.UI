@@ -1,0 +1,24 @@
+<div class="dialog-content">
+  <div class="controls flex">
+    <div class="options flex">
+      <span class="option" [class.focus]="tabId === 1" (click)="onChangeTab(1)">Informacje</span>
+      <span class="option" [class.focus]="tabId === 2" (click)="onChangeTab(2)">Statystyki</span>
+    </div>
+    <div class="close w-full">
+      <!-- <i (click)="onDialogClose()" class="fa-solid fa-x ml-auto my-auto px-4"></i> -->
+      <mat-icon #closeIcon svgIcon="close" (click)="onDialogClose()" class="ml-auto my-auto mr-2 cursor-pointer"></mat-icon>
+    </div>
+  </div>
+  @if (tabId === 1) {
+    <div class="field-info">
+      <app-field-details-info [fieldId]="fieldId"></app-field-details-info>
+      <div class="vl"></div>
+      <app-field-details-history 
+        class="h-full" 
+        [fieldId]="fieldId">
+      </app-field-details-history>
+    </div>
+  } @else if (tabId === 2) {
+    <div>tab 2 Content</div>
+  }
+</div>

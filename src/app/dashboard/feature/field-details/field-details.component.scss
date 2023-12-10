@@ -1,0 +1,61 @@
+$dialog-secondary-color: #D9D9D9;
+
+:host {
+  display: flex;
+}
+
+.dialog-content {
+  width: 870px;
+  height: 520px;
+  display: flex;
+  flex-direction: column;
+}
+
+.options {
+  background-color: $dialog-secondary-color;
+  border-radius: 0px var(--dialog-border-radius) 0px 0px;
+}
+
+.option {
+  font-weight: 400;
+  padding: 10px 8px;
+  min-width: 120px;
+  text-align: center;
+  border-radius: var(--dialog-border-radius) var(--dialog-border-radius) 0px 0px;
+  cursor: pointer;
+}
+
+.option:last-of-type {
+  border-right: 2px $dialog-secondary-color solid;
+}
+
+.focus {
+  background-color: #fff;
+}
+
+.close {
+  border-bottom: 1px $dialog-secondary-color solid;
+  display: flex;
+  
+  i {
+    cursor: pointer;
+  }
+}
+
+.field-info {
+  height: 100%;
+  max-height: 100%;
+  display: grid;
+  grid-template-columns: 57.8% auto 42%;
+  overflow-y: hidden;
+
+  .vl {
+    width: 1px;
+    background-color: $dialog-secondary-color;
+    margin: 5px 0px;
+  }
+}
+
+.mat-icon:hover {
+  color: var(--secondary-color);
+}

@@ -1,0 +1,26 @@
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: var(--dialog-border-radius) !important;
+}
+
+.mat-mdc-select {
+  width: auto !important;
+  display: grid !important;
+}
+
+.mat-mdc-select-trigger {
+  gap: 0.6em !important;
+}
+
+.mat-pseudo-checkbox {
+  display: none !important;
+}
+
+.mat-mdc-option {
+  margin: 0px !important;
+  width: 100%;
+  text-align: center;
+}
+
+.cdk-overlay-pane {
+  min-width: 100px !important;
+}

@@ -1,0 +1,26 @@
+$dots-icon-size: 14px;
+
+:host {
+  border-radius: 12px;
+  background: #E6E5A3;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  margin-bottom: auto;
+}
+
+.tooltip-wrapper {
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.tooltip-wrapper:hover {
+  background-color: #dbdabe;
+  cursor: pointer;
+}
+
+.dots {
+  font-size: $dots-icon-size;
+  height: $dots-icon-size;
+  width: $dots-icon-size;
+}

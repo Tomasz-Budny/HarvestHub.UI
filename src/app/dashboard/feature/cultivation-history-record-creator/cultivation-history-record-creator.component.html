@@ -1,0 +1,72 @@
+<div class="content">
+  <div class="text-4xl font-bold pr-10">Dodaj nowy wpis</div>
+
+  <form class="mt-4" #f="ngForm">
+    <div class="text-sm font-bold mb-1">Wybierz rodzaj:</div>
+    <mat-select
+      name="type" 
+      class="text-lg font-medium ml-4" 
+      [(value)]="chosenHistoryRecordType">
+    @for (historyRecordType of historyRecordTypes; track historyRecordType) {
+      <mat-option [value]="historyRecordType">{{ historyRecordType | historyRecordType }}</mat-option>
+    }
+    </mat-select>
+    <div class="text-sm font-bold mb-1 mt-2">Wybierz datę:</div>
+    <input 
+      [ngModel]="currentDay" 
+      name="date"
+      matInput 
+      [matDatepicker]="picker">
+    <div class="relative w-full">
+      <div class="absolute bottom-1 flex h-10 w-full">
+        <mat-datepicker #picker class="ml-auto"></mat-datepicker>
+        <mat-datepicker-toggle class="ml-auto" matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      </div>
+    </div>
+    <div class="text-sm font-bold mb-1 mt-2">Wybierz ilość (w kg):</div>
+    <input
+      [ngModel]="1"
+      name="amount" 
+      type="number" 
+      min="0">
+
+    @if (chosenHistoryRecordType === 'harvest') {
+      <div class="text-sm font-bold mb-1 mt-2">Wybierz rodzaj zebranej uprawy:</div>
+      <mat-select 
+        [ngModel]="cropTypes[0]"
+        name="cropType"
+        class="text-lg font-medium ml-4">
+      @for (cropType of cropTypes; track cropType) {
+        <mat-option [value]="cropType">{{ cropType | cropType }}</mat-option>
+      }
+      </mat-select>
+
+      <div class="text-sm font-bold mb-1 mt-2">Wybierz wilgotność zebranej uprawy:</div>
+      <input 
+        [ngModel]="1"
+        name="humidity"
+        type="number" 
+        min="0" 
+        max="100">
+    }
+    @if (chosenHistoryRecordType === 'fertilization') {
+      <div class="text-sm font-bold mb-1 mt-2">Wybierz rodzaj użytego nawozu:</div>
+      <mat-select
+        [ngModel]="fertilizerTypes[0]"
+        name="fertilizerType"
+        class="text-lg font-medium ml-4">
+      @for (fertilizerType of fertilizerTypes; track fertilizerType) {
+        <mat-option [value]="fertilizerType">{{ fertilizerType | fertilizerType }}</mat-option>
+      }
+      </mat-select>
+    }
+  </form>
+  <div class="flex mt-8">
+    <div 
+      (click)="createCultivationHistory(f)"
+      class="primary-button ml-auto">
+      Utwórz
+    </div>
+  </div>
+</div>
+

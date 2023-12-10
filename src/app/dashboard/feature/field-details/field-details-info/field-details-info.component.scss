@@ -1,0 +1,56 @@
+:host {
+  padding: var(--dialog-content-padding);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  color: #353333;
+}
+
+.info-container {
+  margin-top: 12px;
+}
+
+.info-container:hover {
+  i {
+    display: inline-block;
+  }
+}
+
+.name-container:hover {
+  i {
+    opacity: 1;
+  }
+}
+
+.delete {
+  background-color: var(--delete-color);
+}
+
+.delete:hover {
+  background-color: var(--delete-color-hover);
+}
+
+.mat-mdc-select {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+}
+
+input.ng-invalid {
+  border: 2px solid var(--delete-color);
+}
+
+input:focus {
+  outline: none;
+}
+
+input {
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.valid-error {
+  color: var(--delete-color);
+}

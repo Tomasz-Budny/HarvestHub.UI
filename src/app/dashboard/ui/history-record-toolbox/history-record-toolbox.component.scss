@@ -26,12 +26,7 @@ $radius: 12px;
 }
 
 .option:first-of-type {
-  border-radius: $radius $radius 0px 0px;
-  border: 0px;
-}
-
-.option:last-of-type {
-  border-radius: 0px 0px $radius $radius;
+  border-radius: $radius $radius $radius $radius;
   border: 0px;
 }
 

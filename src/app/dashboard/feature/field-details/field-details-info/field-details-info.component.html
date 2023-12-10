@@ -1,0 +1,113 @@
+@if (fieldDetails$ | async; as field) {
+<div>
+  <div class="name-container flex mb-5 mt-0">
+    @if (!isNameEditing) {
+      <div 
+        (mouseleave)="isColorPickerVisible = false"
+        (click)="isColorPickerVisible = !isColorPickerVisible"
+        [style]="{ background: field.color }" 
+        class="w-5 h-5 mr-2 my-auto cursor-pointer rounded-full">
+        <div class="relative right-1 top-3">
+          <app-color-picker 
+            *ngIf="isColorPickerVisible" 
+            [(initialColor)]="field.color"
+            [fieldId]="fieldId">
+          </app-color-picker>
+        </div>
+      </div>
+      <div class="text-3xl font-bold">{{ field.name }}</div>
+      <i 
+        (click)="isNameEditing = !isNameEditing; initialName = field.name"
+        class="fa-solid fa-pen ml-4 my-auto text-xs cursor-pointer opacity-0">
+      </i>
+    } @else {
+      <form #f="ngForm" class="w-1/2">
+        <div class="relative ml-1">
+          <div *ngIf="f.invalid" class="text-xs valid-error absolute">
+            Pole Wymagane!
+          </div> 
+        </div>
+        <input 
+        (keyup.enter)="onNameEdit(f)"
+        class="text-3xl font-bold w-full" 
+        matInput 
+        autofocusOnElement 
+        type="text" 
+        name="fieldName"
+        required
+        [(ngModel)]="field.name">
+    
+      </form>
+      <i 
+        (click)="isNameEditing = false; field.name = initialName"
+        class="fa-solid fa-x ml-4 font-semibold my-auto text-sm cursor-pointer opacity-0">
+      </i>
+      <i 
+        (click)="onNameEdit(f)"
+        class="fa-solid fa-check ml-4 font-semibold my-auto text-sm  cursor-pointer opacity-0">
+      </i>
+    }
+  </div>
+  <div class="info-container">
+    <span class="text-lg font-medium label">Pole powierzchni: </span>
+    <span class="text-lg font-bold info ml-4">{{ field.area | hectare:4 }}</span>
+  </div>
+  <div class="info-container">
+    <span class="text-lg font-medium label">Utworzone: </span>
+    <span class="text-lg font-bold info ml-4">{{ field.createdAt | date: 'dd-MM-yyyy' }}</span>
+  </div>
+  <div class="info-container flex">
+    <span class="text-lg font-medium label">Klasa ziemi: </span>
+    @if (!isSoilClassEditing) {
+      <span class="text-lg font-bold info ml-4">{{ field.fieldClass | soilClass }}</span>
+    } @else {
+      <mat-select
+        (selectionChange)="onSoilClassSelected($event)" 
+        class="text-lg font-medium ml-4" [(value)]="field.fieldClass">
+        @for (soilClass of soilClasses; track soilClass) {
+          <mat-option [value]="soilClass">{{ soilClass | soilClass }}</mat-option>
+        }
+      </mat-select>
+    }
+    <i 
+      (click)="isSoilClassEditing = !isSoilClassEditing"
+      class="fa-solid fa-pen ml-4 my-auto text-xs cursor-pointer hidden">
+    </i>
+  </div>
+  <div class="info-container flex">
+    <span class="text-lg font-medium label">Status posiadania: </span>
+    @if (!isOwnershipStatusEditing) {
+      <span class="text-lg font-bold info ml-4">{{ field.ownershipStatus | ownershipStatus }}</span>
+    } @else {
+      <mat-select
+        (selectionChange)="onOwnershipStatusSelected($event)" 
+        class="text-lg font-medium ml-4" [(value)]="field.ownershipStatus">
+        @for (ownershipStatus of ownershipStatuses; track ownershipStatus) {
+          <mat-option [value]="ownershipStatus">{{ ownershipStatus | ownershipStatus }}</mat-option>
+        }
+      </mat-select>
+    }
+    <i 
+      (click)="isOwnershipStatusEditing = !isOwnershipStatusEditing"
+      class="fa-solid fa-pen ml-4 my-auto text-xs cursor-pointer hidden">
+    </i>
+  </div>
+  <div class="info-container">
+    <span class="text-lg font-medium label">Adres: </span>
+    <span class="text-base font-bold info ml-4">{{ field.address | address }}</span>
+  </div>
+</div>
+<div class="mt-auto flex">
+  <div class="ml-auto">
+    <span (click)="onEditFieldBorders()" class="primary-button">Edytuj granicę</span>
+    <span (click)="onDelete()" class="delete primary-button ml-2">Usuń</span>
+  </div>
+</div>
+} @else {
+  <div class="skeleton-content h-9 w-60"></div>
+  <div class="skeleton-content h-6 w-96 mt-6"></div>
+  <div class="skeleton-content h-6 w-80 mt-4"></div>
+  <div class="skeleton-content h-6 w-96 mt-4"></div>
+  <div class="skeleton-content h-6 w-72 mt-4"></div>
+  <div class="skeleton-content h-6 w-96 mt-4"></div>
+}

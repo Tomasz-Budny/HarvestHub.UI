@@ -1,0 +1,19 @@
+$box-shadow: -2px 1px 12px 0px rgba(0, 0, 0, 0.25);
+$background-color: #fff;
+
+:host {
+  position: fixed;
+}
+
+.triangle {
+  width: 0; 
+  height: 0; 
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid $background-color;
+}
+
+.content {
+  box-shadow: $box-shadow;
+  background-color: $background-color;
+}
