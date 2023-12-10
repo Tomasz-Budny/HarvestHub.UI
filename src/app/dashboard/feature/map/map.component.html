@@ -21,8 +21,9 @@
       }
       @if (marker) {
         <map-marker
-          [label]="marker.name"
-          [position]="marker.center">
+          label=""
+          [position]="marker.center"
+          [icon]="hoveredField | fieldInfoModalSvg">
         </map-marker>    
       }        
     }

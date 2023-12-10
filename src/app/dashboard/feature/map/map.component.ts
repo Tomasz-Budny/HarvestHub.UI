@@ -10,11 +10,12 @@ import { MapControlsComponent } from '../../ui/map-controls/map-controls.compone
 import { MapControlDirective } from '../../utils/map-control.directive';
 import { MatDialog } from '@angular/material/dialog';
 import { FieldDetailsComponent } from '../field-details/field-details.component';
+import { FieldInfoModalSvgPipe } from '../../utils/field-info-modal-svg.pipe';
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [CommonModule, GoogleMapsModule, MapControlsComponent, MapControlDirective],
+  imports: [CommonModule, GoogleMapsModule, MapControlsComponent, MapControlDirective, FieldInfoModalSvgPipe],
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss'
 })
@@ -33,6 +34,7 @@ export class MapComponent {
   fields: Signal<FieldViewModel[]> = computed(() => this.fieldsResponse().data)
   fieldsLoaded: Signal<boolean> = computed(() => this.fieldsResponse().loaded)
   marker: {name: string, color: string, center}
+  hoveredField: FieldViewModel;
   editingFieldId = this.mapService.editingFieldId;
 
   constructor(
@@ -58,10 +60,14 @@ export class MapComponent {
 
   onFieldMouseover(field: FieldViewModel) {
     this.marker = {name: field.name, color: field.color, center: field.center}
+
+    this.hoveredField = field;
   }
 
   onFieldMouseout() {
     this.marker = null;
+
+    this.hoveredField = null;
   }
 
   onPolygonClick(field: FieldViewModel) {
