@@ -15,5 +15,10 @@
   </div>
 </div>
 <div class="text-xs p-0.5 text-center">
-  Zebrano {{ data.amount }} ton uprawy {{ data.cropType | cropType }}. Średnia wilgotność {{ data.humidity }}%.
+  <span>
+    Zebrano {{ data.amount }} kg uprawy {{ data.cropType | cropType }}.
+  </span>
+  <span class="whitespace-nowrap">
+    Średnia wilgotność {{ data.humidity }}%.
+  </span>
 </div>

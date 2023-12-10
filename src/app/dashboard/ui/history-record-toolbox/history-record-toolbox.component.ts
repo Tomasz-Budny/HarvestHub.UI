@@ -24,7 +24,7 @@ export class HistoryRecordToolboxComponent {
   ) {}
 
   deleteHarvestHistoryRecord() {
-    this.fieldHistoryService.deleteCultivationHistoryRecord.next({
+    this.fieldHistoryService.deleteCultivationHistoryRecord$.next({
       fieldId: this.fieldId, 
       historyRecordId: this.historyRecordId
     });
