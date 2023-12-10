@@ -3,11 +3,16 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    importProvidersFrom([HttpClientModule, HttpClientJsonpModule, MatNativeDateModule]),
+    {provide: MAT_DATE_LOCALE, useValue: 'pl-PL'},
+    importProvidersFrom([
+      HttpClientModule, 
+      HttpClientJsonpModule, 
+      MatNativeDateModule,
+    ]),
     provideRouter(routes),
     provideAnimations()
   ]
