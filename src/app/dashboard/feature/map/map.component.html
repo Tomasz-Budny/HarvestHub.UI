@@ -23,7 +23,8 @@
         <map-marker
           label=""
           [position]="marker.center"
-          [icon]="hoveredField | fieldInfoModalSvg">
+          [icon]="hoveredField | fieldInfoModalSvg"
+          (mapClick)="onPolygonClick(hoveredField)">
         </map-marker>    
       }        
     }
