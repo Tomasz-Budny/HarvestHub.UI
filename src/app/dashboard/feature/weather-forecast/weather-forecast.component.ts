@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { DayForecastComponent } from '../../ui/day-forecast/day-forecast.component';
 import { WeatherService } from '../../data-access/weather.service';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, Subject, switchMap } from 'rxjs';
 import { DayForecastViewModel } from '../../data-model/day-forecast.model';
 import { WeatherIconPipe } from '../../utils/weather-icon.pipe';
 import { WeekDayPipe } from '../../utils/week-day.pipe';
@@ -12,6 +12,7 @@ import { DayForecastSkeletonComponent } from '../../ui/day-forecast-skeleton/day
 import { OwnerService } from '../../data-access/owner.service';
 import { AddressViewModel } from '../../data-model/address.model';
 import { HarvestHubResponse } from '../../../shared/data-model/harvest-hub-response.model';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-weather-forecast',
@@ -21,13 +22,22 @@ import { HarvestHubResponse } from '../../../shared/data-model/harvest-hub-respo
   styleUrl: './weather-forecast.component.scss'
 })
 export class WeatherForecastComponent {
-  dayForecasts: Signal<HarvestHubResponse<DayForecastViewModel[]>>;
-  address: Signal<AddressViewModel> = computed(() => this.ownerService.startLocation().address)
+  dayForecasts: Signal<HarvestHubResponse<DayForecastViewModel[]>> = this.weatherService.dayForecastsState;
+  address: Signal<AddressViewModel> = computed(() => this.ownerService.startLocation().address);
+  error = this.ownerService.error;
+  startLocationChange$ = toObservable(this.ownerService.startLocation);
 
   constructor(
     public weatherService: WeatherService,
     public ownerService: OwnerService
   ) {
-    this.dayForecasts = this.weatherService.getDayForecasts(5);
+    this.startLocationChange$.pipe(
+      takeUntilDestroyed()
+    ).subscribe(data => {
+      if(!data) {
+        return;
+      }
+      this.weatherService.loadDayForecasts(data.coordinates, 5);
+    })
   }
 }

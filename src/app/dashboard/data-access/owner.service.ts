@@ -1,15 +1,20 @@
 import { Injectable, Signal, computed, signal } from '@angular/core';
 import { AddressViewModel } from '../data-model/address.model';
 import { StartLocation } from '../data-model/start-location.model';
-import { delay, of, tap } from 'rxjs';
+import { Observable, Subject, delay, of, switchMap, tap } from 'rxjs';
 import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { MapService } from './map.service';
+import { CoordinatesViewModel } from '../data-model/coordinates.model';
+import { HttpClient } from '@angular/common/http';
+import { HarvestHubError } from '../../shared/data-model/harvest-hub-error.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OwnerService {
+  URL = 'https://localhost:7258/api/owners';
+
   private state = signal<HarvestHubResponse<StartLocation>>({
     data: null,
     loaded: false,
@@ -18,10 +23,14 @@ export class OwnerService {
 
   startLocation: Signal<StartLocation> = computed(() => this.state().data);
   loaded: Signal<boolean> = computed(() => this.state().loaded);
-
+  error: Signal<HarvestHubError> = computed(() => this.state().error)
+  changeStartLocation$: Subject<CoordinatesViewModel> = new Subject<CoordinatesViewModel>();
+  
   constructor(
+    public http: HttpClient,
     private mapService: MapService
   ) { 
+
     this.loadStartLocation().subscribe({
       next: (res) => this.state.update(state => ({
         ...state,
@@ -32,18 +41,39 @@ export class OwnerService {
         ...state,
         error: err
       }))
-    })
+    });
+
+    this.changeStartLocation$.pipe(
+      takeUntilDestroyed(),
+      switchMap(coords => this.updateStartLocationApi(coords)),
+      switchMap(_ => this.loadStartLocation())
+    ).subscribe({
+      next: (res) => this.state.update(state => ({
+        ...state,
+        data: res,
+        loaded: true
+      })),
+      error: (err) => this.state.update(state => ({
+        ...state,
+        error: err
+      }))
+    });
   }
 
   loadStartLocation() {
-    return of(new StartLocation(
-      {lat: 53.0518, lng: 20.703},
-      new AddressViewModel("Polska", "", "", "Żebry-Kordy")
-    )).pipe(
-      takeUntilDestroyed(),
-      delay(1000),
+    return this.getStartLocationApi()
+    .pipe(
       tap(startLocation => this.mapService.focus(startLocation.coordinates))
     )
   }
 
+  private updateStartLocationApi(coords: CoordinatesViewModel) {
+    return this.http.post(this.URL + '/start_location', {
+      point: coords
+    });
+  }
+
+  private getStartLocationApi(): Observable<StartLocation> {
+    return this.http.get<StartLocation>(this.URL + '/start_location');
+  }
 }

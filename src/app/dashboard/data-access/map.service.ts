@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { ElementRef, Injectable, Signal, computed, signal } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
-import { BehaviorSubject, Observable, Subject, catchError, map, of, switchMap, withLatestFrom } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, combineLatest, map, of, switchMap, take, withLatestFrom } from 'rxjs';
 import { CoordinatesViewModel } from '../data-model/coordinates.model';
 import { FieldsService } from './fields.service';
 import { Polygon } from '../data-model/polygon.model';
@@ -12,7 +12,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   providedIn: 'root'
 })
 export class MapService {
-  private map: BehaviorSubject<GoogleMap> = new BehaviorSubject<GoogleMap>(null);
+  private map: Subject<GoogleMap> = new Subject<GoogleMap>();
   drawingManager: any;
   editingFieldPolygon: any;
   private editingField = signal<{polygon, fieldId: string}>({
@@ -25,19 +25,33 @@ export class MapService {
   private initializeSearchBar$ = new Subject<ElementRef>();
   private addNewField$ = new Subject<void>();
   private initializeEditPolygonBorders$ = new Subject<FieldViewModel>();
+  private setMapControls$: Subject<ElementRef> = new Subject<ElementRef>();
 
   constructor(
     public httpClient: HttpClient,
     private fieldService: FieldsService 
   ) { 
+    this.setMapControls$.pipe(
+      switchMap(elementRef => this.map.pipe(map(map => ({elementRef: elementRef, map: map})))),
+      takeUntilDestroyed()
+    ).subscribe(({elementRef, map}) => {
+      if(!map) {
+        return;
+      }
+      map.controls[google.maps.ControlPosition.TOP_RIGHT].push(
+        elementRef.nativeElement,
+      );
+    });
 
-    this.focus$.pipe(
-      withLatestFrom(this.map),
-      takeUntilDestroyed(),
+    combineLatest([
+      this.focus$.asObservable(),
+      this.map
+    ]).pipe(
+      takeUntilDestroyed()
     ).subscribe(([coords, map]) => {
       map.googleMap.setCenter(coords);
       map.googleMap.setZoom(17);
-    });
+    })
 
     this.focusOnField$.pipe(
       withLatestFrom(this.map),
@@ -149,6 +163,10 @@ export class MapService {
         fieldId: field.id
       });
     });
+  }
+
+  setMapControls(elementRef: ElementRef) {
+    this.setMapControls$.next(elementRef);
   }
 
   loadMap(): Observable<boolean> {

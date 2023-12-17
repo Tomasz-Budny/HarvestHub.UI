@@ -1,10 +1,12 @@
 import { Injectable, Signal, computed, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { DayForecastViewModel } from '../data-model/day-forecast.model';
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, Subject, switchMap, tap } from 'rxjs';
 import { OwnerService } from './owner.service';
 import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { CoordinatesViewModel } from '../data-model/coordinates.model';
+import { StartLocation } from '../data-model/start-location.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,9 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 export class WeatherService {
   URL = "https://localhost:7258/api/weather/";
 
-  private dayForecastsState = signal<HarvestHubResponse<DayForecastViewModel[]>>({
+  private getDayForecasts$: Subject<{coords: CoordinatesViewModel, days: number}> = new Subject();
+
+  public dayForecastsState = signal<HarvestHubResponse<DayForecastViewModel[]>>({
     data: null,
     loaded: false,
     error: null
@@ -21,10 +25,11 @@ export class WeatherService {
   constructor(
     public http: HttpClient,
     public ownerService: OwnerService
-  ) { }
-
-  getDayForecasts(days: number): Signal<HarvestHubResponse<DayForecastViewModel[]>> {
-    this.loadDayForecasts(days).subscribe({
+  ) { 
+    this.getDayForecasts$.pipe(
+      takeUntilDestroyed(),
+      switchMap(data => this.loadDayForecastsApi(data.coords, data.days))
+    ).subscribe({
       next: res => this.dayForecastsState.update(state => ({
         ...state,
         data: res,
@@ -35,20 +40,21 @@ export class WeatherService {
         error: err
       }))
     })
-    return this.dayForecastsState.asReadonly()
   }
 
-  private loadDayForecasts(days: number): Observable<DayForecastViewModel[]> {
-    return this.ownerService.loadStartLocation().pipe(
-      switchMap(startLocation => {
-        const params = new HttpParams()
-          .set('latitude', startLocation.coordinates.lat)
-          .set('longitude', startLocation.coordinates.lng)
-          .set('days', days);
+  public loadDayForecasts(coords: CoordinatesViewModel, days: number) {
+    this.getDayForecasts$.next({
+      coords: coords,
+      days: days
+    });
+  }
 
-        return this.http.get<DayForecastViewModel[]>(this.URL + 'day_forecast', { params });
-      }),
-      takeUntilDestroyed()
-    )
+  private loadDayForecastsApi(coords: CoordinatesViewModel, days: number): Observable<DayForecastViewModel[]> {
+    const params = new HttpParams()
+      .set('latitude', coords.lat)
+      .set('longitude', coords.lng)
+      .set('days', days);
+
+    return this.http.get<DayForecastViewModel[]>(this.URL + 'day_forecast', { params });
   }
 }

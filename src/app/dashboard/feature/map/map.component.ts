@@ -11,6 +11,7 @@ import { MapControlDirective } from '../../utils/map-control.directive';
 import { MatDialog } from '@angular/material/dialog';
 import { FieldDetailsComponent } from '../field-details/field-details.component';
 import { FieldInfoModalSvgPipe } from '../../utils/field-info-modal-svg.pipe';
+import { OwnerService } from '../../data-access/owner.service';
 
 @Component({
   selector: 'app-map',
@@ -19,7 +20,7 @@ import { FieldInfoModalSvgPipe } from '../../utils/field-info-modal-svg.pipe';
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss'
 })
-export class MapComponent {
+export class MapComponent implements AfterViewInit {
   private googleMap: GoogleMap;
   @ViewChild(GoogleMap) set map(content: GoogleMap) {
     if(content) {
@@ -27,6 +28,7 @@ export class MapComponent {
       this.mapService.setMapInstance(this.googleMap);
     }
   }
+  @ViewChild('editHomePosition') editHomePosition: ElementRef;
   apiLoaded: Observable<boolean>;
   options: google.maps.MapOptions;
 
@@ -40,7 +42,8 @@ export class MapComponent {
   constructor(
     public mapService: MapService,
     public fieldsService: FieldsService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private ownerService: OwnerService
   ) {
     this.fieldsResponse = fieldsService.getFields() 
     this.apiLoaded = this.mapService.loadMap().pipe(
@@ -48,6 +51,10 @@ export class MapComponent {
         next: () => this.initializeMap()
       })
     )
+  }
+
+  ngAfterViewInit() {
+    this.mapService.setMapControls(this.editHomePosition)
   }
 
   initializeMap(): void {
@@ -76,5 +83,14 @@ export class MapComponent {
         fieldId: field.id
       }
     });
+  }
+
+  onChangeStarLocation() {
+    // this.ownerService.changeStartLocation$.next({lat: 53.0518, lng: 20.703});
+
+    const lat = Math.floor(Math.random() * (50 - 10 + 1)) + 10;
+    const lng = Math.floor(Math.random() * (50 - 10 + 1)) + 10;
+
+    this.ownerService.changeStartLocation$.next({lat: lat, lng: lng});
   }
 }
