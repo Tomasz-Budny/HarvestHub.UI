@@ -43,15 +43,23 @@ export class MapService {
       );
     });
 
-    combineLatest([
-      this.focus$.asObservable(),
-      this.map
-    ]).pipe(
+    // combineLatest([
+    //   this.focus$.asObservable(),
+    //   this.map
+    // ]).pipe(
+    //   takeUntilDestroyed()
+    // ).subscribe(([coords, map]) => {
+    //   map.googleMap.setCenter(coords);
+    //   map.googleMap.setZoom(17);
+    // });
+
+    this.map.pipe(
+      withLatestFrom(this.focus$.asObservable()),
       takeUntilDestroyed()
-    ).subscribe(([coords, map]) => {
+    ).subscribe(([map, coords]) => {
       map.googleMap.setCenter(coords);
       map.googleMap.setZoom(17);
-    })
+    });
 
     this.focusOnField$.pipe(
       withLatestFrom(this.map),

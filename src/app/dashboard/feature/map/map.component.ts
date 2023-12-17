@@ -23,7 +23,7 @@ import { OwnerService } from '../../data-access/owner.service';
 export class MapComponent implements AfterViewInit {
   private googleMap: GoogleMap;
   @ViewChild(GoogleMap) set map(content: GoogleMap) {
-    if(content) {
+    if(content && !this.googleMap) {
       this.googleMap = content;
       this.mapService.setMapInstance(this.googleMap);
     }
