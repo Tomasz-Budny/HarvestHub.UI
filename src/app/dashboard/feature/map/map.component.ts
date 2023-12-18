@@ -13,6 +13,7 @@ import { FieldDetailsComponent } from '../field-details/field-details.component'
 import { FieldInfoModalSvgPipe } from '../../utils/field-info-modal-svg.pipe';
 import { OwnerService } from '../../data-access/owner.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { SvgUtil } from '../../../shared/utils/svg.util';
 
 @Component({
   selector: 'app-map',
@@ -44,7 +45,7 @@ export class MapComponent implements AfterViewInit {
     public mapService: MapService,
     public fieldsService: FieldsService,
     private dialog: MatDialog,
-    private ownerService: OwnerService
+    public ownerService: OwnerService
   ) {
     this.fieldsResponse = fieldsService.getFields() 
     this.apiLoaded = this.mapService.loadMap().pipe(

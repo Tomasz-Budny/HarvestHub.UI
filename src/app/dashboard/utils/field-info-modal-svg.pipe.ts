@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { FieldViewModel } from '../data-model/field.model';
 import { HectaresUtils } from '../../shared/utils/hectare.util';
+import { SvgUtil } from '../../shared/utils/svg.util';
 
 @Pipe({
   name: 'fieldInfoModalSvg',
@@ -55,21 +56,7 @@ export class FieldInfoModalSvgPipe implements PipeTransform {
     </svg>
     `;
 
-    return this.encodeSVG(svg);
+    return SvgUtil.encodeSVG(svg);
   }
 
-  private encodeSVG(rawSvgString: string): string {
-    const symbols = /[\r\n%#()<>?\[\\\]^`{|}]/g;
-
-    // Use single quotes instead of double to avoid URI encoding
-    rawSvgString = rawSvgString
-      .replace(/'/g, '"')
-      .replace(/>\s+</g, '><')
-      .replace(/\s{2,}/g, ' ');
-
-    return (
-      'data:image/svg+xml;utf-8,' +
-      rawSvgString.replace(symbols, encodeURIComponent)
-    );
-  }
 }

@@ -26,7 +26,15 @@
           [icon]="hoveredField | fieldInfoModalSvg"
           (mapClick)="onPolygonClick(hoveredField)">
         </map-marker>    
-      }        
+      }   
+      
+      @if (ownerService.loaded && !(mapService.isStartLocationEditing | async)) {
+        <map-marker
+          (mapClick)="mapService.focus(ownerService.startLocation().coordinates)"
+          icon="./assets/images/home-marker.png"
+          [position]="ownerService.startLocation().coordinates">
+      </map-marker> 
+      }
     }
   </google-map>
 }
@@ -35,7 +43,7 @@
 <div
   (click)="onChangeStarLocation()"
   class="rounded-full bg-white p-3 mr-3 mt-3 cursor-pointer" #editHomePosition>
-  @if(mapService.isStartLocationEditing | async) {
+  @if (mapService.isStartLocationEditing | async) {
     <div class="flex w-3 h-3">
       <i class="fa-solid fa-x m-auto"></i>
     </div>

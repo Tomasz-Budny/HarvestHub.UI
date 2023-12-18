@@ -44,7 +44,8 @@ export class MapService {
       withLatestFrom(this.map)
     ).subscribe(([isInitialied, map]) => {
       if(isInitialied) {
-        map.googleMap.setOptions({draggableCursor:'url(http://www.rw-designer.com/cursor-extern.php?id=20109), default'});
+        // map.googleMap.setOptions({draggableCursor:'url(http://www.rw-designer.com/cursor-extern.php?id=20109), default'});
+        map.googleMap.setOptions({draggableCursor:'pointer, default'});
         google.maps.event.addListener(map.googleMap, 'click', (e) => {
           this.changeStartLocation$.next(e.latLng.toJSON());
           this.changeStartLocationToggle$.next(false);
@@ -98,10 +99,10 @@ export class MapService {
       map.googleMap.setZoom(zoom);
     });
 
-    this.initializeSearchBar$.pipe(
-      withLatestFrom(this.map),
-      takeUntilDestroyed(),
-    ).subscribe(([searchBar, map]) => {
+    combineLatest([
+      this.initializeSearchBar$,
+      this.map.pipe(take(1))
+    ]).subscribe(([searchBar, map]) => {
       const searchBox = new google.maps.places.SearchBox(
         searchBar.nativeElement,
       );
