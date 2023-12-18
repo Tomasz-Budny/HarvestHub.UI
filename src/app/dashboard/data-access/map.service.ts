@@ -53,14 +53,6 @@ export class MapService {
       map.googleMap.setZoom(17);
     })
 
-    // this.focus$.pipe(
-    //   withLatestFrom(this.map.pipe(take(1))),
-    //   takeUntilDestroyed()
-    // ).subscribe(([coords, map]) => {
-    //   map.googleMap.setCenter(coords);
-    //   map.googleMap.setZoom(17);
-    // });
-
     this.focusOnField$.pipe(
       withLatestFrom(this.map),
       takeUntilDestroyed(),
@@ -83,13 +75,9 @@ export class MapService {
     });
 
     this.initializeSearchBar$.pipe(
-      switchMap(searchBar => this.map.pipe(map(map => ({searchBar: searchBar, map: map})))),
+      withLatestFrom(this.map),
       takeUntilDestroyed(),
-    ).subscribe(({searchBar, map}) => {
-      if(!map) {
-        return;
-      }
-
+    ).subscribe(([searchBar, map]) => {
       const searchBox = new google.maps.places.SearchBox(
         searchBar.nativeElement,
       );

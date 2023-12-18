@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: var(--side-panel-width) auto;
   grid-template-rows: var(--navbar-height) calc(100vh - var(--navbar-height));
+  overflow-y: hidden;
 }
 
 app-navbar {
