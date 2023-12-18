@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FieldDetailsComponent } from '../field-details/field-details.component';
 import { FieldInfoModalSvgPipe } from '../../utils/field-info-modal-svg.pipe';
 import { OwnerService } from '../../data-access/owner.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-map',
@@ -51,6 +52,12 @@ export class MapComponent implements AfterViewInit {
         next: () => this.initializeMap()
       })
     )
+
+    this.mapService.changeStartLocation.pipe(
+      takeUntilDestroyed()
+    ).subscribe(coords => {
+      this.ownerService.changeStartLocation$.next(coords);
+    })
   }
 
   ngAfterViewInit() {
@@ -91,6 +98,8 @@ export class MapComponent implements AfterViewInit {
     const lat = Math.floor(Math.random() * (50 - 10 + 1)) + 10;
     const lng = Math.floor(Math.random() * (50 - 10 + 1)) + 10;
 
-    this.ownerService.changeStartLocation$.next({lat: lat, lng: lng});
+    this.mapService.changeStartLocationToggle();
+
+    // this.ownerService.changeStartLocation$.next({lat: lat, lng: lng});
   }
 }

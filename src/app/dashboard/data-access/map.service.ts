@@ -26,11 +26,35 @@ export class MapService {
   private addNewField$ = new Subject<void>();
   private initializeEditPolygonBorders$ = new Subject<FieldViewModel>();
   private setMapControls$: Subject<ElementRef> = new Subject<ElementRef>();
+  private changeStartLocationToggle$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private changeStartLocation$: Subject<CoordinatesViewModel> = new Subject();
+  public get changeStartLocation(): Observable<CoordinatesViewModel> {
+    return this.changeStartLocation$.asObservable();
+  }
+  public get isStartLocationEditing(): Observable<boolean> {
+    return this.changeStartLocationToggle$.asObservable()
+  }
 
   constructor(
     public httpClient: HttpClient,
     private fieldService: FieldsService 
   ) { 
+    this.changeStartLocationToggle$.pipe(
+      takeUntilDestroyed(),
+      withLatestFrom(this.map)
+    ).subscribe(([isInitialied, map]) => {
+      if(isInitialied) {
+        map.googleMap.setOptions({draggableCursor:'url(http://www.rw-designer.com/cursor-extern.php?id=20109), default'});
+        google.maps.event.addListener(map.googleMap, 'click', (e) => {
+          this.changeStartLocation$.next(e.latLng.toJSON());
+          this.changeStartLocationToggle$.next(false);
+        });
+      } else {
+        map.googleMap.setOptions({draggableCursor:null});
+        google.maps.event.clearListeners(map.googleMap, 'click');
+      }
+    })
+
     this.setMapControls$.pipe(
       switchMap(elementRef => this.map.pipe(map(map => ({elementRef: elementRef, map: map})))),
       takeUntilDestroyed()
@@ -171,6 +195,10 @@ export class MapService {
       map(() => true),
       catchError(() => of(false))
     );
+  }
+
+  changeStartLocationToggle() {
+    this.changeStartLocationToggle$.next(!this.changeStartLocationToggle$.value);
   }
 
   focus(coords: CoordinatesViewModel) {
