@@ -1,5 +1,6 @@
 @if (apiLoaded | async) {
   <google-map 
+    (mapMousemove)="mapMouseMove($event)"
     width="100%"
     height="100%"
     [center]="{lat: 30, lng: 20.2}"
@@ -33,7 +34,13 @@
           (mapClick)="mapService.focus(ownerService.startLocation().coordinates)"
           icon="./assets/images/home-marker.png"
           [position]="ownerService.startLocation().coordinates">
-      </map-marker> 
+        </map-marker> 
+      }
+      @if(mapService.isStartLocationEditing | async) {
+        <map-marker
+          icon="./assets/images/home-marker.png"
+          [position]="mouseCoordinates">
+        </map-marker> 
       }
     }
   </google-map>

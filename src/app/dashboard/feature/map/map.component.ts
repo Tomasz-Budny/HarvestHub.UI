@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Signal, ViewChild, computed } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Signal, ViewChild, computed } from '@angular/core';
 import { GoogleMap, GoogleMapsModule } from '@angular/google-maps';
 import { Observable, tap } from 'rxjs';
 import { MapService } from '../../data-access/map.service';
@@ -13,7 +13,7 @@ import { FieldDetailsComponent } from '../field-details/field-details.component'
 import { FieldInfoModalSvgPipe } from '../../utils/field-info-modal-svg.pipe';
 import { OwnerService } from '../../data-access/owner.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { SvgUtil } from '../../../shared/utils/svg.util';
+import { CoordinatesViewModel } from '../../data-model/coordinates.model';
 
 @Component({
   selector: 'app-map',
@@ -40,6 +40,7 @@ export class MapComponent implements AfterViewInit {
   marker: {name: string, color: string, center}
   hoveredField: FieldViewModel;
   editingFieldId = this.mapService.editingFieldId;
+  mouseCoordinates: CoordinatesViewModel;
 
   constructor(
     public mapService: MapService,
@@ -58,7 +59,7 @@ export class MapComponent implements AfterViewInit {
       takeUntilDestroyed()
     ).subscribe(coords => {
       this.ownerService.changeStartLocation$.next(coords);
-    })
+    });
   }
 
   ngAfterViewInit() {
@@ -93,14 +94,12 @@ export class MapComponent implements AfterViewInit {
     });
   }
 
+  mapMouseMove(e) {
+    const coords = e.latLng.toJSON();
+    this.mouseCoordinates = {...coords, lat: coords.lat + 0.00001};
+  }
+
   onChangeStarLocation() {
-    // this.ownerService.changeStartLocation$.next({lat: 53.0518, lng: 20.703});
-
-    const lat = Math.floor(Math.random() * (50 - 10 + 1)) + 10;
-    const lng = Math.floor(Math.random() * (50 - 10 + 1)) + 10;
-
     this.mapService.changeStartLocationToggle();
-
-    // this.ownerService.changeStartLocation$.next({lat: lat, lng: lng});
   }
 }

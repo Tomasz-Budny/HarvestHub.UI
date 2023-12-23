@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { ElementRef, Injectable, Signal, computed, signal } from '@angular/core';
+import { ElementRef, Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
 import { BehaviorSubject, Observable, Subject, catchError, combineLatest, map, of, switchMap, take, withLatestFrom } from 'rxjs';
 import { CoordinatesViewModel } from '../data-model/coordinates.model';
