@@ -1,12 +1,10 @@
-import { Injectable, Signal, computed, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { DayForecastViewModel } from '../data-model/day-forecast.model';
 import { Observable, Subject, switchMap, tap } from 'rxjs';
-import { OwnerService } from './owner.service';
 import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { CoordinatesViewModel } from '../data-model/coordinates.model';
-import { StartLocation } from '../data-model/start-location.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +21,7 @@ export class WeatherService {
   });
 
   constructor(
-    public http: HttpClient,
-    public ownerService: OwnerService
+    public http: HttpClient
   ) { 
     this.getDayForecasts$.pipe(
       takeUntilDestroyed(),
