@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginRequest } from '../data-model/login-request.model';
-import { Observable, Subject, of, switchMap } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, delay, of, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { jwtDecode } from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
@@ -23,16 +23,17 @@ export class AuthService {
   ) { 
     this.login$.pipe(
       takeUntilDestroyed(),
-      switchMap(data => this.loginApi(data)),
-      switchMap(jwt => this.decodeJwt(jwt))
-    ).subscribe({
-      next: id => {
-        this.userContextService.setUserContext(new UserModel(id), null);
-      },
-      error: err => {
+      switchMap(data => this.loginApi(data).pipe(catchError(err => {
         this.userContextService.setUserContext(null, err);
-      }
-    });
+        return EMPTY;
+      }))),
+      switchMap(jwt => this.decodeJwt(jwt)),
+      tap({
+        next: id => {
+          this.userContextService.setUserContext(new UserModel(id), null);
+        },  
+      })
+    ).subscribe();
   }
 
   login(loginRequest: LoginRequest) {

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../data-access/auth.service';
+import { UserContextService } from '../../data-access/user-context.service';
 
 @Component({
   selector: 'app-login',
@@ -12,10 +14,23 @@ import { RouterModule } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  isSubmitted: boolean = false;
 
   constructor(
     private fb: FormBuilder,
-  ) {}
+    private router: Router,
+    private authService: AuthService,
+    public userContextService: UserContextService
+  ) {
+    effect(() => {
+      if(this.userContextService.user()) {
+        this.router.navigate(['dashboard']);
+      }
+      if(this.userContextService.error()) {
+        this.isSubmitted = false;
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -25,9 +40,12 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('invadlid');
+    console.log('invalid');
     if(this.loginForm.valid) {
       console.log(this.loginForm.value);
+
+      this.isSubmitted = true;
+      this.authService.login(this.loginForm.value);
     }
   }
 }

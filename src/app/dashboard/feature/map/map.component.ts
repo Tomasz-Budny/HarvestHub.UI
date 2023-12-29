@@ -50,6 +50,7 @@ export class MapComponent implements AfterViewInit {
   ) {
     this.fieldsResponse = fieldsService.getFields() 
     this.apiLoaded = this.mapService.loadMap().pipe(
+      takeUntilDestroyed(),
       tap({
         next: () => this.initializeMap()
       })
@@ -58,11 +59,13 @@ export class MapComponent implements AfterViewInit {
     this.mapService.changeStartLocation.pipe(
       takeUntilDestroyed()
     ).subscribe(coords => {
+      this.toggleChangeStartLocationIcon();
       this.ownerService.changeStartLocation$.next(coords);
     });
   }
 
   ngAfterViewInit() {
+    this.editHomePosition.nativeElement.addEventListener('click', this.onChangeStarLocation.bind(this));
     this.mapService.setMapControls(this.editHomePosition)
   }
 
@@ -100,6 +103,13 @@ export class MapComponent implements AfterViewInit {
   }
 
   onChangeStarLocation() {
+    this.toggleChangeStartLocationIcon();
     this.mapService.changeStartLocationToggle();
+  }
+
+  toggleChangeStartLocationIcon() {
+    const icon = document.querySelector('.change-start-location>i');
+    icon.classList.toggle('fa-house');
+    icon.classList.toggle('fa-x');
   }
 }

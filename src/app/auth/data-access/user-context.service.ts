@@ -1,4 +1,4 @@
-import { Injectable, signal } from "@angular/core";
+import { Injectable, computed, signal } from "@angular/core";
 import { HarvestHubResponse } from "../../shared/data-model/harvest-hub-response.model";
 import { UserModel } from "../data-model/user.model";
 import { HarvestHubError } from "../../shared/data-model/harvest-hub-error.model";
@@ -13,21 +13,17 @@ export class UserContextService {
     error: null
   });
 
+  user = computed(() => this.state().data);
+  loaded = computed(() => this.state().loaded);
+  error = computed(() => this.state().error)
+
   constructor() {}
 
   setUserContext(userModel: UserModel, error: HarvestHubError) {
-    this.state.update(state => ({
+    this.state.update(_ => ({
       data: userModel,
-      loaded: true,
+      loaded: error ? false : true,
       error: error
     }));
-  }
-
-  reset() {
-    this.state.set({
-      data: null,
-      loaded: false,
-      error: null
-    });
   }
 }
