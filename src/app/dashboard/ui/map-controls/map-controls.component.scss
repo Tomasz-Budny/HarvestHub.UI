@@ -1,6 +1,20 @@
+:host {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
 .option {
+  margin: 0px 12px 24px 0px;
   background-color: #fff;
   border-radius: 20px;
   padding: 10px;
   cursor: pointer;
+  pointer-events: all;
 }

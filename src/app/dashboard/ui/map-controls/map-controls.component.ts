@@ -1,4 +1,4 @@
-import { Component, Signal, computed } from '@angular/core';
+import { Component, ElementRef, Signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapService } from '../../data-access/map.service';
 import { FieldsService } from '../../data-access/fields.service';
@@ -21,7 +21,7 @@ export class MapControlsComponent {
 
   constructor(
     public mapService: MapService,
-    private fieldsService: FieldsService
+    private fieldsService: FieldsService,
   ) { 
     this.fieldsService.add$.asObservable().pipe(
       takeUntilDestroyed()
@@ -32,7 +32,7 @@ export class MapControlsComponent {
 
   onAddNewField() {
     this.onAddingMode = true;
-    this.mapService.addNewField()
+    this.mapService.addNewField();
   }
 
   discardAddingField() {

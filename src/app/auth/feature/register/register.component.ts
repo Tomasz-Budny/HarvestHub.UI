@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { EMPTY, Subject, catchError, switchMap } from 'rxjs';
+import { RegisterRequest } from '../../data-model/register-request.model';
+import { AuthService } from '../../data-access/auth.service';
+import { AuthValidators } from '../../utils/auth-validators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-register',
@@ -12,10 +17,20 @@ import { RouterModule } from '@angular/router';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  submitted$: Subject<RegisterRequest> = new Subject();
 
   constructor(
     private fb: FormBuilder,
-  ) {}
+    private authService: AuthService,
+    private router: Router,
+  ) {
+    this.submitted$.pipe(
+      takeUntilDestroyed(),
+      switchMap(req => this.authService.register(req).pipe(catchError(_ => EMPTY)))
+    ).subscribe(_ => {
+      this.router.navigate(['auth', 'login'])
+    });
+  }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -24,13 +39,21 @@ export class RegisterComponent {
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required]],
       confirmPassword: [null, [Validators.required]],
+    }, {
+      validators: [AuthValidators.matchValidator('password', 'confirmPassword')]
     });
   }
 
   onSubmit() {
-    console.log('invadlid');
     if(this.registerForm.valid) {
-      console.log(this.registerForm.value);
+      const formBody = this.registerForm.value
+      const registerRequest = new RegisterRequest(
+        formBody.name, 
+        formBody.surname, 
+        formBody.email, 
+        formBody.password
+      );
+      this.submitted$.next(registerRequest);
     }
   }
 }

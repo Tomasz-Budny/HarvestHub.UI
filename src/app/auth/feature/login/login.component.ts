@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     public userContextService: UserContextService
   ) {
     effect(() => {
-      if(this.userContextService.user()) {
+      if(this.userContextService.user() && this.isSubmitted) {
         this.router.navigate(['dashboard']);
       }
       if(this.userContextService.error()) {
@@ -40,10 +40,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('invalid');
     if(this.loginForm.valid) {
-      console.log(this.loginForm.value);
-
       this.isSubmitted = true;
       this.authService.login(this.loginForm.value);
     }

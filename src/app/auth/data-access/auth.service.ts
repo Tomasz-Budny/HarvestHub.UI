@@ -7,12 +7,13 @@ import { jwtDecode } from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
 import { UserContextService } from './user-context.service';
 import { UserModel } from '../data-model/user.model';
+import { RegisterRequest } from '../data-model/register-request.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  URL: string = 'https://localhost:7258/api/user/login'
+  URL: string = 'https://localhost:7258/api/user/'
   private login$: Subject<LoginRequest> = new Subject();
   private tokenExpirationTimer: any;
 
@@ -41,7 +42,11 @@ export class AuthService {
   }
 
   private loginApi(loginRequest: LoginRequest): Observable<string> {
-    return this.http.post(this.URL, loginRequest, {responseType: 'text'});
+    return this.http.post(this.URL + 'login', loginRequest, {responseType: 'text'});
+  }
+
+  register(registerRequest: RegisterRequest): Observable<void> {
+    return this.http.post<void>(this.URL + 'register', registerRequest);
   }
 
   private decodeJwt(jwt: string) {
