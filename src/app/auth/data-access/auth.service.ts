@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginRequest } from '../data-model/login-request.model';
-import { EMPTY, Observable, Subject, catchError, delay, of, switchMap, tap } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, of, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { jwtDecode } from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
@@ -47,6 +47,12 @@ export class AuthService {
 
   register(registerRequest: RegisterRequest): Observable<void> {
     return this.http.post<void>(this.URL + 'register', registerRequest);
+  }
+
+  isEmailUnique(email: string) {
+    return this.http.get(this.URL + 'email_unique', {
+      params: new HttpParams().set('email', email)
+    });
   }
 
   private decodeJwt(jwt: string) {
