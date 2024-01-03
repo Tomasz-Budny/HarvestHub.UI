@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { ElementRef, Injectable, Signal, computed, signal } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
-import { BehaviorSubject, EMPTY, Observable, Subject, catchError, combineLatest, map, of, pipe, switchMap, take, withLatestFrom } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, combineLatest, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { CoordinatesViewModel } from '../data-model/coordinates.model';
 import { FieldsService } from './fields.service';
 import { Polygon } from '../data-model/polygon.model';
@@ -12,7 +12,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   providedIn: 'root'
 })
 export class MapService {
-  private isLoaded: boolean = false;
   private map: Subject<GoogleMap> = new Subject<GoogleMap>();
   drawingManager: any;
   editingFieldPolygon: any;
@@ -196,16 +195,30 @@ export class MapService {
   loadMap(): Observable<boolean> {
     return of(null).pipe(
       switchMap(_ => {
-        if(this.isLoaded) {
+        if(this.isMapLoaded()) {
           return of(true);
         }
 
         return this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKv27xR4mZj_nWp6ljbbo0x_ta0yrui4&libraries=places,geometry,drawing', 'callback').pipe(
-          map(() => { this.isLoaded = true; return true; }),
+          map(() => true ),
           catchError(() => of(false))
         )
       })
     )
+  }
+
+  private isMapLoaded(): boolean {
+    let isLoaded = false;
+    document.querySelectorAll("script").forEach(script => {
+      if (
+        script.src.includes("googleapis.com/maps") ||
+        script.src.includes("maps.gstatic.com") ||
+        script.src.includes("earthbuilder.googleapis.com")
+      ) {
+        isLoaded = true;
+      }
+    })
+    return isLoaded;
   }
 
   changeStartLocationToggle() {

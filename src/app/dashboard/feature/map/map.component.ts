@@ -22,7 +22,7 @@ import { CoordinatesViewModel } from '../../data-model/coordinates.model';
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss'
 })
-export class MapComponent implements AfterViewInit {
+export class MapComponent {
   private googleMap: GoogleMap;
   @ViewChild(GoogleMap) set map(content: GoogleMap) {
     if(content && !this.googleMap) {
@@ -30,7 +30,6 @@ export class MapComponent implements AfterViewInit {
       this.mapService.setMapInstance(this.googleMap);
     }
   }
-  @ViewChild('editHomePosition') editHomePosition: ElementRef;
   apiLoaded: Observable<boolean>;
   options: google.maps.MapOptions;
 
@@ -59,14 +58,8 @@ export class MapComponent implements AfterViewInit {
     this.mapService.changeStartLocation.pipe(
       takeUntilDestroyed()
     ).subscribe(coords => {
-      this.toggleChangeStartLocationIcon();
       this.ownerService.changeStartLocation$.next(coords);
     });
-  }
-
-  ngAfterViewInit() {
-    this.editHomePosition.nativeElement.addEventListener('click', this.onChangeStarLocation.bind(this));
-    this.mapService.setMapControls(this.editHomePosition)
   }
 
   initializeMap(): void {
@@ -103,13 +96,6 @@ export class MapComponent implements AfterViewInit {
   }
 
   onChangeStarLocation() {
-    this.toggleChangeStartLocationIcon();
     this.mapService.changeStartLocationToggle();
-  }
-
-  toggleChangeStartLocationIcon() {
-    const icon = document.querySelector('.change-start-location>i');
-    icon.classList.toggle('fa-house');
-    icon.classList.toggle('fa-x');
   }
 }

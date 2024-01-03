@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginRequest } from '../data-model/login-request.model';
 import { EMPTY, Observable, Subject, catchError, of, switchMap, tap } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { jwtDecode } from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
 import { UserContextService } from './user-context.service';
@@ -16,6 +16,7 @@ export class AuthService {
   URL: string = 'https://localhost:7258/api/user/'
   private login$: Subject<LoginRequest> = new Subject();
   private tokenExpirationTimer: any;
+  public beforeLogout$: Subject<void> = new Subject();
 
   constructor(
     protected http: HttpClient,
@@ -62,6 +63,7 @@ export class AuthService {
     const id = decoded.sub;
 
     this.autoLogout(expiresIn - new Date().getTime());
+    this.cookieService.delete('Authorization');
     this.cookieService.set('Authorization', 'Bearer '+ jwt, expDate);
 
     return of(id);
@@ -74,12 +76,28 @@ export class AuthService {
     }, expirationDuration);
   }
 
-  private logout() {
+  logout() {
     this.cookieService.delete('Authorization');
 
     if(this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
     this.tokenExpirationTimer = null;
+
+    this.beforeLogout$.next();
+  }
+
+  autoLogin() {
+    return toObservable(this.userContextService.user).pipe(
+      switchMap(user => {
+        if(user) {
+          return of(true);
+        }
+        let authCookie = this.cookieService.get('Authorization').slice(7);
+        return this.decodeJwt(authCookie).pipe(
+          tap(id => this.userContextService.setUserContext(new UserModel(id), null))
+        )
+      })
+    )
   }
 }

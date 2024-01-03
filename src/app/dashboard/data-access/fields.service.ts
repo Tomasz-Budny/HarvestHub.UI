@@ -10,6 +10,7 @@ import { Polygon } from '../data-model/polygon.model';
 import { ColorUtil } from '../utils/color.util';
 import { ReplaceFieldVerticesRequest } from '../data-model/replace-field-vertices-request.model';
 import { FieldDetailsService } from './field-details.service';
+import { AuthService } from '../../auth/data-access/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,12 +28,25 @@ export class FieldsService {
   remove$ = new Subject<string>();
   add$ = new Subject<Polygon>();
   replaceFieldVertices$ = new Subject<ReplaceFieldVerticesRequest>();
+  loadFields$: Subject<void> = new Subject();
 
   constructor(
     public http: HttpClient,
-    public fieldDetailsService: FieldDetailsService
-  ) { 
-    this.loadFields().subscribe({
+    public fieldDetailsService: FieldDetailsService,
+    private authService: AuthService
+  ) {
+    this.authService.beforeLogout$.pipe(
+      takeUntilDestroyed()
+    ).subscribe(_ => this.state.set({
+      data: [],
+      loaded: false,
+      error: null
+    }));
+    
+    this.loadFields$.pipe(
+      takeUntilDestroyed(),
+      switchMap(_ => this.getFieldsApi())
+    ).subscribe({
       next: res => this.state.update(state => ({
         ...state,
         data: res,
@@ -157,10 +171,12 @@ export class FieldsService {
     return [...fields];
   }
 
-  private loadFields() {
-    return this.http.get<FieldViewModel[]>(this.URL).pipe(
-      takeUntilDestroyed()
-    );
+  loadFields() {
+    this.loadFields$.next()
+  }
+
+  private getFieldsApi(): Observable<FieldViewModel[]> {
+    return this.http.get<FieldViewModel[]>(this.URL)
   }
 
   private deleteFieldApi(fieldId: string): Observable<string> {

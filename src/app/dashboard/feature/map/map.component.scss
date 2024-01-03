@@ -2,6 +2,11 @@
   width: 100%;
 }
 
+.change-start-location {
+  margin-top: calc(0.75rem + var(--navbar-height));
+  pointer-events: all;
+}
+
 .editHome {
   position: absolute;
   top: var(--navbar-height);

@@ -5,6 +5,7 @@ import { Observable, Subject, switchMap, tap } from 'rxjs';
 import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response.model';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { CoordinatesViewModel } from '../data-model/coordinates.model';
+import { AuthService } from '../../auth/data-access/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,17 @@ export class WeatherService {
   });
 
   constructor(
-    public http: HttpClient
-  ) { 
+    public http: HttpClient,
+    private authService: AuthService
+  ) {
+    this.authService.beforeLogout$.pipe(
+      takeUntilDestroyed()
+    ).subscribe(_ => this.dayForecastsState.set({
+      data: [],
+      loaded: false,
+      error: null
+    }));
+    
     this.getDayForecasts$.pipe(
       takeUntilDestroyed(),
       switchMap(data => this.loadDayForecastsApi(data.coords, data.days))

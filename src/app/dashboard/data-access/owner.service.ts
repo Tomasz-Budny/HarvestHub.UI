@@ -8,6 +8,7 @@ import { MapService } from './map.service';
 import { CoordinatesViewModel } from '../data-model/coordinates.model';
 import { HttpClient } from '@angular/common/http';
 import { HarvestHubError } from '../../shared/data-model/harvest-hub-error.model';
+import { AuthService } from '../../auth/data-access/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,13 +26,25 @@ export class OwnerService {
   loaded: Signal<boolean> = computed(() => this.state().loaded);
   error: Signal<HarvestHubError> = computed(() => this.state().error)
   changeStartLocation$: Subject<CoordinatesViewModel> = new Subject<CoordinatesViewModel>();
-  
+  loadStartLocation$: Subject<void> = new Subject();
+
   constructor(
     public http: HttpClient,
-    private mapService: MapService
+    private mapService: MapService,
+    private authService: AuthService
   ) { 
-
-    this.loadStartLocation().subscribe({
+    this.authService.beforeLogout$.pipe(
+      takeUntilDestroyed()
+    ).subscribe(_ => this.state.set({
+      data: null,
+      loaded: false,
+      error: null
+    }));
+    
+    this.loadStartLocation$.pipe(
+      switchMap(_ => this.getStartLocationApi()),
+      tap(startLocation => this.mapService.focus(startLocation.coordinates))
+    ).subscribe({
       next: (res) => this.state.update(state => ({
         ...state,
         data: res,
@@ -46,7 +59,7 @@ export class OwnerService {
     this.changeStartLocation$.pipe(
       takeUntilDestroyed(),
       switchMap(coords => this.updateStartLocationApi(coords)),
-      switchMap(_ => this.loadStartLocation())
+      switchMap(_ => this.getStartLocationApi())
     ).subscribe({
       next: (res) => this.state.update(state => ({
         ...state,
@@ -61,10 +74,7 @@ export class OwnerService {
   }
 
   loadStartLocation() {
-    return this.getStartLocationApi()
-    .pipe(
-      tap(startLocation => this.mapService.focus(startLocation.coordinates))
-    )
+    this.loadStartLocation$.next();
   }
 
   private updateStartLocationApi(coords: CoordinatesViewModel) {
