@@ -84,6 +84,7 @@ export class AuthService {
     }
     this.tokenExpirationTimer = null;
 
+    this.userContextService.setUserContext(null, null);
     this.beforeLogout$.next();
   }
 
