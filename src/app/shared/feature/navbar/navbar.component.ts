@@ -4,6 +4,7 @@ import { MapService } from '../../../dashboard/data-access/map.service';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../auth/data-access/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { UserContextService } from '../../../auth/data-access/user-context.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +19,7 @@ export class NavbarComponent implements AfterViewInit {
   constructor(
     public mapService: MapService,
     private authService: AuthService,
+    public userContextService: UserContextService,
     private router: Router
   ) { 
     this.authService.beforeLogout$.pipe(

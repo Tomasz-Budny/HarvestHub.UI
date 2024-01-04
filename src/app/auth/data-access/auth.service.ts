@@ -31,8 +31,8 @@ export class AuthService {
       }))),
       switchMap(jwt => this.decodeJwt(jwt)),
       tap({
-        next: id => {
-          this.userContextService.setUserContext(new UserModel(id), null);
+        next: user => {
+          this.userContextService.setUserContext(user, null);
         },  
       })
     ).subscribe();
@@ -56,17 +56,18 @@ export class AuthService {
     });
   }
 
-  private decodeJwt(jwt: string) {
+  private decodeJwt(jwt: string): Observable<UserModel> {
     const decoded: any = jwtDecode(jwt);
     const expiresIn = decoded.exp * 1000;
     const expDate = new Date(expiresIn);
     const id = decoded.sub;
+    const name = decoded.userName;
 
     this.autoLogout(expiresIn - new Date().getTime());
     this.cookieService.delete('Authorization');
     this.cookieService.set('Authorization', 'Bearer '+ jwt, expDate);
 
-    return of(id);
+    return of(new UserModel(id, name));
   }
 
   private autoLogout(expirationDuration: number) {
@@ -96,7 +97,7 @@ export class AuthService {
         }
         let authCookie = this.cookieService.get('Authorization').slice(7);
         return this.decodeJwt(authCookie).pipe(
-          tap(id => this.userContextService.setUserContext(new UserModel(id), null))
+          tap(user => this.userContextService.setUserContext(user, null))
         )
       })
     )
