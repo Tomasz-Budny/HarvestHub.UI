@@ -1,34 +1,22 @@
-<hr>
-
-@if (legendVisible) {
-  <div class="legend absolute">
-    <p>Legenda</p>
-    <div class="fields">
-
-    </div>
-  </div>
-}
-
 <div class="absolute btn-container">
   <div class="flex">
-    <span (click)="legendVisible=!legendVisible" class="primary-button ml-auto">Legenda</span>
+    <span (click)="showFieldAreaDialog()" class="primary-button ml-auto">Legenda</span>
   </div>
 </div>
 <div class="chart-container">
   <ngx-charts-pie-chart
-  [customColors]="colors()"
-  [results]="data()"
-  (select)="onSelect($event)">
+    [customColors]="colors()"
+    [results]="data()"
+    (select)="onSelect($event)">
 
-  <ng-template #tooltipTemplate let-model="model">
-    <span class="text-base font-medium">
-      {{ getName(model.name) }}
-    </span>
-    <div class="text-xs font-light">
-      {{ getAddress(model.name) }}
-    </div>
-    <div class="text-sm">{{ model.value | hectare }}</div>
-  </ng-template>
-
-</ngx-charts-pie-chart>
+    <ng-template #tooltipTemplate let-model="model">
+      <span class="text-base font-medium">
+        {{ getName(model.name) }}
+      </span>
+      <div class="text-xs font-light">
+        {{ getAddress(model.name) }}
+      </div>
+      <div class="text-sm">{{ model.value | hectare }}</div>
+    </ng-template>
+  </ngx-charts-pie-chart>
 </div>

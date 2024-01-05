@@ -162,4 +162,6 @@ body {
   background: var(--primary-color);
 }
 
-.gm-style iframe + div { border:none!important; }
+.gm-style iframe + div { border:none !important; }
+
+.chart-legend .legend-wrap { width: 150px !important; }

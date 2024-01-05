@@ -1,0 +1,25 @@
+<div class="w-full flex">
+  <mat-icon #closeIcon svgIcon="close" (click)="onDialogClose()" class="ml-auto my-3 mr-3 cursor-pointer"></mat-icon>
+</div>
+
+@if (fieldsLoaded()) {
+  <div class="chart-container">
+    <ngx-charts-pie-chart
+    [view]="[819, 475]"
+    [legend]="true"
+    legendTitle="Legenda"
+    [labels]="true"
+    [customColors]="colors()"
+    [results]="data()">
+    <ng-template #tooltipTemplate let-model="model">
+      <span class="text-base font-medium">
+        {{ model.name }}
+      </span>
+      <div class="text-xs font-light">
+        {{ getAddress(model.name) }}
+      </div>
+      <div class="text-sm">{{ model.value | hectare }}</div>
+    </ng-template>
+    </ngx-charts-pie-chart>
+  </div>
+}

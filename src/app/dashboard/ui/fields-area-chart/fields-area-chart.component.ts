@@ -6,6 +6,8 @@ import { FieldViewModel } from '../../data-model/field.model';
 import { HarvestHubResponse } from '../../../shared/data-model/harvest-hub-response.model';
 import { HectarePipe } from '../../../shared/utils/hectare.pipe';
 import { MapService } from '../../data-access/map.service';
+import { MatDialog } from '@angular/material/dialog';
+import { FieldsAreaDialogComponent } from '../../feature/fields-area-dialog/fields-area-dialog.component';
 
 @Component({
   selector: 'app-fields-area-chart',
@@ -17,11 +19,11 @@ import { MapService } from '../../data-access/map.service';
 export class FieldsAreaChartComponent {
   fieldsResponse: Signal<HarvestHubResponse<FieldViewModel[]>>;
   fields: Signal<FieldViewModel[]> = computed(() => this.fieldsResponse().data);
-  legendVisible: boolean = false;
 
   constructor(
     private fieldsService: FieldsService,
-    private mapService: MapService
+    private mapService: MapService,
+    private dialog: MatDialog,
   ) {
     this.fieldsResponse = this.fieldsService.getFields();
   }
@@ -44,5 +46,9 @@ export class FieldsAreaChartComponent {
     if(field) {
       this.mapService.focusOnField(field);
     }
+  }
+
+  showFieldAreaDialog() {
+    this.dialog.open(FieldsAreaDialogComponent);
   }
 }
