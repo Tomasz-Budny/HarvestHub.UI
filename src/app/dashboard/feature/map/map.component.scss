@@ -1,3 +1,23 @@
 :host {
   width: 100%;
 }
+
+.change-start-location {
+  margin-top: calc(0.75rem + var(--navbar-height));
+  pointer-events: all;
+}
+
+.editHome {
+  position: absolute;
+  top: var(--navbar-height);
+  left: calc(100% - 60px);
+  font-size: 12px;
+
+  .fa-x {
+    font-size: 13px;
+  }
+
+  .fa-house {
+    font-size: 11px;
+  }
+}

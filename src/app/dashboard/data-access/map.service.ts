@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { ElementRef, Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
+import { ElementRef, Injectable, Signal, computed, signal } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
-import { BehaviorSubject, Observable, Subject, catchError, combineLatest, map, of, switchMap, take, withLatestFrom } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, combineLatest, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { CoordinatesViewModel } from '../data-model/coordinates.model';
 import { FieldsService } from './fields.service';
 import { Polygon } from '../data-model/polygon.model';
@@ -44,7 +44,6 @@ export class MapService {
       withLatestFrom(this.map)
     ).subscribe(([isInitialied, map]) => {
       if(isInitialied) {
-        // map.googleMap.setOptions({draggableCursor:'url(http://www.rw-designer.com/cursor-extern.php?id=20109), default'});
         map.googleMap.setOptions({draggableCursor:'pointer, default'});
         google.maps.event.addListener(map.googleMap, 'click', (e) => {
           this.changeStartLocation$.next(e.latLng.toJSON());
@@ -57,12 +56,15 @@ export class MapService {
     })
 
     this.setMapControls$.pipe(
-      switchMap(elementRef => this.map.pipe(map(map => ({elementRef: elementRef, map: map})))),
-      takeUntilDestroyed()
+      takeUntilDestroyed(),
+      switchMap(elementRef => {
+        return this.map.pipe(map(map => ({elementRef: elementRef, map: map})))
+      }),
     ).subscribe(({elementRef, map}) => {
       if(!map) {
         return;
       }
+      map.controls[google.maps.ControlPosition.TOP_RIGHT].clear();
       map.controls[google.maps.ControlPosition.TOP_RIGHT].push(
         elementRef.nativeElement,
       );
@@ -70,7 +72,7 @@ export class MapService {
 
     combineLatest([
       this.focus$.asObservable(),
-      this.map.pipe(take(1)),
+      this.map,
     ]).pipe(
       takeUntilDestroyed()
     ).subscribe(([coords, map]) => {
@@ -101,7 +103,7 @@ export class MapService {
 
     combineLatest([
       this.initializeSearchBar$,
-      this.map.pipe(take(1))
+      this.map
     ]).subscribe(([searchBar, map]) => {
       const searchBox = new google.maps.places.SearchBox(
         searchBar.nativeElement,
@@ -191,11 +193,32 @@ export class MapService {
   }
 
   loadMap(): Observable<boolean> {
-    return this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKv27xR4mZj_nWp6ljbbo0x_ta0yrui4&libraries=places,geometry,drawing', 'callback')
-    .pipe(
-      map(() => true),
-      catchError(() => of(false))
-    );
+    return of(null).pipe(
+      switchMap(_ => {
+        if(this.isMapLoaded()) {
+          return of(true);
+        }
+
+        return this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKv27xR4mZj_nWp6ljbbo0x_ta0yrui4&libraries=places,geometry,drawing', 'callback').pipe(
+          map(() => true ),
+          catchError(() => of(false))
+        )
+      })
+    )
+  }
+
+  private isMapLoaded(): boolean {
+    let isLoaded = false;
+    document.querySelectorAll("script").forEach(script => {
+      if (
+        script.src.includes("googleapis.com/maps") ||
+        script.src.includes("maps.gstatic.com") ||
+        script.src.includes("earthbuilder.googleapis.com")
+      ) {
+        isLoaded = true;
+      }
+    })
+    return isLoaded;
   }
 
   changeStartLocationToggle() {

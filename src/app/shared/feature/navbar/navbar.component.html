@@ -5,9 +5,11 @@
   class="search-bar" 
   placeholder="Wyszukaj miejsca..." 
   #searchBar>
-<div class="controls h-full flex p-2 items-center pr-4 text-sm font-medium">
+<div 
+  class="controls h-full flex p-2 items-center px-4 text-sm font-medium"
+  (click)="onLogout()">
   <div class="profile">
-    Witaj, Tomasz
+    Witaj, {{ userContextService.user().name }}
   </div>
   <i class="fa-solid fa-user ml-3 text-xl"></i>
 </div>

@@ -1,0 +1,13 @@
+<form [formGroup]="loginForm" class="flex m-auto flex-col gap-3 primary p-3" (ngSubmit)="onSubmit()">
+  <p class="text-2xl text-center">Zaloguj się</p>
+  <p>Email</p>
+  <input type="text" formControlName="email" class="text-lg">
+  <p>Hasło</p>
+  <input type="password" formControlName="password" class="text-lg">
+  @if(!userContextService.loaded() && isSubmitted) {
+    <p class="text-center">loading...</p>
+  } @else {
+    <button type="submit">Zaloguj</button>
+  }
+  <p routerLink="/auth/register" class="text-center cursor-pointer">Nie masz konta? zarejestruj się</p>
+</form>

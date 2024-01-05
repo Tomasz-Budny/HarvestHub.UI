@@ -1,4 +1,4 @@
-import { Component, Signal, computed } from '@angular/core';
+import { Component, OnInit, Signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FieldComponent } from '../../ui/field/field.component';
 import { FieldsService } from '../../data-access/fields.service';
@@ -13,7 +13,7 @@ import { HectarePipe } from '../../../shared/utils/hectare.pipe';
   templateUrl: './fields.component.html',
   styleUrl: './fields.component.scss'
 })
-export class FieldsComponent {
+export class FieldsComponent implements OnInit {
   fieldsResponse: Signal<HarvestHubResponse<FieldViewModel[]>>;
   fields: Signal<FieldViewModel[]> = computed(() => this.fieldsResponse().data)
   loaded: Signal<boolean> = computed(() => this.fieldsResponse().loaded)
@@ -22,7 +22,9 @@ export class FieldsComponent {
 
   constructor(
     public fieldsService: FieldsService
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.fieldsResponse = this.fieldsService.getFields();
   }
 }

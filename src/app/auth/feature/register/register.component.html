@@ -1,0 +1,19 @@
+<form [formGroup]="registerForm" class="flex m-auto flex-col gap-3 primary p-3" (ngSubmit)="onSubmit()">
+  <p class="text-2xl text-center">Zarejestruj się</p>
+  <p>Imię</p>
+  <input type="text" formControlName="name" class="text-lg">
+  <p>Nazwisko</p>
+  <input type="text" formControlName="surname" class="text-lg">
+  <p>Email</p>
+  <input type="text" formControlName="email" class="text-lg">
+  <p>Hasło</p>
+  <input type="password" formControlName="password" class="text-lg">
+  <p>Potwierdź hasło</p>
+  <input type="password" formControlName="confirmPassword" class="text-lg">
+  @if (submitted$ | async) {
+    <p class="text-center">loading...</p>
+  } @else {
+    <button type="submit">Potwierdź</button>
+  }
+  <p routerLink="/auth/login" class="text-center cursor-pointer">Masz konto? zaloguj się</p>
+</form>

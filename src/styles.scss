@@ -161,3 +161,5 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary-color);
 }
+
+.gm-style iframe + div { border:none!important; }

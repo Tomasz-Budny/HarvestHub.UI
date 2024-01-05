@@ -22,7 +22,7 @@ import { CoordinatesViewModel } from '../../data-model/coordinates.model';
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss'
 })
-export class MapComponent implements AfterViewInit {
+export class MapComponent {
   private googleMap: GoogleMap;
   @ViewChild(GoogleMap) set map(content: GoogleMap) {
     if(content && !this.googleMap) {
@@ -30,7 +30,6 @@ export class MapComponent implements AfterViewInit {
       this.mapService.setMapInstance(this.googleMap);
     }
   }
-  @ViewChild('editHomePosition') editHomePosition: ElementRef;
   apiLoaded: Observable<boolean>;
   options: google.maps.MapOptions;
 
@@ -50,6 +49,7 @@ export class MapComponent implements AfterViewInit {
   ) {
     this.fieldsResponse = fieldsService.getFields() 
     this.apiLoaded = this.mapService.loadMap().pipe(
+      takeUntilDestroyed(),
       tap({
         next: () => this.initializeMap()
       })
@@ -60,10 +60,6 @@ export class MapComponent implements AfterViewInit {
     ).subscribe(coords => {
       this.ownerService.changeStartLocation$.next(coords);
     });
-  }
-
-  ngAfterViewInit() {
-    this.mapService.setMapControls(this.editHomePosition)
   }
 
   initializeMap(): void {

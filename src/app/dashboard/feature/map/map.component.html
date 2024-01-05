@@ -29,7 +29,7 @@
         </map-marker>    
       }   
       
-      @if (ownerService.loaded && !(mapService.isStartLocationEditing | async)) {
+      @if (ownerService.loaded && !(mapService.isStartLocationEditing | async) && ownerService.startLocation()) {
         <map-marker
           (mapClick)="mapService.focus(ownerService.startLocation().coordinates)"
           icon="./assets/images/home-marker.png"
@@ -45,16 +45,18 @@
     }
   </google-map>
 }
-<app-map-controls mapControl></app-map-controls>
+<app-map-controls></app-map-controls>
 
-<div
-  (click)="onChangeStarLocation()"
-  class="rounded-full bg-white p-3 mr-3 mt-3 cursor-pointer" #editHomePosition>
+<div class="absolute top-0 left-0 w-full h-full pointer-events-none flex items-start justify-end">
+  <div
+    class="rounded-full bg-white p-3 mr-3 cursor-pointer change-start-location leading-3"
+    (click)="onChangeStarLocation()">
   @if (mapService.isStartLocationEditing | async) {
     <div class="flex w-3 h-3">
-      <i class="fa-solid fa-x m-auto"></i>
+      <i class="fa-solid text-xs fa-x m-auto leading-3"></i>
     </div>
   } @else {
-    <i class="fa-solid fa-house"></i>
+    <i class="fa-solid text-xs fa-house leading-3"></i>
   }
+</div>
 </div>

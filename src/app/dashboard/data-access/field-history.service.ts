@@ -9,6 +9,7 @@ import { HarvestHistoryRecord } from '../data-model/harvest-history-record.model
 import { CreateHarvestHistoryRecordRequest } from '../data-model/create-harvest-history-record-request.model';
 import { FertilizationHistoryRecordRequest } from '../data-model/create-fertilization-history-record-request.model';
 import { FertilizationHistoryRecord } from '../data-model/fertilization-history-record.model';
+import { AuthService } from '../../auth/data-access/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,16 @@ export class FieldHistoryService {
 
   constructor(
     public http: HttpClient,
+    private authService: AuthService
   ) { 
+    this.authService.beforeLogout$.pipe(
+      takeUntilDestroyed()
+    ).subscribe(_ => this.state.set({
+      data: [],
+      loaded: false,
+      error: null
+    }));
+
     this.deleteCultivationHistoryRecord$.pipe(
       takeUntilDestroyed(),
       confirmDialog(data => {
