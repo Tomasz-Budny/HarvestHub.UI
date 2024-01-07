@@ -17,14 +17,13 @@ export class AuthValidators {
             else if(targetCtrl.hasError('mismatch')) {
                 delete targetCtrl.errors['mismatch'];
                 targetCtrl.updateValueAndValidity();
-                console.log(targetCtrl.errors);
             }
     
             return null;
         }   
     }
 
-    static EmailIsUnique(authService: AuthService): AsyncValidatorFn {
+    static emailIsUnique(authService: AuthService): AsyncValidatorFn {
         return (control: AbstractControl):  Observable<ValidationErrors | null> => {
             return control.valueChanges
               .pipe(
@@ -37,3 +36,5 @@ export class AuthValidators {
         }
     }
 }
+
+

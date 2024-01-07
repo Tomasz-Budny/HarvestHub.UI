@@ -36,7 +36,7 @@ export class RegisterComponent {
     this.registerForm = this.fb.group({
       name: [null, [Validators.required]],
       surname: [null, [Validators.required]],
-      email: [null, [Validators.required, Validators.email], [AuthValidators.EmailIsUnique(this.authService)]],
+      email: [null, [Validators.required, Validators.email], [AuthValidators.emailIsUnique(this.authService)]],
       password: [null, [Validators.required]],
       confirmPassword: [null, [Validators.required]],
     }, {
@@ -57,3 +57,5 @@ export class RegisterComponent {
     }
   }
 }
+
+

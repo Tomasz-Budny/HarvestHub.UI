@@ -8,12 +8,14 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { BaseUrlService } from '../../shared/data-access/base-url.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
-    public cookieService: CookieService
+    public cookieService: CookieService,
+    private baseUrlService: BaseUrlService
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -24,7 +26,7 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(request);
     }
 
-    if(!request.url.toString().includes('localhost')) {
+    if(!request.url.toString().includes(this.baseUrlService.baseUrl)) {
       return next.handle(request);
     }
 
@@ -32,3 +34,4 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(modifiedReq)
   }
 }
+
