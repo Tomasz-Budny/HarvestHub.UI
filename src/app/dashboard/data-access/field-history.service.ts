@@ -10,12 +10,13 @@ import { CreateHarvestHistoryRecordRequest } from '../data-model/create-harvest-
 import { FertilizationHistoryRecordRequest } from '../data-model/create-fertilization-history-record-request.model';
 import { FertilizationHistoryRecord } from '../data-model/fertilization-history-record.model';
 import { AuthService } from '../../auth/data-access/auth.service';
+import { BaseUrlService } from '../../shared/data-access/base-url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FieldHistoryService {
-  URL = 'https://localhost:7258/api/fields/'
+  URL = this.baseUrlService.createUrl('fields/');
 
   private state = signal<HarvestHubResponse<CultivationHistoryRecord[]>>({
     data: [],
@@ -32,7 +33,8 @@ export class FieldHistoryService {
 
   constructor(
     public http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private baseUrlService: BaseUrlService
   ) { 
     this.authService.beforeLogout$.pipe(
       takeUntilDestroyed()

@@ -8,12 +8,13 @@ import { CookieService } from 'ngx-cookie-service';
 import { UserContextService } from './user-context.service';
 import { UserModel } from '../data-model/user.model';
 import { RegisterRequest } from '../data-model/register-request.model';
+import { BaseUrlService } from '../../shared/data-access/base-url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  URL: string = 'https://localhost:7258/api/user/'
+  URL: string = this.baseUrlService.createUrl('user/');
   private login$: Subject<LoginRequest> = new Subject();
   private tokenExpirationTimer: any;
   public beforeLogout$: Subject<void> = new Subject();
@@ -21,7 +22,8 @@ export class AuthService {
   constructor(
     protected http: HttpClient,
     protected cookieService: CookieService,
-    protected userContextService: UserContextService
+    protected userContextService: UserContextService,
+    protected baseUrlService: BaseUrlService
   ) { 
     this.login$.pipe(
       takeUntilDestroyed(),
@@ -43,7 +45,7 @@ export class AuthService {
   }
 
   private loginApi(loginRequest: LoginRequest): Observable<string> {
-    return this.http.post(this.URL + 'login', loginRequest, {responseType: 'text'});
+    return this.http.post(this.URL + 'login', loginRequest, { responseType: 'text' });
   }
 
   register(registerRequest: RegisterRequest): Observable<void> {

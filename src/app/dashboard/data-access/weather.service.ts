@@ -6,12 +6,13 @@ import { HarvestHubResponse } from '../../shared/data-model/harvest-hub-response
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { CoordinatesViewModel } from '../data-model/coordinates.model';
 import { AuthService } from '../../auth/data-access/auth.service';
+import { BaseUrlService } from '../../shared/data-access/base-url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherService {
-  URL = "https://localhost:7258/api/weather/";
+  URL = this.baseUrlService.createUrl('weather/');
 
   private getDayForecasts$: Subject<{coords: CoordinatesViewModel, days: number}> = new Subject();
 
@@ -23,7 +24,8 @@ export class WeatherService {
 
   constructor(
     public http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private baseUrlService: BaseUrlService
   ) {
     this.authService.beforeLogout$.pipe(
       takeUntilDestroyed()

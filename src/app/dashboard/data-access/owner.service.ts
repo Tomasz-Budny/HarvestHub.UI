@@ -9,12 +9,13 @@ import { CoordinatesViewModel } from '../data-model/coordinates.model';
 import { HttpClient } from '@angular/common/http';
 import { HarvestHubError } from '../../shared/data-model/harvest-hub-error.model';
 import { AuthService } from '../../auth/data-access/auth.service';
+import { BaseUrlService } from '../../shared/data-access/base-url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OwnerService {
-  URL = 'https://localhost:7258/api/owners';
+  URL = this.baseUrlService.createUrl('owners');
 
   private state = signal<HarvestHubResponse<StartLocation>>({
     data: null,
@@ -31,7 +32,8 @@ export class OwnerService {
   constructor(
     public http: HttpClient,
     private mapService: MapService,
-    private authService: AuthService
+    private authService: AuthService,
+    private baseUrlService: BaseUrlService
   ) { 
     this.authService.beforeLogout$.pipe(
       takeUntilDestroyed()

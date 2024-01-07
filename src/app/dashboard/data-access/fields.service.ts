@@ -11,12 +11,13 @@ import { ColorUtil } from '../utils/color.util';
 import { ReplaceFieldVerticesRequest } from '../data-model/replace-field-vertices-request.model';
 import { FieldDetailsService } from './field-details.service';
 import { AuthService } from '../../auth/data-access/auth.service';
+import { BaseUrlService } from '../../shared/data-access/base-url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FieldsService {
-  URL = 'https://localhost:7258/api/fields';
+  URL = this.baseUrlService.createUrl('fields/');
 
   private state = signal<HarvestHubResponse<FieldViewModel[]>>({
     data: [],
@@ -33,7 +34,8 @@ export class FieldsService {
   constructor(
     public http: HttpClient,
     public fieldDetailsService: FieldDetailsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private baseUrlService: BaseUrlService
   ) {
     this.authService.beforeLogout$.pipe(
       takeUntilDestroyed()

@@ -5,19 +5,21 @@ import { EMPTY, Subject, catchError, debounceTime, switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { OwnershipStatus } from '../data-model/ownership-status.model';
 import { SoilClass } from '../data-model/soil-class.model';
+import { BaseUrlService } from '../../shared/data-access/base-url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FieldDetailsService {
-  URL = 'https://localhost:7258/api/fields/'
+  URL = this.baseUrlService.createUrl('fields/');
   updateOwnerShipStatus$ = new Subject<{fieldId: string, ownershipStatus: OwnershipStatus}>()
   updateSoilClass$ = new Subject<{fieldId: string, soilClass: SoilClass}>();
   updateFieldName$ = new Subject<{fieldId: string, name: string}>();
   updateFieldColor$ = new Subject<{fieldId: string, color: string}>();
 
   constructor(
-    public http: HttpClient
+    public http: HttpClient,
+    private baseUrlService: BaseUrlService
   ) { 
     this.updateOwnerShipStatus$.pipe(
       takeUntilDestroyed(),
