@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Signal, ViewChild, computed } from '@angular/core';
+import { Component, Signal, ViewChild, computed } from '@angular/core';
 import { GoogleMap, GoogleMapsModule } from '@angular/google-maps';
 import { Observable, tap } from 'rxjs';
 import { MapService } from '../../data-access/map.service';

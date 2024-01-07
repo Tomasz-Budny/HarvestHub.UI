@@ -36,15 +36,7 @@ export class FieldsService {
     public fieldDetailsService: FieldDetailsService,
     private authService: AuthService,
     private baseUrlService: BaseUrlService
-  ) {
-    this.authService.beforeLogout$.pipe(
-      takeUntilDestroyed()
-    ).subscribe(_ => this.state.set({
-      data: [],
-      loaded: false,
-      error: null
-    }));
-    
+  ) {    
     this.loadFields$.pipe(
       takeUntilDestroyed(),
       switchMap(_ => this.getFieldsApi())
@@ -58,7 +50,7 @@ export class FieldsService {
         ...state,
         error: err
       }))
-    })
+    });
 
     this.remove$.asObservable().pipe(
       confirmDialog(fieldId => {
@@ -136,7 +128,15 @@ export class FieldsService {
         ...state,
         error: err
       }))
-    })
+    });
+
+    this.authService.beforeLogout$.pipe(
+      takeUntilDestroyed()
+    ).subscribe(_ => this.state.set({
+      data: [],
+      loaded: false,
+      error: null
+    }));
   }
 
   getField(fieldId: string) {

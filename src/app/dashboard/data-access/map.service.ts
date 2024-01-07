@@ -198,13 +198,12 @@ export class MapService {
         if(this.isMapLoaded()) {
           return of(true);
         }
-
         return this.httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKv27xR4mZj_nWp6ljbbo0x_ta0yrui4&libraries=places,geometry,drawing', 'callback').pipe(
           map(() => true ),
           catchError(() => of(false))
         )
       })
-    )
+    );
   }
 
   private isMapLoaded(): boolean {
