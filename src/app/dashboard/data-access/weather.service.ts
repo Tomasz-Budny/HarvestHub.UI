@@ -7,6 +7,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { CoordinatesViewModel } from '../data-model/coordinates.model';
 import { AuthService } from '../../auth/data-access/auth.service';
 import { BaseUrlService } from '../../shared/data-access/base-url.service';
+import { RandomUtil } from '../utils/random.util';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,7 @@ export class WeatherService {
     ).subscribe({
       next: res => this.dayForecastsState.update(state => ({
         ...state,
-        data: res,
+        data: this.tryFillFakeWeatherData(res),
         loaded: true
       })),
       error: err => this.dayForecastsState.update(state => ({
@@ -65,5 +66,32 @@ export class WeatherService {
       .set('days', days);
 
     return this.http.get<DayForecastViewModel[]>(this.URL + 'day_forecast', { params });
+  }
+
+  private tryFillFakeWeatherData(dayForecasts: DayForecastViewModel[]): DayForecastViewModel[] {
+    const desiredNumberOfForecastDays = 5;
+
+    let lastWeekDay = dayForecasts[dayForecasts.length - 1].weekDay;
+
+    if(dayForecasts.length < desiredNumberOfForecastDays) {
+
+      const iterations = desiredNumberOfForecastDays - dayForecasts.length;
+
+      for(let i = 0; i < iterations; i++) {
+        lastWeekDay = lastWeekDay + 1 % 7;
+
+        var artificialForecastday: DayForecastViewModel = {
+          temperature: RandomUtil.getRandomRange(0, 2),
+          weekDay: lastWeekDay,
+          weatherStatus: RandomUtil.getRandomRange(1, 4),
+          rainChances: RandomUtil.getRandomRange(0, 100)
+        };
+
+        dayForecasts.push(artificialForecastday)
+      }
+
+    }
+
+    return dayForecasts;
   }
 }

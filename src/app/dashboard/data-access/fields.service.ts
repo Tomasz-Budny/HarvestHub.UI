@@ -17,7 +17,7 @@ import { BaseUrlService } from '../../shared/data-access/base-url.service';
   providedIn: 'root'
 })
 export class FieldsService {
-  URL = this.baseUrlService.createUrl('fields/');
+  URL = this.baseUrlService.createUrl('fields');
 
   private state = signal<HarvestHubResponse<FieldViewModel[]>>({
     data: [],
