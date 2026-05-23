@@ -4,11 +4,12 @@ import { SidePanelComponent } from './side-panel/side-panel.component';
 import { NavbarComponent } from '../../shared/feature/navbar/navbar.component';
 import { OwnerService } from '../data-access/owner.service';
 import { FieldsService } from '../data-access/fields.service';
+import { AIChatComponent } from '../../chat/feature/ai-chat/ai-chat.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [MapComponent, SidePanelComponent, NavbarComponent],
+  imports: [MapComponent, SidePanelComponent, NavbarComponent, AIChatComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

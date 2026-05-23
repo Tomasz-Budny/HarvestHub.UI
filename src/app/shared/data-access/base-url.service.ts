@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class BaseUrlService {
   baseUrl = 'https://localhost:7258/api/';
+  urlsToInjectAuthHeader = [this.baseUrl, 'https://localhost:7260/api']
 
   constructor() { }
 

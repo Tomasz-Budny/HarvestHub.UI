@@ -26,9 +26,13 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(request);
     }
 
-    if(!request.url.toString().includes(this.baseUrlService.baseUrl)) {
+    if (!this.baseUrlService.urlsToInjectAuthHeader.some(urlPart => request.url.includes(urlPart))) {
       return next.handle(request);
     }
+
+    // if(!request.url.toString().includes(this.baseUrlService.baseUrl)) {
+    //   return next.handle(request);
+    // }
 
     const modifiedReq = request.clone({headers: new HttpHeaders().set('Authorization', token)});
     return next.handle(modifiedReq)

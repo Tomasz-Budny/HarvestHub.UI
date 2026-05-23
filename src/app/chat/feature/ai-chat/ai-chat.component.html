@@ -1,0 +1,30 @@
+<!-- Toggle button -->
+<button class="chat-toggle-button" (click)="openChat()" *ngIf="!isOpen">💬</button>
+
+<!-- Pływające okienko czatu -->
+<div class="chat-float-window" *ngIf="isOpen">
+  <div class="chat-header">
+    <span>AI Chat</span>
+    <button class="close-button" (click)="closeChat()">✖</button>
+  </div>
+
+  <div class="chat-messages">
+    <div *ngFor="let msg of messages" [ngClass]="msg.sender">
+      <strong *ngIf="msg.sender === 'user'">Ty:</strong>
+      <strong *ngIf="msg.sender === 'ai'">AI:</strong>
+      <span>{{ msg.content }}</span>
+    </div>
+    <div *ngIf="isLoading" class="loading">AI myśli...</div>
+  </div>
+
+  <form (submit)="sendMessage(); $event.preventDefault()" class="chat-form">
+    <textarea
+    [(ngModel)]="userInput"
+    name="message"
+    placeholder="Napisz wiadomość..."
+    (keydown)="handleKeyDown($event)"
+    rows="1"
+  ></textarea>
+    <button type="submit" [disabled]="isLoading || !userInput.trim()">Wyślij</button>
+  </form>
+</div>
